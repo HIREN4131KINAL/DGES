@@ -38,7 +38,6 @@
                 android:background="@android:drawable/picture_frame"
                 android:clickable="true"
                 android:elevation="6dp"
-
                 android:stateListAnimator="@drawable/translation_selector"
                 card_view:cardCornerRadius="4dp" />
 
