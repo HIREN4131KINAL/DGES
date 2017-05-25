@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DGSI</string>
+    <string name="sname">Lastname Firstname Middlename</string>
 </resources>

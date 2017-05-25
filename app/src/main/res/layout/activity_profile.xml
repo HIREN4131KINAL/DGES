@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="2">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#454544"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/img_student_profile"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:src="@drawable/ic_profile" />
+
+                <TextView
+                    android:id="@+id/txt_sname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/sname"
+                    android:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Class"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_class"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_vertical"
+                        android:hint="Name"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Roll No."
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_roll"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:ems="10"
+                        android:textSize="20sp"
+                        android:gravity="center_vertical"
+                        android:hint="04"
+                        android:textColor="#111111" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="GR No."
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_grno"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:hint="123456"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Birthday"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_bday"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:hint="26/11/1994"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Gender"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_gen"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:hint="Male"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Phone"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_phno"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:gravity="center_vertical"
+                        android:hint="9876543210"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_marginEnd="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Address"
+                        android:textColor="#ffffff"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/txt_add"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:lines="2"
+                        android:hint="Office-213, Supermall-2, infocity, Gandhinagar"
+                        android:textColor="#111111"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
