@@ -17,8 +17,7 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
     private List<ObservationData> observationDatas;
     private Context context;
 
-    public ObservationAdapter(List<ObservationData> observationDatas,Context context)
-    {
+    public ObservationAdapter(List<ObservationData> observationDatas, Context context) {
         this.observationDatas = observationDatas;
         this.context = context;
     }
@@ -45,15 +44,15 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
         return observationDatas.size();
     }
 
-    public class ObservationViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtObStudentName,txtObDate,txtObTitle,txtObDescription;
+    public class ObservationViewHolder extends RecyclerView.ViewHolder {
+        public TextView txtObStudentName, txtObDate, txtObTitle, txtObDescription;
 
         public ObservationViewHolder(View itemView) {
             super(itemView);
-            txtObStudentName = (TextView)itemView.findViewById(R.id.txt_observation_student_name);
-            txtObDate = (TextView)itemView.findViewById(R.id.txt_observation_date);
-            txtObTitle = (TextView)itemView.findViewById(R.id.txt_observation_title);
-            txtObDescription = (TextView)itemView.findViewById(R.id.txt_observation_desc);
+            txtObStudentName = (TextView) itemView.findViewById(R.id.txt_observation_student_name);
+            txtObDate = (TextView) itemView.findViewById(R.id.txt_observation_date);
+            txtObTitle = (TextView) itemView.findViewById(R.id.txt_observation_title);
+            txtObDescription = (TextView) itemView.findViewById(R.id.txt_observation_desc);
         }
     }
 }

@@ -3,6 +3,7 @@ package com.tranetech.dges;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,10 +33,13 @@ public class HomeworkActivity extends AppCompatActivity implements SwipeRefreshL
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homework);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Homework");
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);

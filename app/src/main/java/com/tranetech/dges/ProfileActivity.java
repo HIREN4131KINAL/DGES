@@ -65,6 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onResume();
         setData();
     }
+
     //method for setting student data into textviews
     private void setData() {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);

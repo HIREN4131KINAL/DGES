@@ -2,8 +2,8 @@ package com.tranetech.dges;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,33 +28,40 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CircularActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private List<CircularData> circularDatas = new ArrayList<>();
-    private RecyclerView recyclerView;
+/**
+ * Created by HIREN AMALIYAR on 27-05-2017.
+ */
+
+public class ActivityParentsMultiChild extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeRefreshLayout;
-    private CircularAdapter circularAdapter;
+    private List<ParentChildData> parentChildDataList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private AdapterParentsMultiChild adapterParentsMultiChild;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_circular);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Circular");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_circular);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_circular);
+        setContentView(R.layout.activity_parents_multi_child);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_parents_multi_stu);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_parents_multi_stu);
+
     }
 
     @Override
-    public void onRefresh() {
-        getData();
-        swipeRefreshLayout.setRefreshing(false);
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         getData();
+    }
+
+    @Override
+    public void onRefresh() {
+        getData();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void getData() {
@@ -95,7 +102,7 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, CircularActivity.this);
+                ErrorAlert.error(message, ActivityParentsMultiChild.this);
             }
         });
 // Add the request to the RequestQueue.
@@ -107,13 +114,13 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
         JSONObject jsonObject = new JSONObject(response);
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.length(); i++) {
-            CircularData circularData = new CircularData();
+            ParentChildData parentChildData = new ParentChildData();
             JSONObject jobj = jsonArray.getJSONObject(i);
-            circularData.setsCircularTitle(jobj.getString("uid"));
-            circularData.setsCircularDesc(jobj.getString("name"));
-            circularData.setsCircualarDate(jobj.getString("address"));
+            parentChildData.setsStudentID(jobj.getString("uid"));
+            parentChildData.setsName(jobj.getString("name"));
+            parentChildData.setsStandard(jobj.getString("standard"));
 
-            circularDatas.add(circularData);
+            parentChildDataList.add(parentChildData);
         }
 
         IntialAdapter();
@@ -121,12 +128,12 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
 
     public void IntialAdapter() {
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(CircularActivity.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityParentsMultiChild.this);
         recyclerView.setLayoutManager(mLayoutManager);
-        circularAdapter = new CircularAdapter(circularDatas, this);
-        recyclerView.scrollToPosition(circularDatas.size() + 1);
-        circularAdapter.notifyItemInserted(circularDatas.size() + 1);
-        recyclerView.setAdapter(circularAdapter);
+        adapterParentsMultiChild = new AdapterParentsMultiChild(parentChildDataList, getApplicationContext());
+        recyclerView.scrollToPosition(parentChildDataList.size() + 1);
+        adapterParentsMultiChild.notifyItemInserted(parentChildDataList.size() + 1);
+        recyclerView.setAdapter(adapterParentsMultiChild);
     }
 
 }
