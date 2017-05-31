@@ -1,12 +1,12 @@
-package com.tranetech.dges;
+package com.tranetech.dges.seter_geter;
 
 /**
  * Created by HIREN AMALIYAR on 27-05-2017.
  */
 
-class ParentChildData {
+public class ParentChildData {
     private String sStudentID;
-    private String sName;
+    private String sName,mName,lName;
     private String sStandard;
 
 
@@ -32,5 +32,21 @@ class ParentChildData {
 
     public String getsStudentID() {
         return sStudentID;
+    }
+
+    public void setmName(String mName) {
+        this.mName = mName;
+    }
+
+    public String getmName() {
+        return mName;
+    }
+
+    public void setlName(String lName) {
+        this.lName = lName;
+    }
+
+    public String getlName() {
+        return lName;
     }
 }

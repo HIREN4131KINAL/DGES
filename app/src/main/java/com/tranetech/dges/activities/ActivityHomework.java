@@ -1,9 +1,9 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +20,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.adapters.HomeworkAdapter;
+import com.tranetech.dges.seter_geter.HomeworkData;
+import com.tranetech.dges.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,40 +33,33 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by HIREN AMALIYAR on 27-05-2017.
- */
-
-public class ActivityParentsMultiChild extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private List<ParentChildData> parentChildDataList = new ArrayList<>();
+public class ActivityHomework extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private List<HomeworkData> hwData = new ArrayList<>();
     private RecyclerView recyclerView;
-    private AdapterParentsMultiChild adapterParentsMultiChild;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private HomeworkAdapter hwAdapter;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_parents_multi_child);
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_parents_multi_stu);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_parents_multi_stu);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        getData();
+        setContentView(R.layout.activity_homework);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Homework");
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
     }
 
     @Override
     public void onRefresh() {
         getData();
         swipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getData();
     }
 
     private void getData() {
@@ -102,7 +100,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity implements Swip
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, ActivityParentsMultiChild.this);
+                ErrorAlert.error(message, ActivityHomework.this);
             }
         });
 // Add the request to the RequestQueue.
@@ -114,13 +112,13 @@ public class ActivityParentsMultiChild extends AppCompatActivity implements Swip
         JSONObject jsonObject = new JSONObject(response);
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.length(); i++) {
-            ParentChildData parentChildData = new ParentChildData();
+            HomeworkData homeworkData = new HomeworkData();
             JSONObject jobj = jsonArray.getJSONObject(i);
-            parentChildData.setsStudentID(jobj.getString("uid"));
-            parentChildData.setsName(jobj.getString("name"));
-            parentChildData.setsStandard(jobj.getString("standard"));
+            homeworkData.setsSubName(jobj.getString("str_gr_no"));
+            homeworkData.setsHWDate(jobj.getString("name"));
+            homeworkData.setsHWDescription(jobj.getString("address"));
 
-            parentChildDataList.add(parentChildData);
+            hwData.add(homeworkData);
         }
 
         IntialAdapter();
@@ -128,12 +126,11 @@ public class ActivityParentsMultiChild extends AppCompatActivity implements Swip
 
     public void IntialAdapter() {
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityParentsMultiChild.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityHomework.this);
         recyclerView.setLayoutManager(mLayoutManager);
-        adapterParentsMultiChild = new AdapterParentsMultiChild(parentChildDataList, getApplicationContext());
-        recyclerView.scrollToPosition(parentChildDataList.size() + 1);
-        adapterParentsMultiChild.notifyItemInserted(parentChildDataList.size() + 1);
-        recyclerView.setAdapter(adapterParentsMultiChild);
+        hwAdapter = new HomeworkAdapter(hwData, this);
+        recyclerView.scrollToPosition(hwData.size() + 1);
+        hwAdapter.notifyItemInserted(hwData.size() + 1);
+        recyclerView.setAdapter(hwAdapter);
     }
-
 }

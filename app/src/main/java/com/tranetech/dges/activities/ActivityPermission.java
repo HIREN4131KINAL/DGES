@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.tranetech.dges.utils.MarshmallowPermissions;
+import com.tranetech.dges.R;
+
 
 /**
  * Created by HIREN AMALIYAR on 25-05-2017.
  */
 
-public class PermissionActivity extends Activity {
+public class ActivityPermission extends Activity {
     MarshmallowPermissions marsh;
     Intent getiIntent;
     View parentLayout;
@@ -32,7 +35,7 @@ public class PermissionActivity extends Activity {
         setContentView(R.layout.activity_permission);
         marsh = new MarshmallowPermissions(this);
         parentLayout = findViewById(android.R.id.content);
-        marsh = new MarshmallowPermissions(PermissionActivity.this);
+        marsh = new MarshmallowPermissions(ActivityPermission.this);
         parentLayout = findViewById(android.R.id.content);
         getiIntent = getIntent();
 
@@ -93,7 +96,7 @@ public class PermissionActivity extends Activity {
     protected void onResume() {
         super.onResume();
         if (marsh.checkIfAlreadyhavePermission()) {
-            Intent intent = new Intent(this, PermissionActivity.class);
+            Intent intent = new Intent(this, ActivityPermission.class);
             startActivity(intent);
             finish();
         }

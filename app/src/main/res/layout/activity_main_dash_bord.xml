@@ -38,8 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:drawable/picture_frame"
-                    android:orientation="horizontal"
                     android:onClick="LinearProfile"
+                    android:orientation="horizontal"
                     android:padding="@dimen/padding_profile">
 
 
@@ -47,7 +47,7 @@
                         android:id="@+id/img_student_profile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
-                        android:background="@android:color/background_dark"
+                        android:background="@android:color/darker_gray"
                         android:elevation="8dp"
                         android:padding="@dimen/padding_cardview"
                         android:src="@drawable/ic_profile" />
@@ -76,7 +76,7 @@
         android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <include layout="@layout/content_layout" />
+        <include layout="@layout/content_dash_board_layout" />
 
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.ParentChildData;
 
 import java.util.List;
 
@@ -13,7 +17,7 @@ import java.util.List;
  * Created by HIREN AMALIYAR on 27-05-2017.
  */
 
-class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParentsMultiChild.ParentsMultiChildViewHolder> {
+public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParentsMultiChild.ParentsMultiChildViewHolder> {
     private Context context;
     private List<ParentChildData> parentChildDataList;
 
@@ -33,13 +37,15 @@ class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParentsMultiC
     @Override
     public void onBindViewHolder(AdapterParentsMultiChild.ParentsMultiChildViewHolder holder, int position) {
         ParentChildData parentChildData = parentChildDataList.get(position);
-        holder.txt_sname.setText(parentChildData.getsName());
+        Toast.makeText(context, "" + parentChildData.getsName(), Toast.LENGTH_SHORT).show();
+
+        holder.txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
         holder.txt_standard.setText(parentChildData.getsStandard());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return parentChildDataList.size();
     }
 
     public class ParentsMultiChildViewHolder extends RecyclerView.ViewHolder {

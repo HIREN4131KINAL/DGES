@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tranetech.dges.seter_geter.HomeworkData;
+import com.tranetech.dges.R;
 
 import java.util.List;
 

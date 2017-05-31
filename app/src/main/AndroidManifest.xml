@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tranetech.dges">
 
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -12,64 +11,81 @@
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
-
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ActivityMainDashBord"
-            android:parentActivityName=".SplashActivity">
+            android:name=".activities.ActivityMainDashBord"
+            android:parentActivityName=".activities.ActivityParentsMultiChild">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".SplashActivity" />
+                android:value=".activities.ActivityParentsMultiChild" />
         </activity>
         <activity
-            android:name=".ProfileActivity"
-            android:parentActivityName=".ActivityMainDashBord">
+            android:name=".activities.ActivityProfile"
+            android:parentActivityName=".activities.ActivityMainDashBord">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMainDashBord" />
+                android:value=".activities.ActivityMainDashBord" />
         </activity>
         <activity
-            android:name=".HomeworkActivity"
-            android:parentActivityName=".ActivityMainDashBord">
+            android:name=".activities.ActivityHomework"
+            android:parentActivityName=".activities.ActivityMainDashBord">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMainDashBord" />
+                android:value=".activities.ActivityMainDashBord" />
         </activity>
         <activity
-            android:name=".CircularActivity"
-            android:parentActivityName=".ActivityMainDashBord">
+            android:name=".activities.ActivityCircular"
+            android:parentActivityName=".activities.ActivityMainDashBord">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMainDashBord" />
+                android:value=".activities.ActivityMainDashBord" />
         </activity>
         <activity
-            android:name=".ObservationActivity"
-            android:parentActivityName=".ActivityMainDashBord">
+            android:name=".activities.ActivityFees"
+            android:parentActivityName=".activities.ActivityMainDashBord">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityMainDashBord" />
+                android:value=".activities.ActivityMainDashBord" />
         </activity>
-
+        <activity android:name=".activities.ActivityParentsMultiChild" />
         <activity
-            android:name=".SplashActivity"
+            android:name=".activities.ActivityResult"
+            android:parentActivityName=".activities.ActivityMainDashBord">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActivityMainDashBord" />
+        </activity>
+        <activity
+            android:name=".activities.ActivityObservation"
+            android:parentActivityName=".activities.ActivityMainDashBord">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.ActivityMainDashBord" />
+        </activity>
+        <activity
+            android:name=".activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/title_activity_splash"
+            android:label="@string/app_name"
             android:theme="@style/FullscreenTheme">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".PermissionActivity" />
+        <activity android:name=".activities.ActivityPermission" />
+        <!-- <activity
+             android:name=".ActivityLogin"
+             android:windowSoftInputMode="adjustResize" />-->
+        <activity
+            android:name=".activities.ActivityLogin"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

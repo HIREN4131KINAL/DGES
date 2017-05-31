@@ -22,5 +22,15 @@
     <dimen name="margin_profile_student">20dp</dimen>
     <dimen name="img_width_cardview_dash">160dp</dimen>
     <dimen name="img_hight_cardview_dash">140dp</dimen>
+    <dimen name="logoIN_LoginActivity">150dp</dimen>
+    <dimen name="txt_large_schoolname">30sp</dimen>
+    <dimen name="marginTop_logo">10dp</dimen>
+    <dimen name="marginBotom_loginButon">20dp</dimen>
+    <dimen name="profile_row_lable">90dp</dimen>
+    <dimen name="width_profile_row_lable">90dp</dimen>
+    <dimen name="hight_profile_row_lable">40dp</dimen>
+    <dimen name="marginend_profile_row">5dp</dimen>
+    <dimen name="width_editText_login">20dp</dimen>
+    <dimen name="marginTop_login_row_psw">40dp</dimen>
 
 </resources>

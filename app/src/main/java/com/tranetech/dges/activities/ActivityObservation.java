@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -20,6 +20,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.adapters.ObservationAdapter;
+import com.tranetech.dges.seter_geter.ObservationData;
+import com.tranetech.dges.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,21 +33,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeworkActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private List<HomeworkData> hwData = new ArrayList<>();
+public class ActivityObservation extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private List<ObservationData> observationDatas = new ArrayList<>();
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private HomeworkAdapter hwAdapter;
+    private ObservationAdapter observationAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_homework);
+        setContentView(R.layout.activity_observation);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Homework");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
+        actionBar.setTitle("Observation");
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_observation);
         swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_observation);
     }
 
     @Override
@@ -95,7 +100,7 @@ public class HomeworkActivity extends AppCompatActivity implements SwipeRefreshL
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, HomeworkActivity.this);
+                ErrorAlert.error(message, ActivityObservation.this);
             }
         });
 // Add the request to the RequestQueue.
@@ -107,13 +112,14 @@ public class HomeworkActivity extends AppCompatActivity implements SwipeRefreshL
         JSONObject jsonObject = new JSONObject(response);
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.length(); i++) {
-            HomeworkData homeworkData = new HomeworkData();
+            ObservationData observationData = new ObservationData();
             JSONObject jobj = jsonArray.getJSONObject(i);
-            homeworkData.setsSubName(jobj.getString("uid"));
-            homeworkData.setsHWDate(jobj.getString("name"));
-            homeworkData.setsHWDescription(jobj.getString("address"));
+            observationData.setsObStudentName(jobj.getString("str_gr_no"));
+            observationData.setsObDate(jobj.getString("name"));
+            observationData.setsObTitle(jobj.getString("address"));
+            observationData.setsObDesc(jobj.getString("address"));
 
-            hwData.add(homeworkData);
+            observationDatas.add(observationData);
         }
 
         IntialAdapter();
@@ -121,11 +127,11 @@ public class HomeworkActivity extends AppCompatActivity implements SwipeRefreshL
 
     public void IntialAdapter() {
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(HomeworkActivity.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityObservation.this);
         recyclerView.setLayoutManager(mLayoutManager);
-        hwAdapter = new HomeworkAdapter(hwData, this);
-        recyclerView.scrollToPosition(hwData.size() + 1);
-        hwAdapter.notifyItemInserted(hwData.size() + 1);
-        recyclerView.setAdapter(hwAdapter);
+        observationAdapter = new ObservationAdapter(observationDatas, this);
+        recyclerView.scrollToPosition(observationDatas.size() + 1);
+        observationAdapter.notifyItemInserted(observationDatas.size() + 1);
+        recyclerView.setAdapter(observationAdapter);
     }
 }

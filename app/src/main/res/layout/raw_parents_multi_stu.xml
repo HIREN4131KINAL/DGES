@@ -17,7 +17,7 @@
             android:id="@+id/img_student_profile"
             android:layout_width="@dimen/hight_circle_imageview"
             android:layout_height="@dimen/width_circle_imageview"
-            android:background="@android:color/background_dark"
+            android:background="@android:color/darker_gray"
             android:elevation="8dp"
             android:padding="@dimen/padding_cardview"
             android:src="@drawable/ic_profile" />

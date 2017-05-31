@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.seter_geter;
 
 /**
  * Created by Markand on 26-05-2017 at 09:29 AM.

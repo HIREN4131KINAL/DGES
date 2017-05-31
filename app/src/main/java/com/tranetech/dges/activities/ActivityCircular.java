@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -20,6 +20,11 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.tranetech.dges.adapters.CircularAdapter;
+import com.tranetech.dges.seter_geter.CircularData;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,7 +33,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CircularActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ActivityCircular extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<CircularData> circularDatas = new ArrayList<>();
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -95,7 +100,7 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, CircularActivity.this);
+                ErrorAlert.error(message, ActivityCircular.this);
             }
         });
 // Add the request to the RequestQueue.
@@ -109,7 +114,7 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
         for (int i = 0; i < jsonArray.length(); i++) {
             CircularData circularData = new CircularData();
             JSONObject jobj = jsonArray.getJSONObject(i);
-            circularData.setsCircularTitle(jobj.getString("uid"));
+            circularData.setsCircularTitle(jobj.getString("str_gr_no"));
             circularData.setsCircularDesc(jobj.getString("name"));
             circularData.setsCircualarDate(jobj.getString("address"));
 
@@ -121,7 +126,7 @@ public class CircularActivity extends AppCompatActivity implements SwipeRefreshL
 
     public void IntialAdapter() {
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(CircularActivity.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityCircular.this);
         recyclerView.setLayoutManager(mLayoutManager);
         circularAdapter = new CircularAdapter(circularDatas, this);
         recyclerView.scrollToPosition(circularDatas.size() + 1);

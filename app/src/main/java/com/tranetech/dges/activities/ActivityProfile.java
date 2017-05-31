@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,6 +23,9 @@ import com.android.volley.toolbox.Volley;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +34,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ActivityProfile extends AppCompatActivity {
 
     private TextView txtSname, txtClass, txtRollNo, txtGrNo, txtBday, txtGender, txtPhone, txtAddress;
     private ImageView imgProfile;
@@ -105,14 +108,14 @@ public class ProfileActivity extends AppCompatActivity {
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        ErrorAlert.error(message, ProfileActivity.this);
+                        ErrorAlert.error(message, ActivityProfile.this);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("uid", uid);
+                params.put("str_gr_no", uid);
                 return params;
             }
         };

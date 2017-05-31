@@ -1,4 +1,4 @@
-package com.tranetech.dges;
+package com.tranetech.dges.utils;
 
 import android.Manifest;
 import android.app.Activity;

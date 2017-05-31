@@ -1,12 +1,16 @@
-package com.tranetech.dges;
+package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -20,49 +24,81 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.adapters.AdapterParentsMultiChild;
+import com.tranetech.dges.seter_geter.ParentChildData;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.R;
+import com.tranetech.dges.utils.SharedPreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObservationActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private List<ObservationData> observationDatas = new ArrayList<>();
-    private RecyclerView recyclerView;
+/**
+ * Created by HIREN AMALIYAR on 27-05-2017.
+ */
+
+public class ActivityParentsMultiChild extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ObservationAdapter observationAdapter;
+    private List<ParentChildData> parentChildDataList = new ArrayList<>();
+    private RecyclerView recyclerView;
+    private AdapterParentsMultiChild adapterParentsMultiChild;
+    private FileCacher<String> stringCacher = new FileCacher<>(ActivityParentsMultiChild.this, "cache_tmp.txt");
+    String response;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_observation);
+        setContentView(R.layout.activity_parents_multi_child);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Observation");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_observation);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_observation);
+        actionBar.setTitle("DGES");
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_parents_multi_stu);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_parents_multi_stu);
+
+
+        try {
+            response = stringCacher.readCache();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
-    @Override
-    public void onRefresh() {
-        getData();
-        swipeRefreshLayout.setRefreshing(false);
-    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getData();
+        try {
+            getJson(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void getData() {
+    @Override
+    public void onRefresh() {
+        try {
+            getJson(response);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+/*    private void getData() {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         GetIP getIP = new GetIP();
-        String url = getIP.updateip("emp_checkin_log.php");
+        String url = getIP.updateip("login.php");
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -95,26 +131,34 @@ public class ObservationActivity extends AppCompatActivity implements SwipeRefre
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, ObservationActivity.this);
+                ErrorAlert.error(message, ActivityParentsMultiChild.this);
             }
         });
 // Add the request to the RequestQueue.
         queue.add(stringRequest);
-    }
+    }*/
 
-    private void getJson(String response) throws JSONException {
-
+    public void getJson(String response) throws JSONException {
+        swipeRefreshLayout.setRefreshing(false);
+        Log.e("get json data : ", response);
         JSONObject jsonObject = new JSONObject(response);
+
         JSONArray jsonArray = jsonObject.getJSONArray("list");
         for (int i = 0; i < jsonArray.length(); i++) {
-            ObservationData observationData = new ObservationData();
-            JSONObject jobj = jsonArray.getJSONObject(i);
-            observationData.setsObStudentName(jobj.getString("uid"));
-            observationData.setsObDate(jobj.getString("name"));
-            observationData.setsObTitle(jobj.getString("address"));
-            observationData.setsObDesc(jobj.getString("address"));
 
-            observationDatas.add(observationData);
+            ParentChildData parentChildData = new ParentChildData();
+
+            JSONObject jobj = jsonArray.getJSONObject(i);
+
+            parentChildData.setsStudentID(jobj.getString("sId"));
+            parentChildData.setsName(jobj.getString("fName"));
+            parentChildData.setmName(jobj.getString("mName"));
+            parentChildData.setlName(jobj.getString("lName"));
+            parentChildData.setsStandard(jobj.getString("standard"));
+
+            Toast.makeText(this, "" + (jobj.getString("fName")), Toast.LENGTH_SHORT).show();
+
+            parentChildDataList.add(parentChildData);
         }
 
         IntialAdapter();
@@ -122,11 +166,12 @@ public class ObservationActivity extends AppCompatActivity implements SwipeRefre
 
     public void IntialAdapter() {
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ObservationActivity.this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityParentsMultiChild.this);
         recyclerView.setLayoutManager(mLayoutManager);
-        observationAdapter = new ObservationAdapter(observationDatas, this);
-        recyclerView.scrollToPosition(observationDatas.size() + 1);
-        observationAdapter.notifyItemInserted(observationDatas.size() + 1);
-        recyclerView.setAdapter(observationAdapter);
+        adapterParentsMultiChild = new AdapterParentsMultiChild(parentChildDataList, getApplicationContext());
+        recyclerView.scrollToPosition(parentChildDataList.size() + 1);
+        adapterParentsMultiChild.notifyItemInserted(parentChildDataList.size() + 1);
+        recyclerView.setAdapter(adapterParentsMultiChild);
     }
+
 }

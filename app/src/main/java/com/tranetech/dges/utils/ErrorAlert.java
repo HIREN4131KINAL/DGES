@@ -1,8 +1,10 @@
-package com.tranetech.dges;
+package com.tranetech.dges.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+
+import com.tranetech.dges.R;
 
 /**
  * Created by Markand on 18-04-2017 at 10:35 AM.
