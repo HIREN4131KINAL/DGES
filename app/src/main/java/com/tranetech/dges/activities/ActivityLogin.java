@@ -53,7 +53,7 @@ public class ActivityLogin extends FragmentActivity {
     public static SharedPreferences settings;
     // String GR_Number,str_gr_no;
     String mobile, strUrl, msg, mobile_s;
-
+    View parentLayout;
     String JsonResponseLoginData;
     private FileCacher<String> stringCacher = new FileCacher<>(ActivityLogin.this, "cache_tmp.txt");
 
@@ -64,7 +64,7 @@ public class ActivityLogin extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
         settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0);
-
+        parentLayout = findViewById(android.R.id.content);
         image = (ImageView) findViewById(R.id.img_login);
         // et_GR_Number = (EditText) findViewById(R.id.et_gr_number);
         et_Mobile = (EditText) findViewById(R.id.password);
@@ -91,7 +91,8 @@ public class ActivityLogin extends FragmentActivity {
                     startActivity(intent);
                 }
             } else {
-                Toast.makeText(this, "Data not found error...", Toast.LENGTH_SHORT).show();
+                // btn_Login(parentLayout);
+                Snackbar.make(getCurrentFocus(), "Data not found, please try again", Snackbar.LENGTH_SHORT).show();
             }
         }
     }

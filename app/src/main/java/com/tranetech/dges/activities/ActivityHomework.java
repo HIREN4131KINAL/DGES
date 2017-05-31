@@ -1,12 +1,14 @@
 package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -20,6 +22,8 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.adapters.HomeworkAdapter;
@@ -30,14 +34,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityHomework extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<HomeworkData> hwData = new ArrayList<>();
+    private List<ParentChildData> parentChildDataList;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
+    private int intValue;
+    ParentChildData parentChildData;
+    private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityHomework.this, "cacheListTmp.txt");
+    String Student_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +55,25 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         setContentView(R.layout.activity_homework);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Homework");
+
+
+        Intent mIntent = getIntent();
+        intValue = mIntent.getIntExtra("position", 0);
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
+
+        try {
+            parentChildDataList = stringCacherList.readCache();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        parentChildData = parentChildDataList.get(intValue);
+
+        Student_ID = parentChildData.getsStudentID();
+        Log.e("onCreate: ", Student_ID);
     }
 
     @Override

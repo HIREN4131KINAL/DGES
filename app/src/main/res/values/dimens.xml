@@ -32,5 +32,7 @@
     <dimen name="marginend_profile_row">5dp</dimen>
     <dimen name="width_editText_login">20dp</dimen>
     <dimen name="marginTop_login_row_psw">40dp</dimen>
+    <dimen name="marginLeft_name_of_parentChild">10dp</dimen>
+    <dimen name="margin_recyclerview_parents_Multichild">10dp</dimen>
 
 </resources>

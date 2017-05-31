@@ -8,12 +8,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.SharedPreferenceManager;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
+    private int intValue;
+    private List<ParentChildData> parentChildDataList;
+    private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
+    private ParentChildData parentChildData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +36,24 @@ public class ActivityMainDashBord extends AppCompatActivity {
         // get action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
+
+        Intent mIntent = getIntent();
+        intValue = mIntent.getIntExtra("position", 0);
+
+
+        try {
+            parentChildDataList = stringCacherList.readCache();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        parentChildData = parentChildDataList.get(intValue);
+        LoadUIelements();
+
+    }
+
+    private void LoadUIelements() {
+        TextView txt_sname = (TextView) findViewById(R.id.txt_sname);
+        txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
     }
 
 
@@ -48,6 +79,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
     public void cardHomework(View v) {
         Intent Homework = new Intent(this, ActivityHomework.class);
+        Homework.putExtra("intValue", intValue);
         startActivity(Homework);
     }
 
@@ -128,4 +160,5 @@ public class ActivityMainDashBord extends AppCompatActivity {
         }
 
     }
+
 }
