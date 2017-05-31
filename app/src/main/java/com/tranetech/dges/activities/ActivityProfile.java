@@ -1,45 +1,26 @@
 package com.tranetech.dges.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.squareup.picasso.MemoryPolicy;
-import com.squareup.picasso.NetworkPolicy;
-import com.squareup.picasso.Picasso;
-import com.tranetech.dges.utils.ErrorAlert;
-import com.tranetech.dges.utils.GetIP;
+import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.R;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class ActivityProfile extends AppCompatActivity {
 
     private TextView txtSname, txtClass, txtRollNo, txtGrNo, txtBday, txtGender, txtPhone, txtAddress;
     private ImageView imgProfile;
-    private Intent in;
-    private String uid;
+    private List<ParentChildData> parentChildDataList;
+    private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityProfile.this, "cacheListTmp.txt");
+    private ParentChildData parentChildData;
+    public static String fullname;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +28,21 @@ public class ActivityProfile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         getSupportActionBar().setTitle("Profile");
 
-        in = getIntent();
-        uid = "4";
+        Intent mIntent = getIntent();
+        fullname = mIntent.getStringExtra("name");
 
+        //  parentChildData = parentChildDataList.get(fullname);
+
+        LoaduiElements();
+        SetAlldata();
+
+    }
+
+    private void SetAlldata() {
+        txtSname.setText(fullname);
+    }
+
+    private void LoaduiElements() {
         txtSname = (TextView) findViewById(R.id.txt_sname);
         txtClass = (TextView) findViewById(R.id.txt_class);
         txtRollNo = (TextView) findViewById(R.id.txt_roll);
@@ -58,11 +51,17 @@ public class ActivityProfile extends AppCompatActivity {
         txtGender = (TextView) findViewById(R.id.txt_gen);
         txtPhone = (TextView) findViewById(R.id.txt_phno);
         txtAddress = (TextView) findViewById(R.id.txt_add);
-
         imgProfile = (ImageView) findViewById(R.id.img_student_profile);
-
     }
 
+
+
+
+
+
+
+
+/*
     @Override
     protected void onResume() {
         super.onResume();
@@ -144,5 +143,6 @@ public class ActivityProfile extends AppCompatActivity {
                     .networkPolicy(NetworkPolicy.NO_CACHE).placeholder(R.drawable.ic_profile).into(imgProfile);
         }
     }
+*/
 
 }

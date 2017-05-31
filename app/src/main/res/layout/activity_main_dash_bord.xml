@@ -71,7 +71,7 @@
                         android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
                         android:gravity="center"
                         android:text="@string/sname"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/txt_size_stu_name" />
                 </LinearLayout>
 
             </LinearLayout>

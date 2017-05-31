@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -40,14 +41,11 @@ import java.util.List;
 
 public class ActivityHomework extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<HomeworkData> hwData = new ArrayList<>();
-    private List<ParentChildData> parentChildDataList;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
-    private int intValue;
-    ParentChildData parentChildData;
-    private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityHomework.this, "cacheListTmp.txt");
-    String Student_ID;
+
+    String standard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,23 +55,17 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         actionBar.setTitle("Homework");
 
 
+
         Intent mIntent = getIntent();
-        intValue = mIntent.getIntExtra("position", 0);
+        standard = mIntent.getStringExtra("standard");
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
 
-        try {
-            parentChildDataList = stringCacherList.readCache();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Log.e("onCreate: ", standard);
+        Toast.makeText(this, "standard id is " + standard, Toast.LENGTH_SHORT).show();
 
-        parentChildData = parentChildDataList.get(intValue);
-
-        Student_ID = parentChildData.getsStudentID();
-        Log.e("onCreate: ", Student_ID);
     }
 
     @Override

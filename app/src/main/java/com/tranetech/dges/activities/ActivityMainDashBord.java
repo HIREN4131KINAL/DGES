@@ -22,10 +22,11 @@ import java.util.List;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
-    private int intValue;
+    public static int intValue;
     private List<ParentChildData> parentChildDataList;
     private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
     private ParentChildData parentChildData;
+    String name;
 
 
     @Override
@@ -40,12 +41,12 @@ public class ActivityMainDashBord extends AppCompatActivity {
         Intent mIntent = getIntent();
         intValue = mIntent.getIntExtra("position", 0);
 
-
         try {
             parentChildDataList = stringCacherList.readCache();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         parentChildData = parentChildDataList.get(intValue);
         LoadUIelements();
 
@@ -54,6 +55,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     private void LoadUIelements() {
         TextView txt_sname = (TextView) findViewById(R.id.txt_sname);
         txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
+        name = parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName();
     }
 
 
@@ -65,21 +67,25 @@ public class ActivityMainDashBord extends AppCompatActivity {
     }
 
     public void cardFees(View v) {
-
+//have to send student id
         Intent Fees = new Intent(this, ActivityFees.class);
         startActivity(Fees);
 
     }
 
     public void LinearProfile(View v) {
+
         Intent Profile = new Intent(this, ActivityProfile.class);
+        Profile.putExtra("name", name);
+        Profile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(Profile);
 
     }
 
     public void cardHomework(View v) {
+        //have to send standard id
         Intent Homework = new Intent(this, ActivityHomework.class);
-        Homework.putExtra("intValue", intValue);
+        Homework.putExtra("standard", parentChildData.getsStandard());
         startActivity(Homework);
     }
 
@@ -92,7 +98,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
 
     public void cardObservation(View v) {
-
+        //have to send student id
         Intent Updates = new Intent(this, ActivityObservation.class);
         startActivity(Updates);
 
