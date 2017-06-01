@@ -2,7 +2,9 @@ package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +32,7 @@ import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.adapters.HomeworkAdapter;
 import com.tranetech.dges.seter_geter.HomeworkData;
 import com.tranetech.dges.R;
+import com.tranetech.dges.utils.SharedPreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,7 +40,9 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityHomework extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<HomeworkData> hwData = new ArrayList<>();
@@ -55,7 +60,6 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         actionBar.setTitle("Homework");
 
 
-
         Intent mIntent = getIntent();
         standard = mIntent.getStringExtra("standard");
 
@@ -70,76 +74,121 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        getData();
+        GetData();
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        getData();
+        GetData();
     }
 
-    private void getData() {
-        final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
-
-        RequestQueue queue = Volley.newRequestQueue(this);
+    public void GetData() {
+        final ProgressDialog loading = ProgressDialog.show(this, "Home work", "Please wait...", false, false);
         GetIP getIP = new GetIP();
-        String url = getIP.updateip("emp_checkin_log.php");
-
-// Request a string response from the provided URL.
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        String strUrl = getIP.updateip("login.php");
+        StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        // response
                         loading.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
                         try {
-                            getJson(response);
-                        } catch (JSONException e) {
+                            getjson(response);
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        Log.d("Response", response);
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                loading.dismiss();
-                String message = null;
-                if (volleyError instanceof NetworkError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (volleyError instanceof ServerError) {
-                    message = "The server could not be found. Please try again after some time!!";
-                } else if (volleyError instanceof AuthFailureError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (volleyError instanceof ParseError) {
-                    message = "Parsing error! Please try again after some time!!";
-                } else if (volleyError instanceof NoConnectionError) {
-                    message = "Cannot connect to Internet...Please check your connection!";
-                } else if (volleyError instanceof TimeoutError) {
-                    message = "Connection TimeOut! Please check your internet connection.";
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        loading.dismiss();
+                        String message = null;
+                        if (volleyError instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please reset your connection!";
+                        } else if (volleyError instanceof ServerError) {
+                            message = "The server could not be found. Please try again after some time!!";
+                        } else if (volleyError instanceof AuthFailureError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof ParseError) {
+                            message = "Parsing error! Please try again after some time!!";
+                        } else if (volleyError instanceof NoConnectionError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof TimeoutError) {
+                            message = "Connection TimeOut! Please check your internet connection.";
+                        }
+                        ErrorAlert.error(message, ActivityLogin.this);
+                    }
                 }
-                ErrorAlert.error(message, ActivityHomework.this);
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                //  params.put("grno", GR_Number);
+                params.put("mobile", mobile);
+                return params;
             }
-        });
-// Add the request to the RequestQueue.
-        queue.add(stringRequest);
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(postRequest);
     }
 
-    private void getJson(String response) throws JSONException {
+    protected void getjson(String response) throws IOException {
+        JSONObject jsonObject1 = null;
+        // store response in cache memory
+        stringCacher.writeCache(response);
 
-        JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            HomeworkData homeworkData = new HomeworkData();
-            JSONObject jobj = jsonArray.getJSONObject(i);
-            homeworkData.setsSubName(jobj.getString("str_gr_no"));
-            homeworkData.setsHWDate(jobj.getString("name"));
-            homeworkData.setsHWDescription(jobj.getString("address"));
+        try {
+            jsonObject1 = new JSONObject(response);
+            JSONArray jsonArray = jsonObject1.getJSONArray("list");
+            Log.e("getjson:Response ", response);
 
-            hwData.add(homeworkData);
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jobj = null;
+                jobj = jsonArray.getJSONObject(i);
+
+                msg = jobj.getString("msg");
+
+                Log.e("getjson: ", msg);
+
+                if (msg.equals("0")) {
+
+                    Toast.makeText(this, "Error...", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
+                } else {
+                    SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
+                    //str_gr_no = jobj.getString("grNo");
+                    mobile_s = jobj.getString("mobile");
+
+
+                    Intent intent = new Intent(this, ActivityParentsMultiChild.class);
+                    intent.putExtra("response", response);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                }
+
+                SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
+                // SharedPreferenceManager.setDefaults("str_gr_no", str_gr_no, getApplicationContext());
+                SharedPreferenceManager.setDefaults("mobile_s", mobile_s, getApplicationContext());
+
+                SharedPreferences settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0); // 0 - for private mode
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("msg", msg);
+                //editor.putString("str_gr_no", str_gr_no);
+                editor.putString("mobile", mobile_s);
+                editor.putBoolean("hasLoggedIn", true);
+                editor.apply();
+
+            }
+        } catch (JSONException e) {
+            System.out.print(e.toString());
         }
 
-        IntialAdapter();
+
     }
 
     public void IntialAdapter() {
