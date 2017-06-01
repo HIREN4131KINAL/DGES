@@ -12,7 +12,7 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="width_cardview">100dp</dimen>
     <dimen name="hight_cardview">150dp</dimen>
-    <dimen name="margin_cardview">10dp</dimen>
+    <dimen name="margin_cardview">1dp</dimen>
     <dimen name="padding_cardview">5dp</dimen>
     <dimen name="padding_profile">10dp</dimen>
     <dimen name="hight_circle_imageview">100dp</dimen>
