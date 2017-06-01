@@ -20,8 +20,8 @@
     <dimen name="txt_size_stu_name">18sp</dimen>
     <dimen name="txt_size_large_stu_name">25sp</dimen>
     <dimen name="margin_profile_student">20dp</dimen>
-    <dimen name="img_width_cardview_dash">160dp</dimen>
-    <dimen name="img_hight_cardview_dash">140dp</dimen>
+    <dimen name="img_width_cardview_dash">130dp</dimen>
+    <dimen name="img_hight_cardview_dash">110dp</dimen>
     <dimen name="logoIN_LoginActivity">150dp</dimen>
     <dimen name="txt_large_schoolname">30sp</dimen>
     <dimen name="marginTop_logo">10dp</dimen>

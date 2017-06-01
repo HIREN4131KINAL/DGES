@@ -27,16 +27,36 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/color_set_1_primary"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardCircular"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/circular" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Circular"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -54,11 +74,29 @@
                 android:onClick="cardResult"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/result" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Result"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -83,11 +121,29 @@
                 android:onClick="cardFees"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/fees" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Fees"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -99,16 +155,36 @@
                 android:layout_margin="@dimen/margin_cardview"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/color_set_1_primary"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardHomework"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imageView"
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/homework" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Home work"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -129,16 +205,35 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/color_set_1_primary"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardObservation"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/observation" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Observation"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 
@@ -155,12 +250,29 @@
                 android:onClick="cardPolicies"
                 android:stateListAnimator="@drawable/translation_selector">
 
-                <ImageView
-                    android:id="@+id/imageView"
-                    android:layout_width="@dimen/img_width_cardview_dash"
-                    android:layout_height="@dimen/img_hight_cardview_dash"
-                    android:layout_gravity="center"
-                    android:background="@mipmap/ic_launcher_round" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/policy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Policies"
+                        android:textColor="@color/color_set_1_accent"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
 
             </android.support.v7.widget.CardView>
 

@@ -13,6 +13,7 @@ import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.adapters.AdapterParentsMultiChild;
 import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.R;
+import com.tranetech.dges.utils.SharedPreferenceManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,12 +28,14 @@ import java.util.List;
  */
 
 public class ActivityParentsMultiChild extends AppCompatActivity {
+    private SharedPreferenceManager preferenceManager;
     private List<ParentChildData> parentChildDataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AdapterParentsMultiChild adapterParentsMultiChild;
     private FileCacher<String> stringCacher = new FileCacher<>(ActivityParentsMultiChild.this, "cache_tmp.txt");
     private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityParentsMultiChild.this, "cacheListTmp.txt");
-    String response;
+    private FileCacher<Integer> storePosition = new FileCacher<>(ActivityParentsMultiChild.this, "SorageOFposition");
+    private String response;
 
 
     @Override
@@ -42,7 +45,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Child");
         recyclerView = (RecyclerView) findViewById(R.id.rv_parents_multi_stu);
-
+        preferenceManager = new SharedPreferenceManager();
 
         try {
             response = stringCacher.readCache();
@@ -51,6 +54,14 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+
+        if(storePosition.hasCache()){
+            try {
+                storePosition.clearCache();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 
@@ -73,7 +84,6 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             parentChildData.setmName(jobj.getString("mName"));
             parentChildData.setlName(jobj.getString("lName"));
             parentChildData.setsStandard(jobj.getString("std"));
-
             parentChildData.setDivision(jobj.getString("div"));
             parentChildData.setAdhar(jobj.getString("adhar"));
             parentChildData.setGrNo(jobj.getString("grNo"));

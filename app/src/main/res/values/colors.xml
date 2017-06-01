@@ -19,8 +19,8 @@
     <color name="theme_dialer_accent">#FFF</color>
 
     <!-- Reveal transition colors -->
-    <color name="color_set_1_primary">#4fc3f7</color>
-    <color name="color_set_1_accent">#009688</color>
+    <color name="color_set_1_primary">#864fc3f7</color>
+    <color name="color_set_1_accent">#e8054078</color>
 
     <color name="color_set_2_primary">#42bd41</color>
     <color name="color_set_2_accent">#673AB7</color>

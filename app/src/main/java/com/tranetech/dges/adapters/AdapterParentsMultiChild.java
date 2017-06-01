@@ -11,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.activities.ActivityMainDashBord;
 import com.tranetech.dges.activities.ActivityParentsMultiChild;
 import com.tranetech.dges.seter_geter.ParentChildData;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -50,6 +52,7 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
         holder.lr_multi_students_selection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(context, ActivityMainDashBord.class);
                 intent.putExtra("position", position);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
