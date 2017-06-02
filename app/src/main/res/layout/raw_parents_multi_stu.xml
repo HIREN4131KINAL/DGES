@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@android:drawable/picture_frame"
+        android:backgroundTint="@color/colorAccent"
         android:orientation="horizontal"
         android:padding="@dimen/padding_profile">
 

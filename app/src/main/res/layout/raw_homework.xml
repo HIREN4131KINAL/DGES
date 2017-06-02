@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:background="@color/color_set_3_accent"
+        android:background="@color/colorAccent"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="@dimen/padding_cardview">

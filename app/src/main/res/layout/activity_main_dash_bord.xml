@@ -49,7 +49,7 @@
                     android:id="@+id/lrProfile"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:drawable/picture_frame"
+                    android:background="@color/colorAccent"
                     android:onClick="LinearProfile"
                     android:orientation="horizontal"
                     android:padding="@dimen/padding_profile">
