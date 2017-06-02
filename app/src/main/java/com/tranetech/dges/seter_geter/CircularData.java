@@ -1,10 +1,12 @@
 package com.tranetech.dges.seter_geter;
 
+import java.io.Serializable;
+
 /**
  * Created by Markand on 26-05-2017 at 10:55 AM.
  */
 
-public class CircularData {
+public class CircularData implements Serializable{
 
     private String sCircularTitle,sCircularDesc,sCircualarDate;
 

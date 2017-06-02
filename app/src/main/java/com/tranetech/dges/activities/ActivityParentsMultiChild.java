@@ -56,7 +56,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        if(storePosition.hasCache()){
+        if (storePosition.hasCache()) {
             try {
                 storePosition.clearCache();
             } catch (IOException e) {
@@ -70,44 +70,50 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
 
     public void getJson(String response) throws JSONException, IOException {
         Log.e("get json data : ", response);
-        JSONObject jsonObject = new JSONObject(response);
+        try {
+            JSONObject jsonObject = new JSONObject(response);
 
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        for (int i = 0; i < jsonArray.length(); i++) {
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
 
-            ParentChildData parentChildData = new ParentChildData();
+                ParentChildData parentChildData = new ParentChildData();
 
-            JSONObject jobj = jsonArray.getJSONObject(i);
+                JSONObject jobj = jsonArray.getJSONObject(i);
 
-            parentChildData.setsStudentID(jobj.getString("sId"));
-            parentChildData.setsName(jobj.getString("fName"));
-            parentChildData.setmName(jobj.getString("mName"));
-            parentChildData.setlName(jobj.getString("lName"));
-            parentChildData.setsStandard(jobj.getString("std"));
-            parentChildData.setsStandard_ID(jobj.getString("stdid"));
-            parentChildData.setDivision(jobj.getString("div"));
-            parentChildData.setAdhar(jobj.getString("adhar"));
-            parentChildData.setGrNo(jobj.getString("grNo"));
-            parentChildData.setRollno(jobj.getString("rollNo"));
-            parentChildData.setAddress(jobj.getString("address"));
-            parentChildData.setMobile(jobj.getString("mobile"));
-            parentChildData.setDob(jobj.getString("dob"));
+                parentChildData.setsStudentID(jobj.getString("sId"));
+                parentChildData.setsName(jobj.getString("fName"));
+                parentChildData.setmName(jobj.getString("mName"));
+                parentChildData.setlName(jobj.getString("lName"));
+                parentChildData.setsStandard(jobj.getString("std"));
+                parentChildData.setsStandard_ID(jobj.getString("stdid"));
+                parentChildData.setDivision(jobj.getString("div"));
+                parentChildData.setAdhar(jobj.getString("adhar"));
+                parentChildData.setGrNo(jobj.getString("grNo"));
+                parentChildData.setRollno(jobj.getString("rollNo"));
+                parentChildData.setAddress(jobj.getString("address"));
+                parentChildData.setMobile(jobj.getString("mobile"));
+                parentChildData.setDob(jobj.getString("dob"));
 
-            parentChildData.setGender(jobj.getString("gender"));
-            parentChildData.seBloodgroop(jobj.getString("bloodgroup"));
-            parentChildData.setNationality(jobj.getString("nationality"));
-            parentChildData.setPhHndicap(jobj.getString("handi"));
-            parentChildData.setCategory(jobj.getString("category"));
-            parentChildData.setPhoto(jobj.getString("photo"));
-            parentChildData.setLastschool(jobj.getString("lastschool"));
-            parentChildData.setLaststd(jobj.getString("laststd"));
-            parentChildData.setPercentage(jobj.getString("percentage"));
-            parentChildData.setStatus(jobj.getString("status"));
-            parentChildData.setMessage(jobj.getString("msg"));
+                parentChildData.setGender(jobj.getString("gender"));
+                parentChildData.seBloodgroop(jobj.getString("bloodgroup"));
+                parentChildData.setNationality(jobj.getString("nationality"));
+                parentChildData.setPhHndicap(jobj.getString("handi"));
+                parentChildData.setCategory(jobj.getString("category"));
+                parentChildData.setPhoto(jobj.getString("photo"));
+                parentChildData.setLastschool(jobj.getString("lastschool"));
+                parentChildData.setLaststd(jobj.getString("laststd"));
+                parentChildData.setPercentage(jobj.getString("percentage"));
+                parentChildData.setStatus(jobj.getString("status"));
+                parentChildData.setMessage(jobj.getString("msg"));
 
 
-            parentChildDataList.add(parentChildData);
-            stringCacherList.writeCache(parentChildDataList);
+                parentChildDataList.add(parentChildData);
+                stringCacherList.writeCache(parentChildDataList);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         IntialAdapter();

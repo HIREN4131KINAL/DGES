@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="@dimen/padding_cardview"
+        android:background="@color/cardviewback"
         android:orientation="vertical">
 
 
@@ -27,7 +28,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
-                android:backgroundTint="@color/color_set_1_primary"
+                android:backgroundTint="@color/dash_circular"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardCircular"
@@ -51,8 +52,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Circular"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Circular)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -69,6 +70,7 @@
                 android:layout_margin="@dimen/margin_cardview"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/dash_result"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardResult"
@@ -91,8 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Result"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Result)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -116,6 +118,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/dash_fees"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardFees"
@@ -138,8 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Fees"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Fees)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -155,7 +158,7 @@
                 android:layout_margin="@dimen/margin_cardview"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
-                android:backgroundTint="@color/color_set_1_primary"
+                android:backgroundTint="@color/dash_homework"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardHomework"
@@ -176,11 +179,12 @@
                         android:background="@drawable/homework" />
 
                     <TextView
+                        android:id="@+id/textView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Home work"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Home work)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -205,7 +209,7 @@
                 android:layout_marginRight="1dp"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
-                android:backgroundTint="@color/color_set_1_primary"
+                android:backgroundTint="@color/dash_observation"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardObservation"
@@ -228,8 +232,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Observation"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Observation)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -245,6 +249,7 @@
                 android:layout_margin="@dimen/margin_cardview"
                 android:layout_weight="1"
                 android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/dash_policies"
                 android:clickable="true"
                 android:elevation="8dp"
                 android:onClick="cardPolicies"
@@ -267,8 +272,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="Policies"
-                        android:textColor="@color/color_set_1_accent"
+                        android:text="(Policies)"
+                        android:textColor="#111111"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>

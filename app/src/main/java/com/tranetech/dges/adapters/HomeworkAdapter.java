@@ -22,8 +22,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     private List<HomeworkData> alHWData;
     private Context context;
 
-    public HomeworkAdapter(List<HomeworkData> alHWData, Context context)
-    {
+    public HomeworkAdapter(List<HomeworkData> alHWData, Context context) {
         this.alHWData = alHWData;
         this.context = context;
     }
@@ -38,10 +37,21 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
 
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
-        final HomeworkData hwData = alHWData.get(position);
+
+        HomeworkData hwData = alHWData.get(position);
         holder.txtSubName.setText(hwData.getsSubName());
         holder.txtHWDate.setText(hwData.getsHWDate());
         holder.txtHWDescription.setText(hwData.getsHWDescription());
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
@@ -49,16 +59,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
         return alHWData.size();
     }
 
-    public class HomeworkViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtSubName,txtHWDate,txtHWDescription;
+    public class HomeworkViewHolder extends RecyclerView.ViewHolder {
+        public TextView txtSubName, txtHWDate, txtHWDescription;
         public ImageView imgHW;
 
         public HomeworkViewHolder(View itemView) {
             super(itemView);
-            txtSubName = (TextView)itemView.findViewById(R.id.txt_sub_name);
-            txtHWDescription = (TextView)itemView.findViewById(R.id.txt_hw_desc);
-            txtHWDate = (TextView)itemView.findViewById(R.id.txt_hw_date);
-            imgHW = (ImageView)itemView.findViewById(R.id.img_hw);
+            txtSubName = (TextView) itemView.findViewById(R.id.txt_sub_name);
+            txtHWDescription = (TextView) itemView.findViewById(R.id.txt_hw_desc);
+            txtHWDate = (TextView) itemView.findViewById(R.id.txt_hw_date);
+            imgHW = (ImageView) itemView.findViewById(R.id.img_hw);
         }
     }
 }

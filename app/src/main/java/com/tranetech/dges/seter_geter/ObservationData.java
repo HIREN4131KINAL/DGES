@@ -1,10 +1,12 @@
 package com.tranetech.dges.seter_geter;
 
+import java.io.Serializable;
+
 /**
  * Created by Markand on 26-05-2017 at 11:33 AM.
  */
 
-public class ObservationData {
+public class ObservationData implements Serializable {
 
     private String sObStudentName,sObTitle,sObDate,sObDesc;
 

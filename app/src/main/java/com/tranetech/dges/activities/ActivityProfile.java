@@ -48,7 +48,11 @@ public class ActivityProfile extends AppCompatActivity {
         }
 
         Log.e("onCreate:Activity Profile ", String.valueOf(position));
-        parentChildData = parentChildDataList.get(position);
+        try {
+            parentChildData = parentChildDataList.get(position);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         LoaduiElements();
         SetAlldata();

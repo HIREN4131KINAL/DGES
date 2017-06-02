@@ -50,9 +50,8 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
     private FileCacher<List<HomeworkData>> stringCacherHomeworkList = new FileCacher<>(ActivityHomework.this, "cacheListTmp.txt");
-
-
-    String standardID;
+    private HomeworkData homeworkData;
+    private String standardID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,24 +68,23 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
 
-        Log.e("onCreate: ", standardID);
-        Toast.makeText(this, "standard id is " + standardID, Toast.LENGTH_SHORT).show();
+        Log.e("onCreate: Standrd id ", standardID);
 
     }
 
     @Override
     public void onRefresh() {
-        GetData();
+        GetData(standardID);
         swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        GetData();
+        GetData(standardID);
     }
 
-    public void GetData() {
+    public void GetData(final String standardID) {
         final ProgressDialog loading = ProgressDialog.show(this, "Home work", "Please wait...", false, false);
         GetIP getIP = new GetIP();
         String strUrl = getIP.updateip("homework.php");
@@ -94,6 +92,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e("Response Homework : ", response);
                         // response
                         loading.dismiss();
                         try {
@@ -101,7 +100,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.e("Response homwork : ", response);
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -137,8 +136,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("standard", standardID);
-                // params.put("mobile", mobile);
+                params.put("stdid", standardID);
                 return params;
             }
         };
@@ -146,50 +144,42 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         queue.add(postRequest);
     }
 
-    protected void getjson(String response) throws IOException {
+    public void getjson(String response) throws IOException {
         JSONObject jsonObject1 = null;
         // store response in cache memory
 
         try {
             jsonObject1 = new JSONObject(response);
             JSONArray jsonArray = jsonObject1.getJSONArray("list");
-            Log.e("getjson:Response ", response);
 
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jobj = null;
                 jobj = jsonArray.getJSONObject(i);
-
-                String msg = jobj.getString("msg");
-
-                Log.e("getjson: ", msg);
-
-                if (msg.equals("0")) {
-
-                    Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    //str_gr_no = jobj.getString("grNo");
-
-
-                }
-
+                homeworkData = new HomeworkData();
+                homeworkData.setsHWDate(jobj.getString("date"));
+                homeworkData.setsHWDescription(jobj.getString("containt"));
+                homeworkData.setsSubName(jobj.getString("subject"));
+                homeworkData.setStandrdID(jobj.getString("hId"));
+                hwData.add(homeworkData);
+                stringCacherHomeworkList.writeCache(hwData);
             }
         } catch (JSONException e) {
             System.out.print(e.toString());
         }
-
-        IntialAdapter();
+        IntialHomwrkAdapter();
     }
 
-    public void IntialAdapter() throws IOException {
-
-        stringCacherHomeworkList.writeCache(hwData);
+    private void IntialHomwrkAdapter() {
         recyclerView.setHasFixedSize(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityHomework.this);
+        recyclerView.isDuplicateParentStateEnabled();
         recyclerView.setLayoutManager(mLayoutManager);
         hwAdapter = new HomeworkAdapter(hwData, this);
-        recyclerView.scrollToPosition(hwData.size() + 1);
-        hwAdapter.notifyItemInserted(hwData.size() + 1);
+      /*  recyclerView.scrollToPosition(hwData.size() + 1);
+        hwAdapter.notifyItemInserted(hwData.size() + 1);*/
         recyclerView.setAdapter(hwAdapter);
     }
+
+
 }

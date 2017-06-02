@@ -60,7 +60,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
 
         if (storePosition.hasCache()) {
-            parentChildData = parentChildDataList.get(getposition);
+            intValue = getposition;
         } else {
             mIntent = getIntent();
             intValue = mIntent.getIntExtra("position", 0);
@@ -69,8 +69,9 @@ public class ActivityMainDashBord extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            parentChildData = parentChildDataList.get(intValue);
+
         }
+        parentChildData = parentChildDataList.get(intValue);
         LoadUIelements();
     }
 

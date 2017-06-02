@@ -1,11 +1,13 @@
 package com.tranetech.dges.seter_geter;
 
+import java.io.Serializable;
+
 /**
  * Created by Markand on 26-05-2017 at 09:29 AM.
  */
 
-public class HomeworkData {
-    private String sSubName,sHWDate,sHWDescription;
+public class HomeworkData implements Serializable {
+    private String standrdID, sSubName,sHWDate,sHWDescription;
 
 public String getsSubName(){
     return sSubName;
@@ -29,5 +31,13 @@ public String getsSubName(){
 
     public void setsSubName(String sSubName) {
         this.sSubName = sSubName;
+    }
+
+    public void setStandrdID(String standrdID) {
+        this.standrdID = standrdID;
+    }
+
+    public String getStandrdID() {
+        return standrdID;
     }
 }
