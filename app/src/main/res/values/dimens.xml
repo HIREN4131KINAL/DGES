@@ -23,7 +23,7 @@
     <dimen name="img_width_cardview_dash">130dp</dimen>
     <dimen name="img_hight_cardview_dash">110dp</dimen>
     <dimen name="logoIN_LoginActivity">150dp</dimen>
-    <dimen name="txt_large_schoolname">15sp</dimen>
+    <dimen name="txt_large_schoolname">35sp</dimen>
     <dimen name="marginTop_logo">10dp</dimen>
     <dimen name="marginBotom_loginButon">20dp</dimen>
     <dimen name="profile_row_lable">90dp</dimen>
@@ -34,4 +34,5 @@
     <dimen name="marginTop_login_row_psw">40dp</dimen>
     <dimen name="marginLeft_name_of_parentChild">10dp</dimen>
     <dimen name="margin_recyclerview_parents_Multichild">10dp</dimen>
+    <dimen name="margin_lr_splashActivity">15dp</dimen>
 </resources>

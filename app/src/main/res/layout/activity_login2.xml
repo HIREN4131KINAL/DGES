@@ -2,7 +2,6 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/theme_dialer_primary"
     android:fillViewport="true"
     android:gravity="center"
     android:orientation="vertical">
@@ -40,7 +39,7 @@
                 android:layout_width="@dimen/logoIN_LoginActivity"
                 android:layout_height="@dimen/logoIN_LoginActivity"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/logo"
+                android:background="@drawable/logo_main"
                 android:elevation="8dp" />
         </RelativeLayout>
 

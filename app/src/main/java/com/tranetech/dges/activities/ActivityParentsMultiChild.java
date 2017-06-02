@@ -84,6 +84,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             parentChildData.setmName(jobj.getString("mName"));
             parentChildData.setlName(jobj.getString("lName"));
             parentChildData.setsStandard(jobj.getString("std"));
+            parentChildData.setsStandard_ID(jobj.getString("stdid"));
             parentChildData.setDivision(jobj.getString("div"));
             parentChildData.setAdhar(jobj.getString("adhar"));
             parentChildData.setGrNo(jobj.getString("grNo"));
@@ -91,6 +92,8 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             parentChildData.setAddress(jobj.getString("address"));
             parentChildData.setMobile(jobj.getString("mobile"));
             parentChildData.setDob(jobj.getString("dob"));
+
+            parentChildData.setGender(jobj.getString("gender"));
             parentChildData.seBloodgroop(jobj.getString("bloodgroup"));
             parentChildData.setNationality(jobj.getString("nationality"));
             parentChildData.setPhHndicap(jobj.getString("handi"));

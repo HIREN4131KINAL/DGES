@@ -23,7 +23,7 @@ import com.tranetech.dges.R;
  */
 public class SplashActivity extends FragmentActivity {
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 5000;
+    private static int SPLASH_TIME_OUT = 7000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ParentChildData implements Serializable {
     private String sStudentID;
     private String sName, mName, lName;
-    private String sStandard, division, adhar, grNo, rollno, address, mobile, dob, nationality, phHndicap, category, photo, lastschool, laststd, percentage, status, message;
+    private String sStandard,sStandard_ID, division, adhar, grNo, rollno, address, mobile, dob,gender, nationality, phHndicap, category, photo, lastschool, laststd, percentage, status, message;
 
 
     public void setsStudentID(String sStudentID) {
@@ -183,4 +183,19 @@ public class ParentChildData implements Serializable {
         return status;
     }
 
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setsStandard_ID(String sStandard_ID) {
+        this.sStandard_ID = sStandard_ID;
+    }
+
+    public String getsStandard_ID() {
+        return sStandard_ID;
+    }
 }

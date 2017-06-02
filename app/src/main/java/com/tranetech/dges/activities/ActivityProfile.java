@@ -56,7 +56,20 @@ public class ActivityProfile extends AppCompatActivity {
     }
 
     private void SetAlldata() {
-        txtSname.setText(parentChildData.getsName());
+        txtSname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
+        txtClass.setText(parentChildData.getsStandard());
+        txtRollNo.setText(parentChildData.getRollno());
+        txtGrNo.setText(parentChildData.getGrNo());
+        txtBday.setText(parentChildData.getDob());
+        txtGender.setText(parentChildData.getGender());
+        txtPhone.setText(parentChildData.getMobile());
+        txtAddress.setText(parentChildData.getAddress());
+        //  getPhoto();
+    }
+
+
+    private void getPhoto() {
+
     }
 
     private void LoaduiElements() {
@@ -71,10 +84,10 @@ public class ActivityProfile extends AppCompatActivity {
         imgProfile = (ImageView) findViewById(R.id.img_student_profile);
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
+
         switch (itemId) {
             case android.R.id.home:
                 Intent dashboard = new Intent(this, ActivityMainDashBord.class);

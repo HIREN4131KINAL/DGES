@@ -49,8 +49,10 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
+    private FileCacher<List<HomeworkData>> stringCacherHomeworkList = new FileCacher<>(ActivityHomework.this, "cacheListTmp.txt");
 
-    String standard;
+
+    String standardID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,14 +63,14 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
 
 
         Intent mIntent = getIntent();
-        standard = mIntent.getStringExtra("standard");
+        standardID = mIntent.getStringExtra("standard");
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
 
-        Log.e("onCreate: ", standard);
-        Toast.makeText(this, "standard id is " + standard, Toast.LENGTH_SHORT).show();
+        Log.e("onCreate: ", standardID);
+        Toast.makeText(this, "standard id is " + standardID, Toast.LENGTH_SHORT).show();
 
     }
 
@@ -87,7 +89,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     public void GetData() {
         final ProgressDialog loading = ProgressDialog.show(this, "Home work", "Please wait...", false, false);
         GetIP getIP = new GetIP();
-        String strUrl = getIP.updateip("login.php");
+        String strUrl = getIP.updateip("homework.php");
         StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -99,13 +101,21 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.d("Response", response);
+                        Log.e("Response homwork : ", response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+
                         loading.dismiss();
+
+                        try {
+                            hwData = stringCacherHomeworkList.readCache();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         String message = null;
                         if (volleyError instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please reset your connection!";
@@ -120,15 +130,15 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        ErrorAlert.error(message, ActivityLogin.this);
+                        ErrorAlert.error(message, ActivityHomework.this);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                //  params.put("grno", GR_Number);
-                params.put("mobile", mobile);
+                params.put("standard", standardID);
+                // params.put("mobile", mobile);
                 return params;
             }
         };
@@ -139,7 +149,6 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     protected void getjson(String response) throws IOException {
         JSONObject jsonObject1 = null;
         // store response in cache memory
-        stringCacher.writeCache(response);
 
         try {
             jsonObject1 = new JSONObject(response);
@@ -151,47 +160,30 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                 JSONObject jobj = null;
                 jobj = jsonArray.getJSONObject(i);
 
-                msg = jobj.getString("msg");
+                String msg = jobj.getString("msg");
 
                 Log.e("getjson: ", msg);
 
                 if (msg.equals("0")) {
 
-                    Toast.makeText(this, "Error...", Toast.LENGTH_SHORT).show();
                     Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
                 } else {
-                    SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
                     //str_gr_no = jobj.getString("grNo");
-                    mobile_s = jobj.getString("mobile");
 
 
-                    Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                    intent.putExtra("response", response);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
                 }
-
-                SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
-                // SharedPreferenceManager.setDefaults("str_gr_no", str_gr_no, getApplicationContext());
-                SharedPreferenceManager.setDefaults("mobile_s", mobile_s, getApplicationContext());
-
-                SharedPreferences settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0); // 0 - for private mode
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putString("msg", msg);
-                //editor.putString("str_gr_no", str_gr_no);
-                editor.putString("mobile", mobile_s);
-                editor.putBoolean("hasLoggedIn", true);
-                editor.apply();
 
             }
         } catch (JSONException e) {
             System.out.print(e.toString());
         }
 
-
+        IntialAdapter();
     }
 
-    public void IntialAdapter() {
+    public void IntialAdapter() throws IOException {
+
+        stringCacherHomeworkList.writeCache(hwData);
         recyclerView.setHasFixedSize(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityHomework.this);
         recyclerView.setLayoutManager(mLayoutManager);

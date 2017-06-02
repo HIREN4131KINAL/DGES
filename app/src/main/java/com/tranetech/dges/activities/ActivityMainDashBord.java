@@ -61,7 +61,6 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
         if (storePosition.hasCache()) {
             parentChildData = parentChildDataList.get(getposition);
-            Toast.makeText(this, "from sharedPref " + getposition, Toast.LENGTH_SHORT).show();
         } else {
             mIntent = getIntent();
             intValue = mIntent.getIntExtra("position", 0);
@@ -71,7 +70,6 @@ public class ActivityMainDashBord extends AppCompatActivity {
                 e.printStackTrace();
             }
             parentChildData = parentChildDataList.get(intValue);
-            Toast.makeText(this, "normal " + intValue, Toast.LENGTH_SHORT).show();
         }
         LoadUIelements();
     }
@@ -110,7 +108,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void cardHomework(View v) {
         //have to send standard id
         Intent Homework = new Intent(this, ActivityHomework.class);
-        Homework.putExtra("standard", parentChildData.getsStandard());
+        Homework.putExtra("standard", parentChildData.getsStandard_ID());
         startActivity(Homework);
     }
 
