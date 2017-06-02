@@ -74,14 +74,26 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        GetData(standardID);
-        swipeRefreshLayout.setRefreshing(false);
+        if (hwAdapter != null) {
+            hwAdapter.clear();
+        } else {
+            GetData(standardID);
+            hwAdapter.addALL(hwData);
+
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        GetData(standardID);
+        if (hwAdapter != null) {
+            hwAdapter.clear();
+        } else {
+            GetData(standardID);
+            hwAdapter.addALL(hwData);
+
+        }
     }
 
     public void GetData(final String standardID) {
@@ -93,7 +105,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                     @Override
                     public void onResponse(String response) {
                         Log.e("Response Homework : ", response);
-                        // response
+                        swipeRefreshLayout.setRefreshing(false);
                         loading.dismiss();
                         try {
                             getjson(response);
@@ -106,7 +118,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-
+                        swipeRefreshLayout.setRefreshing(false);
                         loading.dismiss();
 
                         try {
@@ -175,9 +187,11 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityHomework.this);
         recyclerView.setLayoutManager(mLayoutManager);
         hwAdapter = new HomeworkAdapter(hwData, this);
+
       /*  recyclerView.scrollToPosition(hwData.size() + 1);
         hwAdapter.notifyItemInserted(hwData.size() + 1);*/
         recyclerView.setAdapter(hwAdapter);
+
     }
 
 

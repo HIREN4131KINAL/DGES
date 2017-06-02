@@ -72,4 +72,15 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             imgHW = (ImageView) itemView.findViewById(R.id.img_hw);
         }
     }
+
+    public void clear() {
+        alHWData.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<HomeworkData> alHWData) {
+        this.alHWData.addAll(alHWData);
+        notifyDataSetChanged();
+    }
+
 }
