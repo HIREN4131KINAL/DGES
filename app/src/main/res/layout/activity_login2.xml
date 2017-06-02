@@ -76,6 +76,7 @@
                 android:drawableLeft="@drawable/ic_password"
                 android:elevation="4dp"
                 android:ems="10"
+                android:text="markand"
                 android:inputType="textWebPassword"
                 android:textColor="@color/colorAccent">
 

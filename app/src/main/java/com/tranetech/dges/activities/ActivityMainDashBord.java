@@ -2,32 +2,29 @@ package com.tranetech.dges.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.SharedPreferenceManager;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
     public static int intValue;
     private List<ParentChildData> parentChildDataList;
-    private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
+    private FileCacher<List<ParentChildData>> stringCacherList;
     private ParentChildData parentChildData;
-    private FileCacher<Integer> storePosition = new FileCacher<>(ActivityMainDashBord.this, "SorageOFposition");
+    private FileCacher<Integer> storePosition;
     Intent mIntent;
     Integer getposition;
 
@@ -37,8 +34,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dash_bord);
         preferenceManager = new SharedPreferenceManager();
-
-
+        stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
+        storePosition = new FileCacher<>(ActivityMainDashBord.this, "SorageOFposition");
         // get action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
@@ -63,13 +60,12 @@ public class ActivityMainDashBord extends AppCompatActivity {
             intValue = getposition;
         } else {
             mIntent = getIntent();
-            intValue = mIntent.getIntExtra("position", 0);
+            intValue = mIntent.getIntExtra("position", Integer.parseInt(null));
             try {
                 storePosition.writeCache(intValue);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
         }
         parentChildData = parentChildDataList.get(intValue);
         LoadUIelements();
