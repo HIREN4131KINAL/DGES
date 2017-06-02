@@ -69,7 +69,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
         LoadUIelements();
     }
 
-//markand
+    //markand
     private void LoadUIelements() {
         TextView txt_sname = (TextView) findViewById(R.id.txt_sname);
         txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
