@@ -23,7 +23,7 @@ import com.tranetech.dges.R;
  */
 public class SplashActivity extends FragmentActivity {
     // Splash screen timer
-    private static int SPLASH_TIME_OUT = 7000;
+    private static int SPLASH_TIME_OUT = 6000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,7 @@ public class SplashActivity extends FragmentActivity {
         final Animation animation_1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.bounce);
         imageView.startAnimation(animation_1);
 
-        final Animation animation_2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_in);
+        final Animation animation_2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.popin);
         textView.startAnimation(animation_2);
 
 

@@ -20,13 +20,12 @@ import java.util.List;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
-    public static int intValue;
+    public int intValue;
     private List<ParentChildData> parentChildDataList;
     private FileCacher<List<ParentChildData>> stringCacherList;
     private ParentChildData parentChildData;
-    private FileCacher<Integer> storePosition;
+    private FileCacher<ParentChildData> Store_Object_of_ParentChildData;
     Intent mIntent;
-    Integer getposition;
 
 
     @Override
@@ -35,7 +34,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
         setContentView(R.layout.activity_main_dash_bord);
         preferenceManager = new SharedPreferenceManager();
         stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
-        storePosition = new FileCacher<>(ActivityMainDashBord.this, "SorageOFposition");
+        Store_Object_of_ParentChildData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
         // get action bar
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
@@ -49,25 +48,24 @@ public class ActivityMainDashBord extends AppCompatActivity {
         }
 
 
-        try {
-            getposition = storePosition.readCache();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        if (storePosition.hasCache()) {
-            intValue = getposition;
+        if (Store_Object_of_ParentChildData.hasCache()) {
+            try {
+                parentChildData = Store_Object_of_ParentChildData.readCache();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             mIntent = getIntent();
-            intValue = mIntent.getIntExtra("position", Integer.parseInt(null));
+            intValue = mIntent.getIntExtra("position", 0);
+
             try {
-                storePosition.writeCache(intValue);
+                parentChildData = parentChildDataList.get(intValue);
+                Store_Object_of_ParentChildData.writeCache(parentChildData);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        parentChildData = parentChildDataList.get(intValue);
+
         LoadUIelements();
     }
 
@@ -75,7 +73,6 @@ public class ActivityMainDashBord extends AppCompatActivity {
     private void LoadUIelements() {
         TextView txt_sname = (TextView) findViewById(R.id.txt_sname);
         txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
-        //name = parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName();
     }
 
 
@@ -164,6 +161,9 @@ public class ActivityMainDashBord extends AppCompatActivity {
                         ActivityLogin.settings.edit().clear().apply();
 
                         Intent toLoginActivity = new Intent(ActivityMainDashBord.this, ActivityLogin.class);
+                        toLoginActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(toLoginActivity);
                         finish();
                     }

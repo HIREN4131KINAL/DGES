@@ -38,6 +38,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
 
+
         HomeworkData hwData = alHWData.get(position);
         holder.txtSubName.setText(hwData.getsSubName());
         holder.txtHWDate.setText(hwData.getsHWDate());

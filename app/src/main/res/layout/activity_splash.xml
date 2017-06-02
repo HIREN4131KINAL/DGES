@@ -21,7 +21,7 @@
             android:layout_margin="@dimen/marginTop_logo"
             android:gravity="center"
             android:text="@string/schoolName"
-            android:textColor="@color/theme_dialer_high"
+            android:textColor="@color/colorPrimary"
             android:textSize="@dimen/txt_large_schoolname"
             android:textStyle="bold"
             tools:ignore="HardcodedText" />

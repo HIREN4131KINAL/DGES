@@ -98,13 +98,8 @@ public class ActivityLogin extends FragmentActivity {
     }
 
     public void btn_Login(View v) {
-
-
         GetData();
-
-
     }
-
 
     public void GetData() {
         final ProgressDialog loading = ProgressDialog.show(this, "Login", "Please wait...", false, false);
@@ -123,7 +118,7 @@ public class ActivityLogin extends FragmentActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.d("Response", response);
+                        Log.e("Response", response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -179,10 +174,10 @@ public class ActivityLogin extends FragmentActivity {
 
                 Log.e("getjson: ", msg);
 
-                if (msg.equals("0")) {
+                if (!msg.equals("1")) {
 
-                    Toast.makeText(this, "Error...", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Your mobile number not registered with school", Toast.LENGTH_SHORT).show();
+                    //Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
                 } else {
                     SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
                     //str_gr_no = jobj.getString("grNo");

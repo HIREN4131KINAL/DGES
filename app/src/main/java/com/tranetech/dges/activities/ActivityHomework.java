@@ -173,7 +173,6 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     private void IntialHomwrkAdapter() {
         recyclerView.setHasFixedSize(false);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityHomework.this);
-        recyclerView.isDuplicateParentStateEnabled();
         recyclerView.setLayoutManager(mLayoutManager);
         hwAdapter = new HomeworkAdapter(hwData, this);
       /*  recyclerView.scrollToPosition(hwData.size() + 1);
