@@ -2,16 +2,13 @@ package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -26,13 +23,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
-import com.tranetech.dges.seter_geter.ParentChildData;
-import com.tranetech.dges.utils.ErrorAlert;
-import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.HomeworkAdapter;
 import com.tranetech.dges.seter_geter.HomeworkData;
-import com.tranetech.dges.R;
-import com.tranetech.dges.utils.SharedPreferenceManager;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,24 +71,23 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     public void onRefresh() {
         if (hwAdapter != null) {
             hwAdapter.clear();
-        } else {
             GetData(standardID);
             hwAdapter.addALL(hwData);
-
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+            ErrorAlert.error("No data available,please add employee data from employee list", ActivityHomework.this);
         }
 
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+
         if (hwAdapter != null) {
             hwAdapter.clear();
-        } else {
-            GetData(standardID);
-            hwAdapter.addALL(hwData);
-
         }
+        GetData(standardID);
+        super.onResume();
     }
 
     public void GetData(final String standardID) {
