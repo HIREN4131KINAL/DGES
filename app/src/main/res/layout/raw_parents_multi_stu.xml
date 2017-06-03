@@ -13,15 +13,20 @@
         android:orientation="horizontal"
         android:padding="@dimen/padding_profile">
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/picture_frame"
+            android:backgroundTint="@color/colorAccent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_student_profile"
-            android:layout_width="@dimen/hight_circle_imageview"
-            android:layout_height="@dimen/width_circle_imageview"
-            android:background="@android:color/darker_gray"
-            android:elevation="8dp"
-            android:padding="@dimen/padding_cardview"
-            android:src="@drawable/ic_profile" />
+            <ImageView
+                android:id="@+id/img_student_profile"
+                android:layout_width="@dimen/hight_circle_imageview"
+                android:layout_height="@dimen/width_circle_imageview"
+                android:elevation="8dp"
+                android:padding="@dimen/padding_cardview"
+                android:src="@drawable/ic_profile" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lr_multi_students_selection"
@@ -41,7 +46,9 @@
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
                 android:text="@string/sname"
-                android:textSize="@dimen/txt_size_stu_name" />
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/txt_size_stu_name"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -59,6 +66,7 @@
                     android:layout_weight="1"
                     android:gravity="end"
                     android:text="@string/standard"
+                    android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_size_stu_name"
                     android:textStyle="bold" />
 
@@ -70,7 +78,10 @@
                     android:gravity="start"
                     android:paddingLeft="5dp"
                     android:text="8"
-                    android:textSize="@dimen/txt_size_stu_name" />
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/txt_size_stu_name"
+
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
