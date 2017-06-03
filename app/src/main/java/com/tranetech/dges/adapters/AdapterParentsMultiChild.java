@@ -7,17 +7,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.kosalgeek.android.caching.FileCacher;
+import com.bumptech.glide.Glide;
 import com.tranetech.dges.R;
 import com.tranetech.dges.activities.ActivityMainDashBord;
-import com.tranetech.dges.activities.ActivityParentsMultiChild;
 import com.tranetech.dges.seter_geter.ParentChildData;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -42,7 +40,7 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
 
     @Override
     public void onBindViewHolder(AdapterParentsMultiChild.ParentsMultiChildViewHolder holder, final int position) {
-        ParentChildData parentChildData = parentChildDataList.get(position);
+        final ParentChildData parentChildData = parentChildDataList.get(position);
 
         Log.e("onBindViewHolder: ", parentChildData.getsName());
 
@@ -54,12 +52,21 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
             public void onClick(View v) {
 
                 Intent intent = new Intent(context, ActivityMainDashBord.class);
-                intent.putExtra("position", position);
+                intent.putExtra("stdid",parentChildData.getsStudentID());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
             }
         });
+//        Picasso.with(context).load(parentChildData.getPhoto()).resize(250, 250)
+//                .centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE)
+//                .networkPolicy(NetworkPolicy.NO_CACHE).into(holder.imgStudentProfile);
+        Glide
+                .with(context)
+                .load(parentChildData.getPhoto())
+                .centerCrop()
+                .crossFade()
+                .into(holder.imgStudentProfile);
 
     }
 
@@ -72,12 +79,14 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
         private LinearLayout lr_multi_students_selection;
         private TextView txt_sname;
         private TextView txt_standard;
+        private ImageView imgStudentProfile;
 
         public ParentsMultiChildViewHolder(View itemView) {
             super(itemView);
             txt_sname = (TextView) itemView.findViewById(R.id.txt_sname);
             lr_multi_students_selection = (LinearLayout) itemView.findViewById(R.id.lr_multi_students_selection);
             txt_standard = (TextView) itemView.findViewById(R.id.txt_standard);
+            imgStudentProfile = (ImageView) itemView.findViewById(R.id.img_student_profile);
         }
     }
 
