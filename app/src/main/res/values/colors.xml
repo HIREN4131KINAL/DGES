@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#880E4F</color>
+    <color name="colorPrimary">#146FBE</color>
     <color name="colorPrimaryDark">#3B1D1B</color>
-    <color name="colorAccent">#a82b2a2b</color>
-    <color name="screenbackground">#1ba5b8 </color>
+    <color name="colorAccent">#8c8db63d</color>
+    <color name="screenbackground">#1ba5b8</color>
     <color name="button">#ff404e</color>
     <color name="cardviewback">#daecf3</color>
     <color name="grade_letter">#1ba5b8</color>
@@ -44,6 +44,8 @@
     <color name="dash_observation">#e5b423</color>
     <color name="dash_homework">#6bbd46</color>
     <color name="dash_policies">#f15559</color>
+    <color name="dash_lable">#fff</color>
+    <color name="raw_parent_child">#a82b2a2b</color>
 
 
 </resources>

@@ -63,7 +63,7 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
     }
 
     private void getData() {
-        final ProgressDialog loading = ProgressDialog.show(this, "Loading Data", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
 
         RequestQueue queue = Volley.newRequestQueue(this);
         GetIP getIP = new GetIP();

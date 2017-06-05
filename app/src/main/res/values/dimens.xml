@@ -36,4 +36,5 @@
     <dimen name="margin_recyclerview_parents_Multichild">10dp</dimen>
     <dimen name="margin_lr_splashActivity">15dp</dimen>
     <dimen name="hight_login_input_text">40dp</dimen>
+    <dimen name="height_width_logo_multichild">200dp</dimen>
 </resources>

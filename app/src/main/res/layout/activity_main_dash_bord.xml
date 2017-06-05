@@ -55,7 +55,7 @@
                     android:padding="@dimen/padding_profile">
 
 
-                    <de.hdodenhof.circleimageview.CircleImageView
+                    <ImageView
                         android:id="@+id/img_student_profile"
                         android:layout_width="100dp"
                         android:layout_height="100dp"

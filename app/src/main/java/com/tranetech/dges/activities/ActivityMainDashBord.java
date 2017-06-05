@@ -1,78 +1,188 @@
 package com.tranetech.dges.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.GetAllData;
 import com.tranetech.dges.seter_geter.ParentChildData;
+import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.utils.SharedPreferenceManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
-    public int intValue;
-    private List<ParentChildData> parentChildDataList;
-    private FileCacher<List<ParentChildData>> stringCacherList;
-    private ParentChildData parentChildData;
-    private FileCacher<ParentChildData> Store_Object_of_ParentChildData;
-    Intent mIntent;
-
+    public String StudentId;
+    private List<GetAllData> StudentInfoDataList = new ArrayList<>();
+    private GetAllData getAllData;
+    private Intent mIntent;
+    TextView txt_sname;
+    ImageView img_student_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dash_bord);
         preferenceManager = new SharedPreferenceManager();
-        stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
-        Store_Object_of_ParentChildData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
+        txt_sname = (TextView) findViewById(R.id.txt_sname);
+        img_student_profile = (ImageView) findViewById(R.id.img_student_profile);
+
+        //   stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
+        //  Store_Object_of_GetAllData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
         // get action bar
+
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
 
 
-        //getting all data of child in stringCacherList
-        try {
-            parentChildDataList = stringCacherList.readCache();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        if (Store_Object_of_ParentChildData.hasCache()) {
-            try {
-                parentChildData = Store_Object_of_ParentChildData.readCache();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
+        if (StudentId == null) {
             mIntent = getIntent();
-            intValue = mIntent.getIntExtra("position", 0);
-
-            try {
-                parentChildData = parentChildDataList.get(intValue);
-                Store_Object_of_ParentChildData.writeCache(parentChildData);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            StudentId = mIntent.getStringExtra("stdid");
         }
 
-        LoadUIelements();
+        GetData(StudentId);
     }
 
-    //markand
-    private void LoadUIelements() {
-        TextView txt_sname = (TextView) findViewById(R.id.txt_sname);
-        txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
+
+    private void GetData(final String StudentId) {
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
+        GetIP getIP = new GetIP();
+        String strUrl = getIP.updateip("get_student_info.php");
+        StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Response StudentAll data : ", response);
+                        loading.dismiss();
+                        try {
+                            getjson(response);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        loading.dismiss();
+
+                     /*   try {
+                            getAllData = Store_Object_of_GetAllData.readCache();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }*/
+                        String message = null;
+                        if (volleyError instanceof NetworkError) {
+                            message = "Cannot connect to Internet...Please reset your connection!";
+                        } else if (volleyError instanceof ServerError) {
+                            message = "The server could not be found. Please try again after some time!!";
+                        } else if (volleyError instanceof AuthFailureError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof ParseError) {
+                            message = "Parsing error! Please try again after some time!!";
+                        } else if (volleyError instanceof NoConnectionError) {
+                            message = "Cannot connect to Internet...Please check your connection!";
+                        } else if (volleyError instanceof TimeoutError) {
+                            message = "Connection TimeOut! Please check your internet connection.";
+                        }
+                        ErrorAlert.error(message, ActivityMainDashBord.this);
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("stdid", StudentId);
+
+                return params;
+            }
+        };
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(postRequest);
+    }
+
+    //
+    private void getjson(String response) throws JSONException, IOException {
+        Log.e("get json data : ", response);
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                getAllData = new GetAllData();
+
+                JSONObject jobj = jsonArray.getJSONObject(i);
+
+                getAllData.setsStudentID(jobj.getString("sId"));
+                getAllData.setsName(jobj.getString("fName"));
+                getAllData.setmName(jobj.getString("mName"));
+                getAllData.setlName(jobj.getString("lName"));
+                getAllData.setsStandard(jobj.getString("std"));
+                getAllData.setsStandard_ID(jobj.getString("stdid"));
+                getAllData.setPhoto(jobj.getString("photo"));
+
+                StudentInfoDataList.add(getAllData);
+                // stringCacherList.writeCache(StudentInfoDataList);
+
+                //Store_Object_of_GetAllData.writeCache(getAllData);
+            }
+
+
+            txt_sname.setText(getAllData.getsName() + " " + getAllData.getmName() + " " + getAllData.getlName());
+
+            Glide
+                    .with(getApplicationContext())
+                    .load(getAllData.getPhoto())
+                    .centerCrop()
+                    .crossFade()
+                    .into(img_student_profile);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }/* catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
     }
 
 
@@ -93,8 +203,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void LinearProfile(View v) throws IOException {
 
         Intent Profile = new Intent(this, ActivityProfile.class);
-        Profile.putExtra("position", intValue);
-        Profile.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Profile.putExtra("stdid", StudentId);
+        Profile.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(Profile);
 
     }
@@ -102,7 +212,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void cardHomework(View v) {
         //have to send standard id
         Intent Homework = new Intent(this, ActivityHomework.class);
-        Homework.putExtra("standard", parentChildData.getsStandard_ID());
+        Homework.putExtra("standard", getAllData.getsStandard_ID());
         startActivity(Homework);
     }
 
@@ -150,7 +260,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(this);
         builder.setTitle("Logout");
         builder.setMessage("Would you like to logout?");
-        builder.setIcon(R.drawable.logo);
+        builder.setIcon(R.drawable.logo_main);
         builder.setPositiveButton("YES",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -187,4 +297,15 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        preferenceManager.setDefaults("stdid", null, getApplicationContext());
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        preferenceManager.setDefaults("stdid", null, getApplicationContext());
+        super.onPause();
+    }
 }

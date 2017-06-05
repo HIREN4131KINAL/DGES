@@ -91,7 +91,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     }
 
     public void GetData(final String standardID) {
-        final ProgressDialog loading = ProgressDialog.show(this, "Home work", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
         GetIP getIP = new GetIP();
         String strUrl = getIP.updateip("homework.php");
         StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
@@ -106,7 +106,6 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {

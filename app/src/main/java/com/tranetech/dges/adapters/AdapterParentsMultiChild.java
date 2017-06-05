@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tranetech.dges.R;
 import com.tranetech.dges.activities.ActivityMainDashBord;
+import com.tranetech.dges.seter_geter.HomeworkData;
 import com.tranetech.dges.seter_geter.ParentChildData;
 
 import java.util.List;
@@ -58,9 +59,6 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
 
             }
         });
-//        Picasso.with(context).load(parentChildData.getPhoto()).resize(250, 250)
-//                .centerCrop().memoryPolicy(MemoryPolicy.NO_CACHE)
-//                .networkPolicy(NetworkPolicy.NO_CACHE).into(holder.imgStudentProfile);
         Glide
                 .with(context)
                 .load(parentChildData.getPhoto())
@@ -89,6 +87,9 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
             imgStudentProfile = (ImageView) itemView.findViewById(R.id.img_student_profile);
         }
     }
-
+    public void clear() {
+        parentChildDataList.clear();
+        notifyDataSetChanged();
+    }
 
 }

@@ -38,7 +38,7 @@ public class SplashActivity extends FragmentActivity {
         final Animation animation_1 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.bounce);
         imageView.startAnimation(animation_1);
 
-        final Animation animation_2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.popin);
+        final Animation animation_2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.fade_in);
         textView.startAnimation(animation_2);
 
 

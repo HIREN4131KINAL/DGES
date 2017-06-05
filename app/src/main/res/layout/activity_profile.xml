@@ -31,7 +31,7 @@
                 android:orientation="horizontal"
                 android:padding="@dimen/padding_cardview">
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <ImageView
                     android:id="@+id/img_student_profile"
                     android:layout_width="@dimen/width_circle_imageview"
                     android:layout_height="@dimen/hight_circle_imageview"

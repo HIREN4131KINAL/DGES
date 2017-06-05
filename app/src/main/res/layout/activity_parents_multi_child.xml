@@ -4,20 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:background="@drawable/multi_bg"
+    android:orientation="vertical"
     tools:context="com.tranetech.dges.activities.ActivityObservation">
 
-<ImageView
-    android:layout_width="@dimen/height_width_logo_multichild"
-    android:layout_height="@dimen/height_width_logo_multichild"
-    android:src="@drawable/logo_main"
-    android:layout_gravity="center"/>
+    <ImageView
+        android:layout_width="@dimen/height_width_logo_multichild"
+        android:layout_height="@dimen/height_width_logo_multichild"
+        android:layout_gravity="center"
+        android:src="@drawable/logo_main" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_parents_multi_stu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|top"
+        android:layout_gravity="start|center"
         android:layout_margin="@dimen/marginTop_logo"
         tools:ignore="MissingConstraints" />
 </LinearLayout>

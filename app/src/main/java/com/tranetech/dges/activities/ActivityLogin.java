@@ -55,7 +55,7 @@ public class ActivityLogin extends FragmentActivity {
     String mobile, strUrl, msg, mobile_s;
     View parentLayout;
     String JsonResponseLoginData;
-    private FileCacher<String> stringCacher = new FileCacher<>(ActivityLogin.this, "cache_tmp.txt");
+    //  private FileCacher<String> stringCacher = new FileCacher<>(ActivityLogin.this, "cache_tmp.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,30 +70,27 @@ public class ActivityLogin extends FragmentActivity {
         et_Mobile = (EditText) findViewById(R.id.password);
 
         hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
-        msg = SharedPreferenceManager.getDefaults("msg", getApplicationContext());
 
+        msg = SharedPreferenceManager.getDefaults("msg", getApplicationContext());
         // to hide soft keyboard until user interaction
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
 
-
         if (hasLoggedIn) {
 
-            if (stringCacher.hasCache()) {
+            //   if (stringCacher.hasCache()) {
 
-                Log.e("onCreate:has loged ", hasLoggedIn + "");
-                if (msg.equals("0")) {
-                    Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
+            Log.e("onCreate:has loged ", hasLoggedIn + "");
+            if (msg.equals("0")) {
+                Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
             } else {
-                // btn_Login(parentLayout);
-                Snackbar.make(getCurrentFocus(), "Data not found, please try again", Snackbar.LENGTH_SHORT).show();
+                Intent intent = new Intent(this, ActivityParentsMultiChild.class);
+                intent.putExtra("mobile", mobile);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
+            // }
         }
     }
 
@@ -102,7 +99,7 @@ public class ActivityLogin extends FragmentActivity {
     }
 
     public void GetData() {
-        final ProgressDialog loading = ProgressDialog.show(this, "Login", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
         //GR_Number = et_GR_Number.getText().toString();
         mobile = et_Mobile.getText().toString();
         GetIP getIP = new GetIP();
@@ -118,7 +115,7 @@ public class ActivityLogin extends FragmentActivity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        Log.e("Response", response);
+                        Log.e("Response Loin data : ", response);
                     }
                 },
                 new Response.ErrorListener() {
@@ -158,7 +155,7 @@ public class ActivityLogin extends FragmentActivity {
     protected void getjson(String response) throws IOException {
         JSONObject jsonObject1 = null;
         // store response in cache memory
-        stringCacher.writeCache(response);
+        //   stringCacher.writeCache(response);
 
         try {
             jsonObject1 = new JSONObject(response);
@@ -183,21 +180,19 @@ public class ActivityLogin extends FragmentActivity {
                     //str_gr_no = jobj.getString("grNo");
                     mobile_s = jobj.getString("mobile");
 
-
                     Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                    intent.putExtra("response", response);
+                    intent.putExtra("mobile", mobile_s);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                 }
 
                 SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
                 // SharedPreferenceManager.setDefaults("str_gr_no", str_gr_no, getApplicationContext());
-                SharedPreferenceManager.setDefaults("mobile_s", mobile_s, getApplicationContext());
+                SharedPreferenceManager.setDefaults("mobile", mobile_s, getApplicationContext());
 
                 SharedPreferences settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0); // 0 - for private mode
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("msg", msg);
-                //editor.putString("str_gr_no", str_gr_no);
                 editor.putString("mobile", mobile_s);
                 editor.putBoolean("hasLoggedIn", true);
                 editor.apply();

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tranetech.dges.seter_geter.HomeworkData;
 import com.tranetech.dges.R;
 
@@ -38,11 +39,12 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
 
-
         HomeworkData hwData = alHWData.get(position);
         holder.txtSubName.setText(hwData.getsSubName());
         holder.txtHWDate.setText(hwData.getsHWDate());
         holder.txtHWDescription.setText(hwData.getsHWDescription());
+        holder.imgHW.setImageResource(R.drawable.homework);
+
     }
 
     @Override

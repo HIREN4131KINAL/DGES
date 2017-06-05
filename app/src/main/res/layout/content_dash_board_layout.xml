@@ -52,8 +52,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Circular)"
-                        android:textColor="#111111"
+                        android:text="Circular"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -93,8 +93,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Result)"
-                        android:textColor="#111111"
+                        android:text="Result"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -141,8 +141,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Fees)"
-                        android:textColor="#111111"
+                        android:text="Fees"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -183,8 +183,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Home work)"
-                        android:textColor="#111111"
+                        android:text="Home work"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -232,8 +232,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Observation)"
-                        android:textColor="#111111"
+                        android:text="Observation"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -272,8 +272,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/marginTop_logo"
-                        android:text="(Policies)"
-                        android:textColor="#111111"
+                        android:text="Policies"
+                        android:textColor="@color/dash_lable"
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
