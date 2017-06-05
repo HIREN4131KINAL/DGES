@@ -3,7 +3,6 @@ package com.tranetech.dges.activities;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -27,10 +26,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.seter_geter.GetAllData;
-import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.utils.SharedPreferenceManager;
@@ -227,6 +224,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void cardObservation(View v) {
         //have to send student id
         Intent Updates = new Intent(this, ActivityObservation.class);
+        Updates.putExtra("sid", getAllData.getsStudentID());
         startActivity(Updates);
 
     }

@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.tranetech.dges.seter_geter.ObservationData;
 import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.ObservationData;
 
 import java.util.List;
 
@@ -57,5 +57,14 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
             txtObTitle = (TextView) itemView.findViewById(R.id.txt_observation_title);
             txtObDescription = (TextView) itemView.findViewById(R.id.txt_observation_desc);
         }
+    }
+    public void clear() {
+        observationDatas.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<ObservationData> alOBData) {
+        this.observationDatas.addAll(alOBData);
+        notifyDataSetChanged();
     }
 }
