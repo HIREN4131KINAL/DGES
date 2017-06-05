@@ -99,7 +99,7 @@ public class ActivityLogin extends FragmentActivity {
     }
 
     public void GetData() {
-        final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
+        final ProgressDialog loading = ProgressDialog.show(this, "Login", "Please wait...", false, false);
         //GR_Number = et_GR_Number.getText().toString();
         mobile = et_Mobile.getText().toString();
         GetIP getIP = new GetIP();

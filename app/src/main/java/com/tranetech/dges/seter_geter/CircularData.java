@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class CircularData implements Serializable{
 
-    private String sCircularTitle,sCircularDesc,sCircualarDate;
+    private String sCircularTitle,sCircularDesc,sCircualarDate,sCircualarStatus;
 
     public void setsCircularTitle(String sCircularTitle) {
         this.sCircularTitle = sCircularTitle;
@@ -32,5 +32,13 @@ public class CircularData implements Serializable{
 
     public String getsCircualarDate() {
         return sCircualarDate;
+    }
+
+    public void setsCircualarStatus(String sCircualarStatus) {
+        this.sCircualarStatus = sCircualarStatus;
+    }
+
+    public String getsCircualarStatus() {
+        return sCircualarStatus;
     }
 }

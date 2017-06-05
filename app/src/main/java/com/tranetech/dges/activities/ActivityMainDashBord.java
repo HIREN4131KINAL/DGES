@@ -60,8 +60,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
         img_student_profile = (ImageView) findViewById(R.id.img_student_profile);
 
         //   stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
-        //  Store_Object_of_GetAllData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
-        // get action bar
+        //   Store_Object_of_GetAllData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
+        //   get action bar
 
 
         ActionBar actionBar = getSupportActionBar();
@@ -169,6 +169,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
             Glide
                     .with(getApplicationContext())
                     .load(getAllData.getPhoto())
+                    .placeholder(R.drawable.ic_profile)
                     .centerCrop()
                     .crossFade()
                     .into(img_student_profile);
