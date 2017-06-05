@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.tranetech.dges.seter_geter.CircularData;
 import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.HomeworkData;
 
 import java.util.List;
 
@@ -22,8 +23,7 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
     private List<CircularData> alCircularData;
     private Context context;
 
-    public CircularAdapter(List<CircularData> alCircularData,Context context)
-    {
+    public CircularAdapter(List<CircularData> alCircularData, Context context) {
         this.alCircularData = alCircularData;
         this.context = context;
     }
@@ -42,6 +42,8 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
         holder.txtCircularTitle.setText(circularData.getsCircularTitle());
         holder.txtCircularDesc.setText(circularData.getsCircularDesc());
         holder.txtCircularDate.setText(circularData.getsCircualarDate());
+        holder.imgCircualr.setImageResource(R.drawable.circular);
+
     }
 
     @Override
@@ -49,16 +51,26 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
         return alCircularData.size();
     }
 
-    public class CircularViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtCircularTitle,txtCircularDesc,txtCircularDate;
+    public class CircularViewHolder extends RecyclerView.ViewHolder {
+        public TextView txtCircularTitle, txtCircularDesc, txtCircularDate;
         public ImageView imgCircualr;
 
         public CircularViewHolder(View itemView) {
             super(itemView);
-            txtCircularTitle = (TextView)itemView.findViewById(R.id.txt_circular_title);
-            txtCircularDesc = (TextView)itemView.findViewById(R.id.txt_circular_description);
-            txtCircularDate = (TextView)itemView.findViewById(R.id.txt_circular_date);
-            imgCircualr = (ImageView)itemView.findViewById(R.id.img_circular);
+            txtCircularTitle = (TextView) itemView.findViewById(R.id.txt_circular_title);
+            txtCircularDesc = (TextView) itemView.findViewById(R.id.txt_circular_description);
+            txtCircularDate = (TextView) itemView.findViewById(R.id.txt_circular_date);
+            imgCircualr = (ImageView) itemView.findViewById(R.id.img_circular);
         }
+    }
+
+    public void clear() {
+        alCircularData.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<CircularData> alHWData) {
+        this.alCircularData.addAll(alCircularData);
+        notifyDataSetChanged();
     }
 }

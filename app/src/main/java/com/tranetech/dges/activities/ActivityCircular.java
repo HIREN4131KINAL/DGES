@@ -42,9 +42,11 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_circular);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Circular");
+
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_circular);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_circular);
@@ -52,13 +54,22 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
 
     @Override
     public void onRefresh() {
-        getData();
-        swipeRefreshLayout.setRefreshing(false);
+        if (circularAdapter != null) {
+            circularAdapter.clear();
+            getData();
+            circularAdapter.addALL(circularDatas);
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+            ErrorAlert.error("No data available", ActivityCircular.this);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (circularAdapter != null) {
+            circularAdapter.clear();
+        }
         getData();
     }
 
@@ -67,7 +78,7 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
 
         RequestQueue queue = Volley.newRequestQueue(this);
         GetIP getIP = new GetIP();
-        String url = getIP.updateip("emp_checkin_log.php");
+        String url = getIP.updateip("circular.php");
 
 // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -114,9 +125,10 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
         for (int i = 0; i < jsonArray.length(); i++) {
             CircularData circularData = new CircularData();
             JSONObject jobj = jsonArray.getJSONObject(i);
-            circularData.setsCircularTitle(jobj.getString("str_gr_no"));
-            circularData.setsCircularDesc(jobj.getString("name"));
-            circularData.setsCircualarDate(jobj.getString("address"));
+            circularData.setsCircularTitle(jobj.getString("title"));
+            circularData.setsCircularDesc(jobj.getString("description"));
+            circularData.setsCircualarDate(jobj.getString("date"));
+            circularData.setsCircualarStatus(jobj.getString("status"));
 
             circularDatas.add(circularData);
         }
@@ -129,8 +141,8 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityCircular.this);
         recyclerView.setLayoutManager(mLayoutManager);
         circularAdapter = new CircularAdapter(circularDatas, this);
-        recyclerView.scrollToPosition(circularDatas.size() + 1);
-        circularAdapter.notifyItemInserted(circularDatas.size() + 1);
+       /* recyclerView.scrollToPosition(circularDatas.size() + 1);
+        circularAdapter.notifyItemInserted(circularDatas.size() + 1);*/
         recyclerView.setAdapter(circularAdapter);
     }
 
