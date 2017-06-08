@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <!-- External storage for caching. -->
     <!-- My Location -->
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -18,8 +20,6 @@
         android:roundIcon="@drawable/logo_main"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity
             android:name=".activities.ActivityMainDashBord"
             android:launchMode="singleTop"
@@ -28,8 +28,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityParentsMultiChild" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityProfile"
             android:launchMode="singleTop"
@@ -38,8 +36,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityCircular"
             android:launchMode="singleTop"
@@ -48,8 +44,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityFees"
             android:launchMode="singleTop"
@@ -58,8 +52,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityHomework"
             android:launchMode="singleTop"
@@ -68,8 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityResult"
             android:launchMode="singleTop"
@@ -78,8 +68,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.ActivityObservation"
             android:launchMode="singleTop"
@@ -88,8 +76,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
-
         <activity
             android:name=".activities.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -97,16 +83,30 @@
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".activities.ActivityParentsMultiChild" />
-        <!-- <activity
+        <!--
+             <activity
              android:name=".ActivityLogin"
-             android:windowSoftInputMode="adjustResize" />-->
+             android:windowSoftInputMode="adjustResize" />
+        -->
         <activity
             android:name=".activities.ActivityLogin"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".activities.ActivityPermission"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
     </application>
 
 </manifest>

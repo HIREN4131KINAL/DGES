@@ -53,7 +53,7 @@ public class SplashActivity extends FragmentActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent intent = new Intent(SplashActivity.this, ActivityLogin.class);
+                Intent intent = new Intent(SplashActivity.this, ActivityPermission.class);
                 startActivity(intent);
                 finish();
             }

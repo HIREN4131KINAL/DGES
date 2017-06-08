@@ -82,6 +82,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/buttons_effact_login"
                         android:text="Download"
+                        android:visibility="gone"
                         android:textColor="@android:color/white" />
                 </LinearLayout>
 

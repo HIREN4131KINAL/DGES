@@ -129,7 +129,12 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
             circularData.setsCircularDesc(jobj.getString("description"));
             circularData.setsCircualarDate(jobj.getString("date"));
             circularData.setsCircualarStatus(jobj.getString("status"));
-
+            String url = jobj.getString("cfile");
+            if(!url.equals("null"))
+            {
+                circularData.setsCircularURL(url);
+                circularData.setsCircularFileName(jobj.getString("filename"));
+            }
             circularDatas.add(circularData);
         }
 

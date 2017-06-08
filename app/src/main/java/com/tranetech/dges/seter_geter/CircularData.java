@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class CircularData implements Serializable{
 
-    private String sCircularTitle,sCircularDesc,sCircualarDate,sCircualarStatus;
+    private String sCircularTitle,sCircularDesc,sCircualarDate,sCircualarStatus,sCircularURL,sCircularFileName;
 
     public void setsCircularTitle(String sCircularTitle) {
         this.sCircularTitle = sCircularTitle;
@@ -37,8 +37,23 @@ public class CircularData implements Serializable{
     public void setsCircualarStatus(String sCircualarStatus) {
         this.sCircualarStatus = sCircualarStatus;
     }
-
     public String getsCircualarStatus() {
         return sCircualarStatus;
+    }
+
+    public void setsCircularURL(String sCircularURL) {
+        this.sCircularURL = sCircularURL;
+    }
+
+    public String getsCircularURL() {
+        return sCircularURL;
+    }
+
+    public void setsCircularFileName(String sCircularFileName) {
+        this.sCircularFileName = sCircularFileName;
+    }
+
+    public String getsCircularFileName() {
+        return sCircularFileName;
     }
 }
