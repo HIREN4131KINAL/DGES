@@ -45,7 +45,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
                     android:gravity="center"
-                    android:text="@string/sname"
+                    android:hint="@string/sname"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
 
@@ -92,7 +92,6 @@
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:layout_gravity="center_horizontal"
                     android:gravity="center_vertical"
-                    android:hint="1st"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
@@ -118,7 +117,6 @@
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:ems="10"
                     android:gravity="center_vertical"
-                    android:hint="04"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
@@ -143,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:gravity="center_vertical"
-                    android:hint="123456"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
@@ -168,7 +165,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:gravity="center_vertical"
-                    android:hint="26/11/1994"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
@@ -193,7 +189,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:gravity="center_vertical"
-                    android:hint="Male"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
@@ -218,10 +213,82 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/hight_profile_row_lable"
                     android:gravity="center_vertical"
-                    android:hint="9876543210"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_cardview"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/width_profile_row_lable"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:layout_marginEnd="@dimen/marginend_profile_row"
+                    android:gravity="center_vertical"
+                    android:text="Adhar"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+
+                <TextView
+                    android:id="@+id/txt_adhar"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:gravity="center_vertical"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_cardview"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/width_profile_row_lable"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:layout_marginEnd="@dimen/marginend_profile_row"
+                    android:gravity="center_vertical"
+                    android:text="Blood"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+
+                <TextView
+                    android:id="@+id/txt_blood"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:gravity="center_vertical"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_cardview"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/width_profile_row_lable"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:layout_marginEnd="@dimen/marginend_profile_row"
+                    android:gravity="center_vertical"
+                    android:text="Status"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+
+                <TextView
+                    android:id="@+id/txt_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/hight_profile_row_lable"
+                    android:gravity="center_vertical"
+                    android:textColor="#111111"
+                    android:textSize="@dimen/txt_size_stu_name" />
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -243,7 +310,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:hint="Office-213, Supermall-2, infocity, Gandhinagar"
                     android:lines="2"
                     android:textColor="#111111"
                     android:textSize="@dimen/txt_size_stu_name" />

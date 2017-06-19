@@ -44,15 +44,14 @@ import java.util.Map;
 
 public class ActivityProfile extends AppCompatActivity {
 
-    private TextView txtSname, txtClass, txtRollNo, txtGrNo, txtBday, txtGender, txtPhone, txtAddress;
+    private TextView txtSname, txtClass, txtRollNo, txtGrNo, txtBday, txtGender, txtPhone, txtAddress, txt_adhar, txt_blood, txt_status;
     private ImageView imgProfile;
     private List<GetAllData> StudentInfoDataList = new ArrayList<>();
     //private FileCacher<List<ParentChildData>> stringCacherList = new FileCacher<>(ActivityProfile.this, "cacheListTmp.txt");
     private GetAllData getAllData;
     private static final String PREFS_NAME = "ActivityProfile";
-    public int position;
-    private String StudentId;
-    private Intent mIntent;
+    private String StudentId, stu_name, stu_photo;
+    private Intent mIntent, IGetName, IGetPhoto;
 
 
     @Override
@@ -62,22 +61,37 @@ public class ActivityProfile extends AppCompatActivity {
         getSupportActionBar().setTitle("Profile");
         //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        if (StudentId == null) {
-            mIntent = getIntent();
-            StudentId = mIntent.getStringExtra("stdid");
-        }
-
+        mIntent = getIntent();
+        StudentId = mIntent.getStringExtra("stdid");
 
         GetData(StudentId);
 
+        IGetName = getIntent();
+        stu_name = IGetName.getStringExtra("stu_name");
+        Log.e("get name: ", stu_name);
+
+        IGetPhoto = getIntent();
+        stu_photo = IGetPhoto.getStringExtra("stu_photo");
+        Log.e("get photo: ", stu_photo);
+
+
         LoaduiElements();
+
+        txtSname.setText(stu_name);
+
+        Glide.with(getApplicationContext())
+                .load(stu_photo)
+                .placeholder(R.drawable.ic_profile)
+                .centerCrop()
+                .crossFade()
+                .into(imgProfile);
+
 
     }
 
     private void SetAlldata() {
-        txtSname.setText(getAllData.getsName() + " " + getAllData.getmName() + " " + getAllData.getlName());
-        txtClass.setText(getAllData.getsStandard());
+
+        txtClass.setText(getAllData.getsStandard() + "(" + getAllData.getDivision() + ")");
         txtRollNo.setText(getAllData.getRollno());
         txtGrNo.setText(getAllData.getGrNo());
         txtBday.setText(getAllData.getDob());
@@ -85,13 +99,10 @@ public class ActivityProfile extends AppCompatActivity {
         txtPhone.setText(getAllData.getMobile());
         txtAddress.setText(getAllData.getAddress());
 
+        txt_adhar.setText(getAllData.getAdhar());
+        txt_blood.setText(getAllData.getBloodGroup());
+        txt_status.setText(getAllData.getStatus());
 
-        Glide
-                .with(getApplicationContext())
-                .load(getAllData.getPhoto())
-                .centerCrop()
-                .crossFade()
-                .into(imgProfile);
 
     }
 
@@ -105,6 +116,10 @@ public class ActivityProfile extends AppCompatActivity {
         txtGender = (TextView) findViewById(R.id.txt_gen);
         txtPhone = (TextView) findViewById(R.id.txt_phno);
         txtAddress = (TextView) findViewById(R.id.txt_add);
+
+        txt_adhar = (TextView) findViewById(R.id.txt_adhar);
+        txt_blood = (TextView) findViewById(R.id.txt_blood);
+        txt_status = (TextView) findViewById(R.id.txt_status);
         imgProfile = (ImageView) findViewById(R.id.img_student_profile);
     }
 
@@ -189,20 +204,35 @@ public class ActivityProfile extends AppCompatActivity {
                 getAllData.setsStandard_ID(jobj.getString("stdid"));
                 getAllData.setPhoto(jobj.getString("photo"));
 
-                StudentInfoDataList.add(getAllData);
-                // stringCacherList.writeCache(StudentInfoDataList);
+                getAllData.setRollno(jobj.getString("rollNo"));
+                getAllData.setGrNo(jobj.getString("grNo"));
+                getAllData.setDob(jobj.getString("dob"));
+                getAllData.setGender(jobj.getString("gender"));
+                getAllData.setMobile(jobj.getString("mobile"));
+                getAllData.setAddress(jobj.getString("address"));
 
+
+                getAllData.setAdhar(jobj.getString("adhar"));
+                getAllData.setDivision(jobj.getString("div"));
+                getAllData.setBloodGroup(jobj.getString("bloodgroup"));
+                getAllData.setStatus(jobj.getString("status"));
+
+
+                StudentInfoDataList.add(getAllData);
+
+
+                Log.e("getjson in for: ", jobj.getString("fName"));
+
+
+                // stringCacherList.writeCache(StudentInfoDataList);
                 //Store_Object_of_GetAllData.writeCache(getAllData);
             }
-
 
             SetAlldata();
 
         } catch (JSONException e) {
             e.printStackTrace();
-        }/* catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        }
 
     }
 

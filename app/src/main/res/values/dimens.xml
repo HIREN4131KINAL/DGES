@@ -37,4 +37,8 @@
     <dimen name="margin_lr_splashActivity">15dp</dimen>
     <dimen name="hight_login_input_text">40dp</dimen>
     <dimen name="height_width_logo_multichild">200dp</dimen>
+    <dimen name="txt_size_policies">30sp</dimen>
+    <dimen name="hight_lr_enqiry">180dp</dimen>
+    <dimen name="hight_lrc_enqiry">105dp</dimen>
+    <dimen name="width_date_raw_inquiry">200dp</dimen>
 </resources>

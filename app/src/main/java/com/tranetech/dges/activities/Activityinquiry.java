@@ -9,6 +9,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -24,9 +29,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
-import com.tranetech.dges.adapters.ObservationAdapter;
-import com.tranetech.dges.seter_geter.HomeworkData;
-import com.tranetech.dges.seter_geter.ObservationData;
+import com.tranetech.dges.adapters.FeesAdapter;
+import com.tranetech.dges.adapters.InquiryAdapter;
+import com.tranetech.dges.seter_geter.FeesData;
+import com.tranetech.dges.seter_geter.InquiryData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
 
@@ -40,73 +46,82 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ActivityObservation extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private List<ObservationData> observationDatas = new ArrayList<>();
-    private FileCacher<List<ObservationData>> str_CachList_observation;
+public class Activityinquiry extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private List<InquiryData> inquiryDatas = new ArrayList<>();
+    private FileCacher<List<InquiryData>> fileCacherInquiry;
     private RecyclerView recyclerView;
+    private String StudentId;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private ObservationAdapter observationAdapter;
-    private String studentID;
-
+    private InquiryAdapter inquiryAdapter;
+    private Intent mIntent;
+    private Button btn_inquiry;
+    private String REsponse;
+    private EditText et_inquiry;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_observation);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Observation");
+        setContentView(R.layout.activity_inquiry);
 
-        Intent mIntent = getIntent();
-        studentID = mIntent.getStringExtra("sid");
-
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_observation);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_inquiry);
         swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_observation);
+        recyclerView = (RecyclerView) findViewById(R.id.rv_inquiry);
+        et_inquiry = (EditText) findViewById(R.id.et_inquiry);
 
-        str_CachList_observation = new FileCacher<>(ActivityObservation.this, "stu_observation_" + studentID + ".txt");
+        btn_inquiry = (Button) findViewById(R.id.btn_inquiry);
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Inquiry");
+
+        mIntent = getIntent();
+        StudentId = mIntent.getStringExtra("sid");
+
+        fileCacherInquiry = new FileCacher<>(Activityinquiry.this, "stu_inquiry_" + StudentId + ".txt");
+
+        btn_inquiry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onRefresh();
+            }
+        });
 
     }
 
     @Override
     public void onRefresh() {
-        if (observationAdapter != null) {
-            observationAdapter.clear();
-            GetData(studentID);
-            observationAdapter.addALL(observationDatas);
+        if (inquiryAdapter != null) {
+            inquiryDatas.clear();
+            getData(StudentId);
+            inquiryAdapter.addALL(inquiryDatas);
             swipeRefreshLayout.setRefreshing(false);
         } else {
-            ErrorAlert.error("No data available for this student.", ActivityObservation.this);
-            swipeRefreshLayout.setRefreshing(false);
+            ErrorAlert.error("No data available", Activityinquiry.this);
         }
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
-        if (observationAdapter != null) {
-            observationAdapter.clear();
+
+        if (inquiryAdapter != null) {
+            inquiryDatas.clear();
         }
-        GetData(studentID);
+        getData(StudentId);
         super.onResume();
     }
 
-    public void GetData(final String standardID) {
+    private void getData(final String StudentId) {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
         GetIP getIP = new GetIP();
-        String strUrl = getIP.updateip("observation.php");
+        String strUrl = getIP.updateip("enquiry.php");
         StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e("Response Observation : ", response);
-                        swipeRefreshLayout.setRefreshing(false);
-
-                        if (observationAdapter != null) {
-                            observationAdapter.clear();
+                        Log.e("Inquery data : ", response + StudentId);
+                        if (inquiryAdapter != null) {
+                            inquiryDatas.clear();
                         }
-
                         loading.dismiss();
-
                         try {
                             getJson(response);
                         } catch (JSONException e) {
@@ -114,19 +129,16 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
-                        swipeRefreshLayout.setRefreshing(false);
                         loading.dismiss();
 
                         try {
-                            if (str_CachList_observation.hasCache()) {
-                                str_CachList_observation.readCache();
-                            }
+                            inquiryDatas = fileCacherInquiry.readCache();
+                            IntialAdapter();
 
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -146,14 +158,15 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        ErrorAlert.error(message, ActivityObservation.this);
+                        ErrorAlert.error(message, Activityinquiry.this);
                     }
                 }
         ) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("sid", standardID);
+                params.put("sid", StudentId);
+                params.put("enquiry", et_inquiry.getText().toString());
                 return params;
             }
         };
@@ -161,38 +174,63 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
         queue.add(postRequest);
     }
 
+
     private void getJson(String response) throws JSONException, IOException {
+        try {
 
-        JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        if (jsonArray.length() == 0) {
-            ErrorAlert.error("No data available for this student.", ActivityObservation.this);
-        }
-        for (int i = 0; i < jsonArray.length(); i++) {
-            ObservationData observationData = new ObservationData();
-            JSONObject jobj = jsonArray.getJSONObject(i);
+            JSONObject jsonObject = new JSONObject(response);
 
-            String name = jobj.getString("fName") + " " + jobj.getString("lName");
+            REsponse = jsonObject.getString("msg");
 
-            observationData.setsObStudentName(name);
-            observationData.setsObDate(jobj.getString("date"));
-            observationData.setsObTitle(jobj.getString("subject"));
-            observationData.setsObDesc(jobj.getString("remarks"));
+            if (REsponse.equals("1")) {
+                Toast.makeText(this, "Send successfully", Toast.LENGTH_SHORT).show();
+            }
 
-            observationDatas.add(observationData);
-            str_CachList_observation.writeCache(observationDatas);
+            Log.e("Response from server : ", REsponse);
+
+
+            JSONObject jsonData = new JSONObject(response);
+            JSONArray jsonArray = jsonData.getJSONArray("list");
+
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+
+                InquiryData Inq_Data = new InquiryData();
+                JSONObject jobj = jsonArray.getJSONObject(i);
+
+                Inq_Data.setsInquiryeId(jobj.getString("eId"));
+                Inq_Data.setsInquiryenquiry(jobj.getString("enquiry"));
+                Inq_Data.setsInquirydate(jobj.getString("date"));
+
+                inquiryDatas.add(Inq_Data);
+                fileCacherInquiry.writeCache(inquiryDatas);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         IntialAdapter();
     }
 
+
     public void IntialAdapter() {
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+      /*  layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.scrollToPosition(0);*/
+        recyclerView.setLayoutManager(layoutManager);
+
+        // allows for optimizations if all item views are of the same size:
         recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityObservation.this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        observationAdapter = new ObservationAdapter(observationDatas, this);
-        /*recyclerView.scrollToPosition(observationDatas.size() + 1);
-        observationAdapter.notifyItemInserted(observationDatas.size() + 1);*/
-        recyclerView.setAdapter(observationAdapter);
+        inquiryAdapter = new InquiryAdapter(inquiryDatas, this);
+        recyclerView.setAdapter(inquiryAdapter);
+
     }
+
 }
+
+
+

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -26,8 +27,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.seter_geter.GetAllData;
+import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.utils.SharedPreferenceManager;
@@ -44,10 +47,13 @@ import java.util.Map;
 
 public class ActivityMainDashBord extends AppCompatActivity {
     private SharedPreferenceManager preferenceManager;
-    public String StudentId;
+    private String StudentId, stu_name, stu_photo, std_ID;
     private List<GetAllData> StudentInfoDataList = new ArrayList<>();
+    // private FileCacher<List<GetAllData>> stringCachStuInfo = new FileCacher<>(ActivityMainDashBord.this, "cacheGetAll.txt");
     private GetAllData getAllData;
-    private Intent mIntent;
+
+
+    private Intent mIntent, IGetPhoto, IGetName, IstdID;
     TextView txt_sname;
     ImageView img_student_profile;
 
@@ -59,21 +65,38 @@ public class ActivityMainDashBord extends AppCompatActivity {
         txt_sname = (TextView) findViewById(R.id.txt_sname);
         img_student_profile = (ImageView) findViewById(R.id.img_student_profile);
 
-        //   stringCacherList = new FileCacher<>(ActivityMainDashBord.this, "cacheListTmp.txt");
-        //   Store_Object_of_GetAllData = new FileCacher<>(ActivityMainDashBord.this, "SorageOFobj.txt");
-        //   get action bar
-
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
 
 
-        if (StudentId == null) {
-            mIntent = getIntent();
-            StudentId = mIntent.getStringExtra("stdid");
-        }
+        mIntent = getIntent();
+        StudentId = mIntent.getStringExtra("stu_id");
+
+        IstdID = getIntent();
+        std_ID = IstdID.getStringExtra("std_ID");
+
 
         GetData(StudentId);
+
+        IGetName = getIntent();
+        stu_name = IGetName.getStringExtra("stu_name");
+        Log.e("get name: ", stu_name);
+
+        IGetPhoto = getIntent();
+        stu_photo = IGetPhoto.getStringExtra("photo");
+        Log.e("get photo: ", stu_photo);
+
+        txt_sname.setText(stu_name);
+
+        Glide.with(getApplicationContext())
+                .load(stu_photo)
+                .placeholder(R.drawable.ic_profile)
+                .centerCrop()
+                .crossFade()
+                .into(img_student_profile);
+
+
     }
 
 
@@ -87,6 +110,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
                     public void onResponse(String response) {
                         Log.e("Response StudentAll data : ", response);
                         loading.dismiss();
+
                         try {
                             getjson(response);
                         } catch (IOException e) {
@@ -101,11 +125,6 @@ public class ActivityMainDashBord extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         loading.dismiss();
 
-                     /*   try {
-                            getAllData = Store_Object_of_GetAllData.readCache();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }*/
                         String message = null;
                         if (volleyError instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please reset your connection!";
@@ -158,9 +177,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
                 getAllData.setPhoto(jobj.getString("photo"));
 
                 StudentInfoDataList.add(getAllData);
-                // stringCacherList.writeCache(StudentInfoDataList);
+                //     stringCachStuInfo.writeCache(StudentInfoDataList);
 
-                //Store_Object_of_GetAllData.writeCache(getAllData);
             }
 
 
@@ -192,8 +210,10 @@ public class ActivityMainDashBord extends AppCompatActivity {
     }
 
     public void cardFees(View v) {
-//have to send student id
+        //have to send student id
         Intent Fees = new Intent(this, ActivityFees.class);
+        Fees.putExtra("sid", StudentId);
+        Fees.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(Fees);
 
     }
@@ -202,6 +222,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
         Intent Profile = new Intent(this, ActivityProfile.class);
         Profile.putExtra("stdid", StudentId);
+        Profile.putExtra("stu_name", stu_name);
+        Profile.putExtra("stu_photo", stu_photo);
         Profile.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(Profile);
 
@@ -210,7 +232,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void cardHomework(View v) {
         //have to send standard id
         Intent Homework = new Intent(this, ActivityHomework.class);
-        Homework.putExtra("standard", getAllData.getsStandard_ID());
+        Homework.putExtra("std_ID", std_ID);
         startActivity(Homework);
     }
 
@@ -224,16 +246,32 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
     public void cardObservation(View v) {
         //have to send student id
+
         Intent Updates = new Intent(this, ActivityObservation.class);
-        Updates.putExtra("sid", getAllData.getsStudentID());
+        Updates.putExtra("sid", StudentId);
+        Updates.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(Updates);
 
     }
 
     public void cardPolicies(View v) {
 
-        Intent Policies = new Intent(this, ActivityProfile.class);
+        Intent Policies = new Intent(this, ActivityPolicies.class);
         startActivity(Policies);
+    }
+
+    public void cardEnquiry(View v) {
+        Intent inq = new Intent(this, Activityinquiry.class);
+        inq.putExtra("sid", StudentId);
+        inq.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(inq);
+    }
+
+    public void cardLeave(View v) {
+        Intent Leave = new Intent(this, ActivityLeave.class);
+        Leave.putExtra("sid", StudentId);
+        Leave.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(Leave);
     }
 
 

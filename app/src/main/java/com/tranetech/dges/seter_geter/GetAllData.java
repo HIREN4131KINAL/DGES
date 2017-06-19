@@ -6,10 +6,10 @@ import java.io.Serializable;
  * Created by HIREN AMALIYAR on 03-06-2017.
  */
 
-public class GetAllData implements Serializable {
+public class GetAllData  {
     private String sStudentID;
     private String sName, mName, lName;
-    private String sStandard, sStandard_ID, division, adhar, grNo, rollno, address, mobile, dob, gender, nationality, phHndicap, category, photo, lastschool, laststd, percentage, status, message;
+    private String sStandard, sStandard_ID, division, adhar,bloodGroup, grNo, rollno, address, mobile, dob, gender, nationality, phHndicap, category, photo, lastschool, laststd, percentage, status, message;
 
 
     public void setsStudentID(String sStudentID) {
@@ -197,5 +197,13 @@ public class GetAllData implements Serializable {
 
     public String getsStandard_ID() {
         return sStandard_ID;
+    }
+
+    public void setBloodGroup(String bloodGroup) {
+        this.bloodGroup = bloodGroup;
+    }
+
+    public String getBloodGroup() {
+        return bloodGroup;
     }
 }

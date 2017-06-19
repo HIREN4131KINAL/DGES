@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 
 public class HomeworkData implements Serializable {
-    private String standrdID, sSubName,sHWDate,sHWDescription;
+    private String standrdID, sSubName,sHWDate,sHWDescription,teachers;
 
 public String getsSubName(){
     return sSubName;
@@ -39,5 +39,13 @@ public String getsSubName(){
 
     public String getStandrdID() {
         return standrdID;
+    }
+
+    public void setTeachers(String teachers) {
+        this.teachers = teachers;
+    }
+
+    public String getTeachers() {
+        return teachers;
     }
 }

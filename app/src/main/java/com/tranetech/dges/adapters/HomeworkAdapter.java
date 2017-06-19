@@ -39,11 +39,16 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     @Override
     public void onBindViewHolder(HomeworkViewHolder holder, int position) {
 
-        HomeworkData hwData = alHWData.get(position);
-        holder.txtSubName.setText(hwData.getsSubName());
-        holder.txtHWDate.setText(hwData.getsHWDate());
-        holder.txtHWDescription.setText(hwData.getsHWDescription());
-        holder.imgHW.setImageResource(R.drawable.homework);
+        try {
+            HomeworkData hwData = alHWData.get(position);
+            holder.txt_teacher.setText("(" + hwData.getTeachers() + ")");
+            holder.txtSubName.setText(hwData.getsSubName());
+            holder.txtHWDate.setText(hwData.getsHWDate());
+            holder.txtHWDescription.setText(hwData.getsHWDescription());
+            holder.imgHW.setImageResource(R.drawable.homework);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -63,7 +68,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
     }
 
     public class HomeworkViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtSubName, txtHWDate, txtHWDescription;
+        public TextView txtSubName, txtHWDate, txtHWDescription, txt_teacher;
         public ImageView imgHW;
 
         public HomeworkViewHolder(View itemView) {
@@ -72,6 +77,7 @@ public class HomeworkAdapter extends RecyclerView.Adapter<HomeworkAdapter.Homewo
             txtHWDescription = (TextView) itemView.findViewById(R.id.txt_hw_desc);
             txtHWDate = (TextView) itemView.findViewById(R.id.txt_hw_date);
             imgHW = (ImageView) itemView.findViewById(R.id.img_hw);
+            txt_teacher = (TextView) itemView.findViewById(R.id.txt_teacher);
         }
     }
 

@@ -45,7 +45,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="@string/sname"
+                android:hint="@string/sname"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/txt_size_stu_name"
                 android:textStyle="bold" />
@@ -65,7 +65,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:text="@string/standard"
+                    android:hint="@string/standard"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_size_stu_name"
                     android:textStyle="bold" />
@@ -76,8 +76,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="start"
+                    android:hint="-"
                     android:paddingLeft="5dp"
-                    android:text="8"
                     android:textColor="@android:color/white"
                     android:textSize="@dimen/txt_size_stu_name"
 

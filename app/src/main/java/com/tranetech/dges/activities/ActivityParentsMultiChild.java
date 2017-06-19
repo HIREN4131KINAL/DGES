@@ -33,6 +33,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.AdapterParentsMultiChild;
 import com.tranetech.dges.seter_geter.ParentChildData;
@@ -60,7 +61,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
     private List<ParentChildData> parentChildDataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AdapterParentsMultiChild adapterParentsMultiChild;
-    //   private FileCacher<List<ParentChildData>> stringCachParentChild = new FileCacher<>(ActivityParentsMultiChild.this, "cacheListTmp.txt");
+    private FileCacher<List<ParentChildData>> stringCachParentChild = new FileCacher<>(ActivityParentsMultiChild.this, "cacheListTmp.txt");
     private String MobileNo;
 
     @Override
@@ -68,7 +69,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parents_multi_child);
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Child");
+        actionBar.setTitle("DGES");
 
         recyclerView = (RecyclerView) findViewById(R.id.rv_parents_multi_stu);
         preferenceManager = new SharedPreferenceManager();
@@ -80,7 +81,11 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             MobileNo = getMobile.getStringExtra("mobile");
             preferenceManager.setDefaults("mobile", MobileNo, getApplicationContext());
         }
+
+
         Log.e("MobileNo: ", MobileNo);
+
+
     }
 
     @Override
@@ -88,7 +93,15 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
         if (adapterParentsMultiChild != null) {
             adapterParentsMultiChild.clear();
         }
+
         GetData(MobileNo);
+
+        if (adapterParentsMultiChild != null) {
+            adapterParentsMultiChild.clear();
+            adapterParentsMultiChild.addALL(parentChildDataList);
+        }
+
+
         super.onResume();
     }
 
@@ -101,6 +114,10 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         Log.e("Response Homework : ", response);
+
+                        if (adapterParentsMultiChild != null) {
+                            adapterParentsMultiChild.clear();
+                        }
 
                         loading.dismiss();
                         try {
@@ -118,12 +135,15 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
                     public void onErrorResponse(VolleyError volleyError) {
                         loading.dismiss();
 
-                      /*  try {
+
+                        try {
                             parentChildDataList = stringCachParentChild.readCache();
+                            IntialAdapter();
+
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-*/
+
                         String message = null;
                         if (volleyError instanceof NetworkError) {
                             message = "Cannot connect to Internet...Please reset your connection!";
@@ -171,21 +191,25 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
                 parentChildData.setlName(jobj.getString("lName"));
                 parentChildData.setsStandard(jobj.getString("std"));
                 parentChildData.setPhoto(jobj.getString("photo"));
+                parentChildData.setsStandard_ID(jobj.getString("stdId"));
+
 
                 parentChildDataList.add(parentChildData);
-                // stringCachParentChild.writeCache(parentChildDataList);
+                stringCachParentChild.writeCache(parentChildDataList);
+
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }/* catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
         IntialAdapter();
     }
 
     public void IntialAdapter() {
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityParentsMultiChild.this);
         recyclerView.setLayoutManager(mLayoutManager);
         adapterParentsMultiChild = new AdapterParentsMultiChild(parentChildDataList, getApplicationContext());
@@ -254,103 +278,5 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
 
     }
 
-
-    /**
-     * For marsh mallow permission
-     **/
-
-    public static class ActivityPermission extends Activity {
-        MarshmallowPermissions marsh;
-        Intent getiIntent;
-        View parentLayout;
-        private static final int REQUEST_PERMISSION = 1;
-
-        @Override
-        protected void onCreate(@Nullable Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            requestWindowFeature(Window.FEATURE_NO_TITLE);
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
-                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
-            setContentView(R.layout.activity_permission);
-            marsh = new MarshmallowPermissions(this);
-            parentLayout = findViewById(android.R.id.content);
-            marsh = new MarshmallowPermissions(ActivityPermission.this);
-            parentLayout = findViewById(android.R.id.content);
-            getiIntent = getIntent();
-
-
-            if (!marsh.checkIfAlreadyhavePermission()) {
-                marsh.requestpermissions();
-            } else {
-                Intent intent = new Intent(this, ActivityMainDashBord.class);
-                startActivity(intent);
-                finish();
-            }
-
-
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.M)
-        public void onRequestPermissionsResult(final int requestCode, String[] permissions, int[] grantResults) {
-            if (requestCode == REQUEST_PERMISSION) {
-                // for each permission check if the user grantet/denied them
-                // you may want to group the rationale in a single dialog,
-                // this is just an tranetech
-                for (int i = 0, len = permissions.length; i < len; i++) {
-                    final String permission = permissions[i];
-                    if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
-                        boolean showRationale = shouldShowRequestPermissionRationale(permission);
-                        if (!showRationale) {
-                            // user denied flagging NEVER ASK AGAIN
-                            // you can either enable some fall back,
-                            // disable features of your app
-                            // or open another dialog explaining
-                            // again the permission and directing to
-                            // the app setting
-                            marsh.AllowedManually(parentLayout);
-                        } else if (android.Manifest.permission.ACCESS_FINE_LOCATION.equals(permission)) {
-                            // showRationale(permission, R.string.permission_denied);
-                            // user denied WITHOUT never ask again
-                            // this is a good place to explain the user
-                            // why you need the permission and ask if he want
-                            // to accept it (the rationale)
-                            marsh.AllowedManually(parentLayout);
-                        }
-
-                    } else {
-                        if (marsh.checkIfAlreadyhavePermission()) {
-                            Intent intent = new Intent(this, ActivityMainDashBord.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            marsh.AllowedManually(parentLayout);
-                        }
-                    }
-                }
-            }
-
-        }
-
-        @Override
-        protected void onResume() {
-            super.onResume();
-            if (marsh.checkIfAlreadyhavePermission()) {
-                Intent intent = new Intent(this, ActivityPermission.class);
-                startActivity(intent);
-                finish();
-            }
-        }
-
-        @Override
-        protected void onRestart() {
-            super.onRestart();
-            if (!marsh.checkIfAlreadyhavePermission()) {
-                marsh.requestpermissions();
-            }
-        }
-
-
-    }
 
 }

@@ -48,14 +48,11 @@ public class ActivityLogin extends FragmentActivity {
     private static boolean hasLoggedIn;
     //   private static String mobile_s;
     private static final String PREFS_NAME = "Login";
-    private TextView txt_admin_register;
 
     public static SharedPreferences settings;
     // String GR_Number,str_gr_no;
     String mobile, strUrl, msg, mobile_s;
     View parentLayout;
-    String JsonResponseLoginData;
-    //  private FileCacher<String> stringCacher = new FileCacher<>(ActivityLogin.this, "cache_tmp.txt");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,26 +68,17 @@ public class ActivityLogin extends FragmentActivity {
 
         hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
 
-        msg = SharedPreferenceManager.getDefaults("msg", getApplicationContext());
         // to hide soft keyboard until user interaction
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
 
         if (hasLoggedIn) {
-
-            //   if (stringCacher.hasCache()) {
-
             Log.e("onCreate:has loged ", hasLoggedIn + "");
-            if (msg.equals("0")) {
-                Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
-            } else {
-                Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                intent.putExtra("mobile", mobile);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-            }
-            // }
+            Intent intent = new Intent(this, ActivityParentsMultiChild.class);
+            intent.putExtra("mobile", mobile);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
         }
     }
 
@@ -168,36 +156,40 @@ public class ActivityLogin extends FragmentActivity {
                 jobj = jsonArray.getJSONObject(i);
 
                 msg = jobj.getString("msg");
+                mobile_s = jobj.getString("mobile");
 
                 Log.e("getjson: ", msg);
 
-                if (!msg.equals("1")) {
 
-                    Toast.makeText(this, "Your mobile number not registered with school", Toast.LENGTH_SHORT).show();
-                    //Snackbar.make(getCurrentFocus(), "Something Is Wrong, please try again", Snackbar.LENGTH_SHORT).show();
-                } else {
-                    SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
-                    //str_gr_no = jobj.getString("grNo");
-                    mobile_s = jobj.getString("mobile");
+            }
 
-                    Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                    intent.putExtra("mobile", mobile_s);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                }
 
-                SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
-                // SharedPreferenceManager.setDefaults("str_gr_no", str_gr_no, getApplicationContext());
+            if (!msg.equals("1")) {
+                Snackbar.make(getCurrentFocus(), "Your mobile number is not registered with DGES school.", Snackbar.LENGTH_LONG).show();
+            } else {
+                SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
+                //str_gr_no = jobj.getString("grNo");
+
+                Log.e("get mobile no: ", mobile_s);
+
+                // SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
                 SharedPreferenceManager.setDefaults("mobile", mobile_s, getApplicationContext());
 
                 SharedPreferences settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0); // 0 - for private mode
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("msg", msg);
+                //    editor.putString("msg", msg);
                 editor.putString("mobile", mobile_s);
                 editor.putBoolean("hasLoggedIn", true);
                 editor.apply();
 
+
+                Intent intent = new Intent(this, ActivityParentsMultiChild.class);
+                intent.putExtra("mobile", mobile_s);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             }
+
+
         } catch (JSONException e) {
             System.out.print(e.toString());
         }

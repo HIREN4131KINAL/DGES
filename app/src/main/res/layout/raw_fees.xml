@@ -2,165 +2,79 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        card_view:cardBackgroundColor="#daecf3"
-        card_view:cardCornerRadius="4dp">
+        android:orientation="vertical"
+        android:padding="5dp">
 
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/card_view1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:orientation="horizontal"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:weightSum="2">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            card_view:cardBackgroundColor="#daecf3"
+            card_view:cardCornerRadius="4dp">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@color/grade_letter"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:id="@+id/img_fees"
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="20dp"
-                    card_view:srcCompat="@android:drawable/ic_menu_my_calendar" />
-
-                <TextView
-                    android:id="@+id/cal_txt"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="MAY"
-                    android:textSize="20sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:orientation="horizontal"
+                android:weightSum="2">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:layout_weight="1.2"
+                    android:background="@color/grade_letter"
+                    android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/lr_stu_name"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <LinearLayout
+                        <TextView
+                            android:id="@+id/txt_stu_name"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/amount_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:text="Amount"
-                                    android:textColor="@color/letters"
-                                    android:textSize="20sp" />
-
-                            </LinearLayout>
-
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/amount_rup_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:text="₹ 25000"
-                                    android:textSize="20sp" />
-
-                            </LinearLayout>
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/due_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:text="Due"
-                                    android:textColor="@color/letters"
-                                    android:textSize="20sp" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_weight="1"
-                                android:orientation="horizontal">
-
-                                <TextView
-                                    android:id="@+id/rup_txt"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"
-                                    android:gravity="center"
-                                    android:text="₹ 0"
-                                    android:textSize="20sp" />
-
-                            </LinearLayout>
-
-                        </LinearLayout>
-
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:text="name"
+                            android:textColor="@android:color/white" />
 
                     </LinearLayout>
 
-                </LinearLayout>
+                    <ImageView
+                        android:id="@+id/img_fees"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:layout_gravity="center"
+                        card_view:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
+                    <TextView
+                        android:id="@+id/txt_month"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:text="MAY"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -169,31 +83,162 @@
                         android:layout_weight="1"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/paid_am_txt"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="Paid"
-                            android:textColor="@color/letters"
-                            android:textSize="20sp" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <!-- <TextView
+                                         android:id="@+id/amount_txt"
+                                         android:layout_width="match_parent"
+                                         android:layout_height="match_parent"
+                                         android:gravity="center"
+                                         android:text="Amount"
+                                         android:textColor="@color/letters"
+                                         android:textSize="20sp" />-->
+
+                                    <TextView
+                                        android:id="@+id/paid_am_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="Paid"
+                                        android:textColor="@color/letters"
+                                        android:textSize="20sp" />
+
+                                </LinearLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <!-- <TextView
+                                         android:id="@+id/txt_total_fees"
+                                         android:layout_width="match_parent"
+                                         android:layout_height="match_parent"
+                                         android:gravity="center"
+                                         android:text="₹ 25000"
+                                         android:textSize="20sp" />-->
+
+                                    <TextView
+                                        android:id="@+id/paid_rs_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="₹ 0"
+                                        android:textSize="20sp" />
+
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/due_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="Due"
+                                        android:textColor="@color/letters"
+                                        android:textSize="20sp" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:id="@+id/rup_txt"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:gravity="center"
+                                        android:text="₹ 0"
+                                        android:textSize="20sp" />
+
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>
 
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/paid_rs_txt"
+                    <!--    <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text="₹ 25000"
-                            android:textSize="20sp" />
-                    </LinearLayout>
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                              &lt;!&ndash;  <TextView
+                                    android:id="@+id/paid_am_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="Paid"
+                                    android:textColor="@color/letters"
+                                    android:textSize="20sp" />&ndash;&gt;
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_weight="1"
+                                android:orientation="horizontal">
+
+                               &lt;!&ndash; <TextView
+                                    android:id="@+id/paid_rs_txt"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:gravity="center"
+                                    android:text="₹ 25000"
+                                    android:textSize="20sp" />&ndash;&gt;
+
+
+                            </LinearLayout>
+
+
+                        </LinearLayout>-->
+
 
                 </LinearLayout>
 
@@ -201,7 +246,101 @@
             </LinearLayout>
 
 
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-    </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:id="@+id/card_view2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@android:drawable/picture_frame">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+
+                <LinearLayout
+                    android:id="@+id/lr_pay_mode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+
+                    <TextView
+                        android:id="@+id/txt_lbl_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="1.5"
+                        android:text="pay mode" />
+
+                    <TextView
+                        android:id="@+id/txt_paymode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="0.5"
+                        android:text="no data available" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lr_pay_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+
+                    <TextView
+                        android:id="@+id/txt_lbl_check"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="1.5"
+                        android:text="Check No" />
+
+                    <TextView
+                        android:id="@+id/txt_chk_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="0.5"
+                        android:text="no data available" />
+
+                </LinearLayout>
+
+                <LinearLayout
+
+                    android:id="@+id/lr_bank_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txt_lbl_bank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="1.5"
+                        android:text="Bank name" />
+
+                    <TextView
+                        android:id="@+id/txt_bank_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/marginLeft_name_of_parentChild"
+                        android:layout_weight="0.5"
+                        android:text="no data available" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -11,7 +11,7 @@ import com.tranetech.dges.R;
  */
 
 public class ErrorAlert {
-    public static void error(String message, Context context){
+    public static void error(String message, Context context) {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
@@ -20,7 +20,7 @@ public class ErrorAlert {
         alertDialog.setMessage(message);
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_profile);
+        alertDialog.setIcon(R.drawable.logo_main);
         alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

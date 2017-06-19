@@ -44,7 +44,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private HomeworkAdapter hwAdapter;
-    private FileCacher<List<HomeworkData>> stringCacherHomeworkList = new FileCacher<>(ActivityHomework.this, "cacheListTmp.txt");
+    private FileCacher<List<HomeworkData>> stringCacherHomeworkList;
     private HomeworkData homeworkData;
     private String standardID;
 
@@ -57,13 +57,15 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
 
 
         Intent mIntent = getIntent();
-        standardID = mIntent.getStringExtra("standard");
+        standardID = mIntent.getStringExtra("std_ID");
+        Log.e("onCreate: Standrd id ", standardID);
+
 
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
 
-        Log.e("onCreate: Standrd id ", standardID);
+        stringCacherHomeworkList = new FileCacher<>(ActivityHomework.this, "stu_homework" + standardID + ".txt");
 
     }
 
@@ -100,6 +102,9 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                     public void onResponse(String response) {
                         Log.e("Response Homework : ", response);
                         swipeRefreshLayout.setRefreshing(false);
+                        if (hwAdapter != null) {
+                            hwAdapter.clear();
+                        }
                         loading.dismiss();
                         try {
                             getjson(response);
@@ -115,7 +120,10 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         loading.dismiss();
 
                         try {
+
                             hwData = stringCacherHomeworkList.readCache();
+
+                            IntialHomwrkAdapter();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -166,6 +174,7 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                 homeworkData.setsHWDescription(jobj.getString("containt"));
                 homeworkData.setsSubName(jobj.getString("subject"));
                 homeworkData.setStandrdID(jobj.getString("hId"));
+                homeworkData.setTeachers(jobj.getString("teacher"));
                 hwData.add(homeworkData);
                 stringCacherHomeworkList.writeCache(hwData);
             }

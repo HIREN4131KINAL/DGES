@@ -32,7 +32,7 @@
     <color name="color_set_2_accent">#673AB7</color>
 
     <color name="color_set_3_primary">#ffb74d</color>
-    <color name="color_set_3_accent">#ba402c</color>
+    <color name="color_set_3_accent">#de5e38</color>
 
     <color name="color_set_4_primary">#5cff8a65</color>
     <color name="color_set_4_accent">#d500f9</color>
@@ -46,6 +46,7 @@
     <color name="dash_policies">#f15559</color>
     <color name="dash_lable">#fff</color>
     <color name="raw_parent_child">#6e2b2a2b</color>
-
+    <color name="txt_inquiry">#BACDE1</color>
+    <color name="txt2_inquiry">#d3ffce</color>
 
 </resources>

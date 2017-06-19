@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.tranetech.dges.activities.ActivityObservation">
+    android:orientation="vertical">
+
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/sr_observation"
+        android:id="@+id/sr_fee"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:elevation="8dp"
-        android:scrollIndicators="top"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:scrollIndicators="top">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_observation"
+            android:id="@+id/rv_fees"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 </LinearLayout>

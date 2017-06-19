@@ -241,6 +241,95 @@
 
             </android.support.v7.widget.CardView>
 
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_leave"
+                android:layout_width="@dimen/width_cardview"
+                android:layout_height="@dimen/hight_cardview"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_cardview"
+                android:layout_weight="1"
+                android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/dash_fees"
+                android:clickable="true"
+                android:elevation="8dp"
+                android:onClick="cardLeave"
+                android:stateListAnimator="@drawable/translation_selector">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/logo_main" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Leave"
+                        android:textColor="@color/dash_lable"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_enquiry"
+                android:layout_width="@dimen/width_cardview"
+                android:layout_height="@dimen/hight_cardview"
+                android:layout_margin="@dimen/margin_cardview"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@android:drawable/picture_frame"
+                android:backgroundTint="@color/dash_circular"
+                android:clickable="true"
+                android:elevation="8dp"
+                android:onClick="cardEnquiry"
+                android:stateListAnimator="@drawable/translation_selector">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/padding_cardview"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/img_width_cardview_dash"
+                        android:layout_height="@dimen/img_hight_cardview_dash"
+                        android:layout_gravity="center"
+                        android:background="@drawable/logo_main" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/marginTop_logo"
+                        android:text="Enquiry"
+                        android:textColor="@color/dash_lable"
+                        android:textSize="@dimen/txt_size_stu_name"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
             <android.support.v7.widget.CardView
                 android:id="@+id/card_policies"
                 android:layout_width="@dimen/width_cardview"
@@ -277,7 +366,6 @@
                         android:textSize="@dimen/txt_size_stu_name"
                         android:textStyle="bold" />
                 </LinearLayout>
-
 
             </android.support.v7.widget.CardView>
 

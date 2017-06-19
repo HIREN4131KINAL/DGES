@@ -2,6 +2,7 @@ package com.tranetech.dges.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +18,25 @@ import java.util.List;
  * Created by DHWANI-ANDROID on 27-05-17.
  */
 
+
+/**
+ * Modified by Hiren-ANDROID on 05-06-17.
+ */
 public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder> {
 
     private List<FeesData> alFeesData;
     private Context context;
+    private TextView txt_total_fees, due_rup_txt, total_paid_txt;
+    private String t_paid, t_FEES;
+    private int sum_of_paid = 0;
 
-    public FeesAdapter(List<FeesData> alFessData,Context context)
-    {
+    public FeesAdapter(List<FeesData> alFessData, Context context, TextView txt_total_fees, TextView total_paid_txt, TextView due_rup_txt) {
         this.alFeesData = alFessData;
         this.context = context;
+        this.txt_total_fees = txt_total_fees;
+        this.total_paid_txt = total_paid_txt;
+        this.due_rup_txt = due_rup_txt;
+
     }
 
     @Override
@@ -38,11 +49,72 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
 
     @Override
     public void onBindViewHolder(FeesAdapter.FeesViewHolder holder, int position) {
-        final FeesData FeesData = alFeesData.get(position);
-        holder.txtFeesAmount.setText(FeesData.getsFeesAmount());
-        holder.txtFeesDue.setText(FeesData.getsFeesDue());
-        holder.txtFeesPaid.setText(FeesData.getsFeesPaid());
-        holder.txtFeesCal.setText(FeesData.getsFeesCal());
+
+
+        try {
+            final FeesData FeesData = alFeesData.get(position);
+
+            holder.txtFeesDue.setText(FeesData.getsFeesDue());
+            holder.txtFeesPaid.setText(FeesData.getsFeesPaid());
+            holder.txt_month.setText(FeesData.getsFeesMonth());
+            holder.txt_stu_name.setText(FeesData.getsFeesFname());
+            holder.txt_paymode.setText(FeesData.getsFeesPaymode());
+
+
+            String str_check_no = FeesData.getsFeesCheck();
+
+            if (str_check_no == "null" || str_check_no.isEmpty()) {
+                str_check_no = "Data not available";
+            }
+
+            String str_bank = FeesData.getsFeesBank();
+
+            if (str_bank == "null" || str_bank.isEmpty()) {
+                str_bank = "Data not available";
+            }
+
+
+            holder.txt_chk_no.setText(str_check_no);
+            holder.txt_bank_name.setText(str_bank);
+
+            //for header fees activity
+            txt_total_fees.setText(FeesData.getsFeesTotal());
+
+            for (int i = 0; i < getItemCount() - 1; i++) {
+
+                FeesData FeesData_cal = alFeesData.get(i);
+
+                t_paid = FeesData_cal.getsFeesPaid();
+                t_FEES = FeesData_cal.getsFeesTotal();
+
+
+                if (!t_paid.isEmpty() || t_paid != null || !t_FEES.isEmpty() || t_FEES != null) {
+
+
+                    if (Integer.parseInt(t_paid) < Integer.parseInt(t_FEES)) {
+
+                        sum_of_paid = sum_of_paid + Integer.parseInt(t_paid);
+                    }
+
+
+                } else {
+                    t_paid = "no data";
+                    t_FEES = "no data";
+                }
+            }
+
+            String Gross_Due, Gross_Paid;
+
+            Gross_Paid = String.valueOf(sum_of_paid);
+            Gross_Due = String.valueOf(Integer.parseInt(t_FEES) - Integer.parseInt(Gross_Paid));
+
+            due_rup_txt.setText(Gross_Due);
+            total_paid_txt.setText(Gross_Paid);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -50,18 +122,36 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
         return alFeesData.size();
     }
 
-    public class FeesViewHolder extends RecyclerView.ViewHolder{
-        public TextView txtFeesAmount,txtFeesDue,txtFeesPaid, txtFeesCal;
+    public class FeesViewHolder extends RecyclerView.ViewHolder {
+        public TextView txtFeesDue, txtFeesPaid, txt_month, txt_chk_no, txt_bank_name, txt_stu_name, txt_paymode;
         public ImageView imgFees;
 
         public FeesViewHolder(View itemView) {
             super(itemView);
-            txtFeesAmount = (TextView)itemView.findViewById(R.id.amount_rup_txt);
-            txtFeesDue = (TextView)itemView.findViewById(R.id.rup_txt);
-            txtFeesPaid = (TextView)itemView.findViewById(R.id.paid_rs_txt);
-            txtFeesCal = (TextView)itemView.findViewById(R.id.cal_txt);
-            imgFees = (ImageView)itemView.findViewById(R.id.img_fees);
+
+            txtFeesDue = (TextView) itemView.findViewById(R.id.rup_txt);
+            txtFeesPaid = (TextView) itemView.findViewById(R.id.paid_rs_txt);
+            txt_month = (TextView) itemView.findViewById(R.id.txt_month);
+            imgFees = (ImageView) itemView.findViewById(R.id.img_fees);
+            txt_chk_no = (TextView) itemView.findViewById(R.id.txt_chk_no);
+            txt_bank_name = (TextView) itemView.findViewById(R.id.txt_bank_name);
+            txt_stu_name = (TextView) itemView.findViewById(R.id.txt_stu_name);
+            txt_paymode = (TextView) itemView.findViewById(R.id.txt_paymode);
+
         }
     }
+
+
+    public void clear() {
+        alFeesData.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<FeesData> alFeesData) {
+        this.alFeesData.addAll(alFeesData);
+        notifyDataSetChanged();
+    }
+
+
 }
 

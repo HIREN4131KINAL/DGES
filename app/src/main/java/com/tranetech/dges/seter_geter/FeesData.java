@@ -8,15 +8,9 @@ import java.io.Serializable;
 
 public class FeesData implements Serializable {
 
-    private String sFeesAmount,sFeesDue,sFeesPaid,sFeesCal;
+    private String sFeesDue,sFeesPaid,sFeesTotal,sFeesMonth ,sFeesFname,sFeesCheck ,sFeesBank,sFeesPaymode;
 
-    public void setsFeesAmount(String sFeesAmount) {
-        this.sFeesAmount = sFeesAmount;
-    }
 
-    public String getsFeesAmount() {
-        return sFeesAmount;
-    }
 
     public void setsFeesDue(String sFeesDue) {
         this.sFeesDue = sFeesDue;
@@ -34,12 +28,54 @@ public class FeesData implements Serializable {
         return sFeesPaid;
     }
 
-    public void setsFeesCal(String sFeesCal) {
-        this.sFeesCal = sFeesCal;
+
+
+    public void setsFeesMonth(String sFeesMonth) {
+        this.sFeesMonth = sFeesMonth;
     }
 
-    public String getsFeesCal() {
-        return sFeesCal;
+    public String getsFeesMonth() {
+        return sFeesMonth;
     }
 
+
+    public void setsFeesFname(String sFeesFname) {
+        this.sFeesFname = sFeesFname;
+    }
+
+    public String getsFeesFname() {
+        return sFeesFname;
+    }
+
+    public void setsFeesCheck(String sFeesCheck) {
+        this.sFeesCheck = sFeesCheck;
+    }
+
+    public String getsFeesCheck() {
+        return sFeesCheck;
+    }
+
+    public void setsFeesBank(String sFeesBank) {
+        this.sFeesBank = sFeesBank;
+    }
+
+    public String getsFeesBank() {
+        return sFeesBank;
+    }
+
+    public void setsFeesPaymode(String sFeesPaymode) {
+        this.sFeesPaymode = sFeesPaymode;
+    }
+
+    public String getsFeesPaymode() {
+        return sFeesPaymode;
+    }
+
+    public void setsFeesTotal(String sFeesTotal) {
+        this.sFeesTotal = sFeesTotal;
+    }
+
+    public String getsFeesTotal() {
+        return sFeesTotal;
+    }
 }

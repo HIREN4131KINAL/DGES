@@ -53,8 +53,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:maxLines="1"
-                    android:text="Parent session - 08/01/2017, Sunday"
                     android:textColor="@android:color/white"
                     android:textSize="20dp" />
 

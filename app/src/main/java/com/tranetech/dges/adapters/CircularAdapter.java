@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.tranetech.dges.R;
 import com.tranetech.dges.seter_geter.CircularData;
+import com.tranetech.dges.utils.MarshmallowPermissions;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,9 +48,13 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
     private Context context;
     private ProgressDialog mProgressDialog;
     private DownloadTask downloadTask;
-    public CircularAdapter(List<CircularData> alCircularData, Context context) {
+    private MarshmallowPermissions marsh;
+
+
+    public CircularAdapter(List<CircularData> alCircularData, Context context, MarshmallowPermissions marsh) {
         this.alCircularData = alCircularData;
         this.context = context;
+        this.marsh = marsh;
     }
 
     @Override
@@ -61,6 +66,7 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
 
         return new CircularViewHolder(itemView);
     }
+
 
     @Override
     public void onBindViewHolder(CircularViewHolder holder, int position) {
@@ -78,27 +84,34 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
             }
         });
         final CircularData circularData = alCircularData.get(position);
-        boolean fileExists =  new File("/sdcard/"+circularData.getsCircularFileName()).isFile();
+        boolean fileExists = new File("/sdcard/" + circularData.getsCircularFileName()).isFile();
         holder.txtCircularTitle.setText(circularData.getsCircularTitle());
         holder.txtCircularDesc.setText(circularData.getsCircularDesc());
         holder.txtCircularDate.setText(circularData.getsCircualarDate());
         holder.imgCircualr.setImageResource(R.drawable.circular);
         if (circularData.getsCircularURL() != null) {
             holder.download.setVisibility(View.VISIBLE);
-            if(fileExists){
+            if (fileExists) {
                 holder.download.setText("Open");
                 holder.download.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        view(circularData.getsCircularFileName());
+                        if (!marsh.checkIfAlreadyhavePermission()) {
+                            marsh.requestpermissions();
+                        } else {
+                            view(circularData.getsCircularFileName());
+                        }
                     }
                 });
-            }else {
+            } else {
                 holder.download.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        downloadTask.execute(circularData.getsCircularURL(),circularData.getsCircularFileName());
-                        // new DownloadFileFromURL().execute(circularData.getsCircularURL());
+                        if (!marsh.checkIfAlreadyhavePermission()) {
+                            marsh.requestpermissions();
+                        } else {
+                            downloadTask.execute(circularData.getsCircularURL(), circularData.getsCircularFileName());
+                        }
                     }
                 });
             }
@@ -107,9 +120,8 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
     }
 
 
-    public void view(String filename)
-    {
-        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/"+filename);
+    public void view(String filename) {
+        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + filename);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (Build.VERSION.SDK_INT > M) {
             Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
@@ -126,9 +138,9 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         context.startActivity(intent);
 
-        try{
+        try {
             context.startActivity(intent);
-        }catch(ActivityNotFoundException e){
+        } catch (ActivityNotFoundException e) {
             Toast.makeText(context, "No Application available to view PDF", Toast.LENGTH_SHORT).show();
         }
     }
@@ -218,7 +230,7 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
 
                 // download the file
                 input = connection.getInputStream();
-                output = new FileOutputStream("/sdcard/"+sUrl[1]);
+                output = new FileOutputStream("/sdcard/" + sUrl[1]);
 
                 byte data[] = new byte[4096];
                 long total = 0;
@@ -251,6 +263,7 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(String s) {
             mWakeLock.release();
@@ -258,7 +271,7 @@ public class CircularAdapter extends RecyclerView.Adapter<CircularAdapter.Circul
             if (s != null) {
                 Toast.makeText(context, "Download error: " + s, Toast.LENGTH_LONG).show();
                 Log.e("Download", s);
-            }else {
+            } else {
                 Toast.makeText(context, "File downloaded", Toast.LENGTH_SHORT).show();
                 notifyDataSetChanged();
             }

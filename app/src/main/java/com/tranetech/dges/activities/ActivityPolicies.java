@@ -1,12 +1,14 @@
 package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
-import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
+import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -20,46 +22,44 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.PoliciesData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
-import com.tranetech.dges.R;
-import com.tranetech.dges.adapters.ResultAdapter;
-import com.tranetech.dges.seter_geter.ResultData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActivityResult extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private List<ResultData> resultDatas = new ArrayList<>();
-    private android.support.v7.widget.RecyclerView recyclerView;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private ResultAdapter resultAdapter;
+public class ActivityPolicies extends AppCompatActivity {
+
+    private List<PoliciesData> policiesDataList = new ArrayList<>();
+    private FileCacher<List<PoliciesData>> CatchPolicies = new FileCacher<>(ActivityPolicies.this, "PoliciesData.txt");
+    TextView txt_policies_tital;
+    private PoliciesData policiesDataData;
+    WebView web_description;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_result);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Result");
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_result);
-        swipeRefreshLayout.setOnRefreshListener(this);
-        recyclerView = (RecyclerView) findViewById(R.id.rv_result);
-    }
 
-    @Override
-    public void onRefresh() {
-        getData();
-        swipeRefreshLayout.setRefreshing(false);
+        setContentView(R.layout.activity_policies);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Policies");
+
+        txt_policies_tital = (TextView) findViewById(R.id.txt_policies_tital);
+        web_description = (WebView) findViewById(R.id.web_description);
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         getData();
+        super.onResume();
     }
 
     private void getData() {
@@ -67,30 +67,44 @@ public class ActivityResult extends AppCompatActivity implements SwipeRefreshLay
 
         RequestQueue queue = Volley.newRequestQueue(this);
         GetIP getIP = new GetIP();
-        String url = getIP.updateip("emp_checkin_log.php");
+        String url = getIP.updateip("policy.php");
 
-// Request a string response from the provided URL.
+        // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         loading.dismiss();
-                        swipeRefreshLayout.setRefreshing(false);
+
+                        Log.e("onResponse: ", response);
                         try {
                             getJson(response);
                         } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+
                 loading.dismiss();
+                //getting offline data...
+                try {
+                    if (CatchPolicies.hasCache()) {
+                        policiesDataList = CatchPolicies.readCache();
+                        setData();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 String message = null;
                 if (volleyError instanceof NetworkError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (volleyError instanceof ServerError) {
-                    message = "Developers are working on this module:-> The server could not be found. Please try again after some time!!";
+                    message = "The server could not be found. Please try again after some time!!";
                 } else if (volleyError instanceof AuthFailureError) {
                     message = "Cannot connect to Internet...Please check your connection!";
                 } else if (volleyError instanceof ParseError) {
@@ -100,44 +114,44 @@ public class ActivityResult extends AppCompatActivity implements SwipeRefreshLay
                 } else if (volleyError instanceof TimeoutError) {
                     message = "Connection TimeOut! Please check your internet connection.";
                 }
-                ErrorAlert.error(message, ActivityResult.this);
+                ErrorAlert.error(message, ActivityPolicies.this);
             }
         });
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
-    private void getJson(String response) throws JSONException {
+    private void getJson(String response) throws JSONException, IOException {
 
         JSONObject jsonObject = new JSONObject(response);
         JSONArray jsonArray = jsonObject.getJSONArray("list");
+
         for (int i = 0; i < jsonArray.length(); i++) {
-            ResultData ResultData = new ResultData();
+
+            policiesDataData = new PoliciesData();
+
             JSONObject jobj = jsonArray.getJSONObject(i);
-            ResultData.setsResultSub(jobj.getString("sub"));
-            ResultData.setsResultObtMarks(jobj.getString("obmark"));
-            ResultData.setsResultSlash(jobj.getString("slash"));
-            ResultData.setsResultOutMarks(jobj.getString("outmarks"));
+            policiesDataData.setsPolicesTitle(jobj.getString("title"));
+            policiesDataData.setsPolicesDesc(jobj.getString("description"));
 
-            resultDatas.add(ResultData);
+            policiesDataList.add(policiesDataData);
+            CatchPolicies.writeCache(policiesDataList);
+
         }
-
-        IntialAdapter();
+        setData();
     }
 
-    public void IntialAdapter() {
-        recyclerView.setHasFixedSize(false);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(ActivityResult.this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        resultAdapter = new ResultAdapter(resultDatas, this);
-        recyclerView.scrollToPosition(resultDatas.size() + 1);
-        resultAdapter.notifyItemInserted(resultDatas.size() + 1);
-        recyclerView.setAdapter(resultAdapter);
+    private void setData() {
+
+        String str = policiesDataList.get(0).getsPolicesTitle();
+        Log.e("setData: ", str);
+
+        String str2 = policiesDataList.get(0).getsPolicesDesc();
+        Log.e("setDesc: ", str2);
+
+        txt_policies_tital.setText(str);
+        web_description.loadDataWithBaseURL(null, str2, "text/html", "utf-8", null);
+
     }
 
 }
-
-
-
-
-

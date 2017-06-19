@@ -24,12 +24,11 @@ public class MarshmallowPermissions {
 
     }
 
-
     public void requestpermissions() {
         int MyVersion = Build.VERSION.SDK_INT;
         if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
             ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     1);
         }
 
@@ -37,7 +36,7 @@ public class MarshmallowPermissions {
 
 
     public void AllowedManually(View vg) {
-        Snackbar.make(vg, "Without permission you are unable to get location", Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(vg, "You need storage permission", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Allow ME", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
