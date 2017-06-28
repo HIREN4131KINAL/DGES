@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/margin_cardview"
-    android:background="@android:drawable/picture_frame"
-    android:backgroundTint="#6bbd46"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txt_date"
-        android:layout_width="@dimen/width_date_raw_inquiry"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginTop_logo"
-        android:background="@color/txt_inquiry"
-        android:gravity="center"
-        android:text="yy:mm::dd"
-        android:textSize="@dimen/txt_size_large_stu_name" />
-
-    <TextView
-        android:id="@+id/txt_inquiry"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="@dimen/marginTop_logo"
-        android:background="@color/txt2_inquiry"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/txt_size_stu_name" />
+        android:layout_margin="5dp"
+        android:backgroundTint="@color/dash_circular"
+        android:elevation="@dimen/cardview_default_elevation"
+        app:cardCornerRadius="4dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="20dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
+            <TextView
+                android:id="@+id/txt_inquiry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="center_vertical"
+                android:text="What will be color of the school uniform."
+                android:textColor="#000000"
+                android:textSize="@dimen/txt_size_stu_name"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="2"
+                android:fontFamily="sans-serif-condensed"
+                android:gravity="end"
+                android:text="yy:mm::dd"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/txt_size_stu_name"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

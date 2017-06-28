@@ -23,12 +23,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="5dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_profile" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_student" />
 
                 <TextView
                     android:id="@+id/txt_observation_student_name"
@@ -37,6 +37,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:text="Student Name"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAllCaps="true"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -60,12 +61,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="5dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_profile" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_book_logo" />
 
                 <TextView
                     android:id="@+id/txt_observation_title"
@@ -74,6 +75,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:text="English Grammer"
+                    android:textColor="@color/colorPrimary"
                     android:textAllCaps="true"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -84,12 +86,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="10dp">
+                android:padding="5dp">
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_profile" />
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_warning" />
 
                 <TextView
                     android:id="@+id/txt_observation_desc"
@@ -98,8 +100,7 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="center"
                     android:text="Did not bring notebook according to the period of the subject"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

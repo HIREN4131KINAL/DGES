@@ -2,17 +2,22 @@ package com.tranetech.dges.activities;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -28,11 +33,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.FirebaseServices.Config;
+import com.tranetech.dges.FirebaseServices.NotificationUtils;
+import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.CircularAdapter;
 import com.tranetech.dges.seter_geter.CircularData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
-import com.tranetech.dges.R;
 import com.tranetech.dges.utils.MarshmallowPermissions;
 
 import org.json.JSONArray;
@@ -44,14 +51,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActivityCircular extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private static final int REQUEST_PERMISSION = 1;
+    View parentLayout;
     private List<CircularData> circularDatas = new ArrayList<>();
     private MarshmallowPermissions marsh;
-
-    View parentLayout;
-    private static final int REQUEST_PERMISSION = 1;
-
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
     private FileCacher<List<CircularData>> circulerCatch = new FileCacher<>(ActivityCircular.this, "cirulerList.txt");
-
+    private TextView txtEmpty;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private CircularAdapter circularAdapter;
@@ -70,7 +76,20 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_circular);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_circular);
+        txtEmpty = (TextView) findViewById(R.id.txt_circular_empty);
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                swipeRefreshLayout.setOnRefreshListener(ActivityCircular.this);
+                String message = intent.getStringExtra("topic");
+                if (message.equals("circular")) {
+                    circularAdapter.clear();
+                    getData();
+                    circularAdapter.addALL(circularDatas);
+                }
+            }
+        };
 
     }
 
@@ -89,11 +108,16 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
     @Override
     protected void onResume() {
         super.onResume();
+// register new push message receiver
+// by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
 
+// clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
         if (circularAdapter != null) {
             circularAdapter.clear();
         }
-
         getData();
     }
 
@@ -204,26 +228,34 @@ public class ActivityCircular extends AppCompatActivity implements SwipeRefreshL
     private void getJson(String response) throws JSONException, IOException {
 
         JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
+        String res = jsonObject.getString("list");
+        if (res.equals("0")) {
+//            ErrorAlert.error("No Data Available", ActivityResult.this);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
 
-        for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
 
-            CircularData circularData = new CircularData();
+                CircularData circularData = new CircularData();
 
-            JSONObject jobj = jsonArray.getJSONObject(i);
-            circularData.setsCircularTitle(jobj.getString("title"));
-            circularData.setsCircularDesc(jobj.getString("description"));
-            circularData.setsCircualarDate(jobj.getString("date"));
-            circularData.setsCircualarStatus(jobj.getString("status"));
-            String url = jobj.getString("cfile");
-            if (!url.equals("null")) {
-                circularData.setsCircularURL(url);
-                circularData.setsCircularFileName(jobj.getString("filename"));
+                JSONObject jobj = jsonArray.getJSONObject(i);
+                circularData.setsCircularTitle(jobj.getString("title"));
+                circularData.setsCircularDesc(jobj.getString("description"));
+                circularData.setsCircualarDate(jobj.getString("date"));
+                circularData.setsCircualarStatus(jobj.getString("status"));
+                String url = jobj.getString("cfile");
+                if (!url.equals("null")) {
+                    circularData.setsCircularURL(url);
+                    circularData.setsCircularFileName(jobj.getString("filename"));
+                }
+                circularDatas.add(circularData);
+                circulerCatch.writeCache(circularDatas);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                txtEmpty.setVisibility(View.GONE);
             }
-            circularDatas.add(circularData);
-            circulerCatch.writeCache(circularDatas);
         }
-
         IntialAdapter();
     }
 

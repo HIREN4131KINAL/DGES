@@ -6,13 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -27,10 +29,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.seter_geter.GetAllData;
-import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
 import com.tranetech.dges.utils.SharedPreferenceManager;
@@ -46,16 +46,16 @@ import java.util.List;
 import java.util.Map;
 
 public class ActivityMainDashBord extends AppCompatActivity {
+    Animation startAnimation;
+    TextView txt_sname;
+    ImageView img_student_profile;
     private SharedPreferenceManager preferenceManager;
-    private String StudentId, stu_name, stu_photo, std_ID;
+    private String StudentId, stu_name, stu_photo, std_ID, strTopic;
     private List<GetAllData> StudentInfoDataList = new ArrayList<>();
     // private FileCacher<List<GetAllData>> stringCachStuInfo = new FileCacher<>(ActivityMainDashBord.this, "cacheGetAll.txt");
     private GetAllData getAllData;
-
-
+    private CardView cvCircular, cvResult, cvFees, cvHomework, cvObservation, cvLeave, cvEnquiry, cvPolicy;
     private Intent mIntent, IGetPhoto, IGetName, IstdID;
-    TextView txt_sname;
-    ImageView img_student_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,30 +64,43 @@ public class ActivityMainDashBord extends AppCompatActivity {
         preferenceManager = new SharedPreferenceManager();
         txt_sname = (TextView) findViewById(R.id.txt_sname);
         img_student_profile = (ImageView) findViewById(R.id.img_student_profile);
-
+        cvCircular = (CardView) findViewById(R.id.card_circular);
+        cvResult = (CardView) findViewById(R.id.card_result);
+        cvObservation = (CardView) findViewById(R.id.card_observation);
+        cvHomework = (CardView) findViewById(R.id.card_homework);
+        cvFees = (CardView) findViewById(R.id.card_fees);
+        cvLeave = (CardView) findViewById(R.id.card_leave);
+        cvEnquiry = (CardView) findViewById(R.id.card_enquiry);
+        cvPolicy = (CardView) findViewById(R.id.card_policies);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Dash Board");
 
+        startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blinking);
 
         mIntent = getIntent();
         StudentId = mIntent.getStringExtra("stu_id");
-
-        IstdID = getIntent();
-        std_ID = IstdID.getStringExtra("std_ID");
-
+        strTopic = mIntent.getStringExtra("topic");
+        if (strTopic != null) {
+            if (strTopic.equals("observation")) {
+                cvObservation.startAnimation(startAnimation);
+            } else if (strTopic.equals("leave")) {
+                cvLeave.startAnimation(startAnimation);
+            } else if (strTopic.equals("circular")) {
+                cvCircular.startAnimation(startAnimation);
+            }
+        }
+        std_ID = mIntent.getStringExtra("std_ID");
 
         GetData(StudentId);
 
-        IGetName = getIntent();
-        stu_name = IGetName.getStringExtra("stu_name");
-        Log.e("get name: ", stu_name);
+//        stu_name = mIntent.getStringExtra("stu_name");
+//        Log.e("get name: ", stu_name);
 
-        IGetPhoto = getIntent();
-        stu_photo = IGetPhoto.getStringExtra("photo");
-        Log.e("get photo: ", stu_photo);
+//        stu_photo = mIntent.getStringExtra("photo");
+//        Log.e("get photo: ", stu_photo);
 
-        txt_sname.setText(stu_name);
+        //  txt_sname.setText(stu_name);
 
         Glide.with(getApplicationContext())
                 .load(stu_photo)
@@ -95,10 +108,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
                 .centerCrop()
                 .crossFade()
                 .into(img_student_profile);
-
-
     }
-
 
     private void GetData(final String StudentId) {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
@@ -175,14 +185,15 @@ public class ActivityMainDashBord extends AppCompatActivity {
                 getAllData.setsStandard(jobj.getString("std"));
                 getAllData.setsStandard_ID(jobj.getString("stdid"));
                 getAllData.setPhoto(jobj.getString("photo"));
-
                 StudentInfoDataList.add(getAllData);
                 //     stringCachStuInfo.writeCache(StudentInfoDataList);
 
             }
 
-
-            txt_sname.setText(getAllData.getsName() + " " + getAllData.getmName() + " " + getAllData.getlName());
+            stu_name = getAllData.getsName() + " " + getAllData.getmName() + " " + getAllData.getlName();
+            txt_sname.setText(stu_name);
+            std_ID = getAllData.getsStudentID();
+            stu_photo = getAllData.getPhoto();
 
             Glide
                     .with(getApplicationContext())
@@ -205,6 +216,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public void cardResult(View v) {
 
         Intent Result = new Intent(this, ActivityResult.class);
+        Result.putExtra("sid", StudentId);
         startActivity(Result);
 
     }
@@ -237,7 +249,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
     }
 
     public void cardCircular(View v) {
-
+        cvCircular.clearAnimation();
         Intent Circular = new Intent(this, ActivityCircular.class);
         startActivity(Circular);
 
@@ -246,7 +258,8 @@ public class ActivityMainDashBord extends AppCompatActivity {
 
     public void cardObservation(View v) {
         //have to send student id
-
+        cvObservation.clearAnimation();
+        //startAnimation.cancel();
         Intent Updates = new Intent(this, ActivityObservation.class);
         Updates.putExtra("sid", StudentId);
         Updates.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -268,10 +281,16 @@ public class ActivityMainDashBord extends AppCompatActivity {
     }
 
     public void cardLeave(View v) {
+        cvLeave.clearAnimation();
         Intent Leave = new Intent(this, ActivityLeave.class);
         Leave.putExtra("sid", StudentId);
         Leave.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(Leave);
+    }
+
+    public void cardGallery(View v){
+        Intent Gallery = new Intent(this, GalleryActivity.class);
+        startActivity(Gallery);
     }
 
 

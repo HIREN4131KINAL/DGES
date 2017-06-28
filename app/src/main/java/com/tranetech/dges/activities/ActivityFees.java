@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -24,11 +25,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
-import com.tranetech.dges.utils.ErrorAlert;
+import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.FeesAdapter;
 import com.tranetech.dges.seter_geter.FeesData;
+import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
-import com.tranetech.dges.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,6 +50,7 @@ public class ActivityFees extends AppCompatActivity implements SwipeRefreshLayou
     private FeesAdapter feesAdapter;
     private Intent mIntent;
     private TextView txt_total_fees, total_paid_txt, due_rup_txt;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class ActivityFees extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_fees);
         txt_total_fees = (TextView) findViewById(R.id.txt_total_fees);
-
+        txtEmpty = (TextView) findViewById(R.id.txt_fees_empty);
 
         total_paid_txt = (TextView) findViewById(R.id.total_paid_txt);
         due_rup_txt = (TextView) findViewById(R.id.due_rup_txt);
@@ -171,22 +173,32 @@ public class ActivityFees extends AppCompatActivity implements SwipeRefreshLayou
     private void getJson(String response) throws JSONException, IOException {
 
         JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        for (int i = 0; i < jsonArray.length(); i++) {
-            FeesData FeesData = new FeesData();
 
-            JSONObject jobj = jsonArray.getJSONObject(i);
-            FeesData.setsFeesDue(jobj.getString("rAmount"));
-            FeesData.setsFeesPaid(jobj.getString("pAmount"));
-            FeesData.setsFeesMonth(jobj.getString("date"));
-            FeesData.setsFeesFname(jobj.getString("fName"));
-            FeesData.setsFeesCheck(jobj.getString("cNo"));
-            FeesData.setsFeesBank(jobj.getString("bName"));
-            FeesData.setsFeesPaymode(jobj.getString("paymentMode"));
-            FeesData.setsFeesTotal(jobj.getString("totalFees"));
+        String res = jsonObject.getString("list");
+        if (res.equals("0")) {
+//            ErrorAlert.error("No Data Available", ActivityResult.this);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                FeesData FeesData = new FeesData();
 
-            feesDatas.add(FeesData);
-            fileCacherFess.writeCache(feesDatas);
+                JSONObject jobj = jsonArray.getJSONObject(i);
+                FeesData.setsFeesDue(jobj.getString("rAmount"));
+                FeesData.setsFeesPaid(jobj.getString("pAmount"));
+                FeesData.setsFeesMonth(jobj.getString("date"));
+                FeesData.setsFeesFname(jobj.getString("fName"));
+                FeesData.setsFeesCheck(jobj.getString("cNo"));
+                FeesData.setsFeesBank(jobj.getString("bName"));
+                FeesData.setsFeesPaymode(jobj.getString("paymentMode"));
+                FeesData.setsFeesTotal(jobj.getString("totalFees"));
+
+                feesDatas.add(FeesData);
+                fileCacherFess.writeCache(feesDatas);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                txtEmpty.setVisibility(View.GONE);
+            }
         }
         IntialAdapter();
     }

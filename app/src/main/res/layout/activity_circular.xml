@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.tranetech.dges.activities.ActivityHomework">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/sr_circular"
@@ -16,6 +16,15 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_circular"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layoutManager="LinearLayoutManager"/>
+
     </android.support.v4.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/txt_circular_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No data available for Circular."/>
 </LinearLayout>

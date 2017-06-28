@@ -10,6 +10,7 @@ public class ParentChildData implements Serializable {
     private String sStudentID;
     private String sName, mName, lName;
     private String sStandard,sStandard_ID, division, adhar, grNo, rollno, address, mobile, dob,gender, nationality, phHndicap, category, photo, lastschool, laststd, percentage, status, message;
+    private String topic;
 
 
     public void setsStudentID(String sStudentID) {
@@ -197,5 +198,13 @@ public class ParentChildData implements Serializable {
 
     public String getsStandard_ID() {
         return sStandard_ID;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
+    }
+
+    public String getTopic() {
+        return topic;
     }
 }

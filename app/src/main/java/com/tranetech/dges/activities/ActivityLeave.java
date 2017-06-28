@@ -1,11 +1,15 @@
 package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +31,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.FirebaseServices.Config;
+import com.tranetech.dges.FirebaseServices.NotificationUtils;
 import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.LeaveAdapter;
 import com.tranetech.dges.seter_geter.LeaveData;
@@ -54,6 +60,7 @@ public class ActivityLeave extends AppCompatActivity implements SwipeRefreshLayo
     private Intent mIntent;
     private Button btn_leave;
     private EditText et_leave;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
 
     @Override
@@ -78,9 +85,28 @@ public class ActivityLeave extends AppCompatActivity implements SwipeRefreshLayo
         btn_leave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getData(StudentId);
+                if(et_leave.getText().toString().length()==0){
+                 et_leave.setError("Enter Leave Reason.");
+                }else {
+                    getData(StudentId);
+                }
             }
         });
+
+
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                swipeRefreshLayout.setOnRefreshListener(ActivityLeave.this);
+                String message = intent.getStringExtra("message");
+                if (message.equals("leave")) {
+                    LeaveAdapter.clear();
+                    getData(StudentId);
+                    LeaveAdapter.addALL(leaveDatas);
+                }
+            }
+        };
 
     }
 
@@ -98,7 +124,13 @@ public class ActivityLeave extends AppCompatActivity implements SwipeRefreshLayo
 
     @Override
     protected void onResume() {
+// register new push message receiver
+// by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
 
+// clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
         if (LeaveAdapter != null) {
             leaveDatas.clear();
         }

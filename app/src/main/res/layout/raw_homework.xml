@@ -6,7 +6,6 @@
     android:orientation="vertical"
     android:padding="@dimen/padding_cardview">
 
-
     <LinearLayout
         android:id="@+id/rl_requests"
         android:layout_width="match_parent"

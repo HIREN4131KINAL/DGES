@@ -12,11 +12,15 @@
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="width_cardview">100dp</dimen>
     <dimen name="hight_cardview">170dp</dimen>
+    <dimen name="width_cardview_gallery">300dp</dimen>
+    <dimen name="hight_cardview_gallery">170dp</dimen>
     <dimen name="margin_cardview">5dp</dimen>
     <dimen name="padding_cardview">5dp</dimen>
     <dimen name="padding_profile">10dp</dimen>
-    <dimen name="hight_circle_imageview">100dp</dimen>
-    <dimen name="width_circle_imageview">100dp</dimen>
+    <dimen name="hight_circle_imageview_profile">100dp</dimen>
+    <dimen name="width_circle_imageview_profile">100dp</dimen>
+    <dimen name="hight_circle_imageview">60dp</dimen>
+    <dimen name="width_circle_imageview">60dp</dimen>
     <dimen name="txt_size_stu_name">18sp</dimen>
     <dimen name="txt_size_large_stu_name">25sp</dimen>
     <dimen name="margin_profile_student">20dp</dimen>
@@ -41,4 +45,5 @@
     <dimen name="hight_lr_enqiry">180dp</dimen>
     <dimen name="hight_lrc_enqiry">105dp</dimen>
     <dimen name="width_date_raw_inquiry">200dp</dimen>
+    <dimen name="hight_linear_gallery">150dp</dimen>
 </resources>

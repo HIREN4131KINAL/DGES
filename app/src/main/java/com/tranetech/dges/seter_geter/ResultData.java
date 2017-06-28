@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 public class ResultData implements Serializable {
 
-    private String sResultSub,sResultObtMarks,sResultSlash,sResultOutMarks;
+    private String sResultSub,sResultObtMarks,sResultSlash,sResultOutMarks,sTestType;
+    private String date;
 
     public void setsResultSub(String sResultSub) {
         this.sResultSub = sResultSub;
@@ -25,17 +26,25 @@ public class ResultData implements Serializable {
         return sResultObtMarks;
     }
 
-    public void setsResultSlash(String sResultSlash) {
-        this.sResultSlash = sResultSlash;
-    }
-
-    public String getsResultSlash() {
-        return sResultSlash;
-    }
-
     public void setsResultOutMarks(String sResultOutMarks) {this.sResultOutMarks = sResultOutMarks;
     }
 
     public String getsResultOutMarks() {return sResultOutMarks;
+    }
+
+    public String  getTestType() {
+        return sTestType;
+    }
+
+    public void setTestType(String testType) {
+        this.sTestType = testType;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
     }
 }

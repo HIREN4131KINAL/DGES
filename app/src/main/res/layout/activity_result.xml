@@ -9,16 +9,22 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/sr_result"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:elevation="8dp"
         android:scrollIndicators="top">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_result"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp" />
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"/>
 
+    </android.support.v4.widget.SwipeRefreshLayout>
+    <TextView
+        android:id="@+id/txt_result_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="No data available for Result."/>
     <!--</LinearLayout>-->
 </LinearLayout>

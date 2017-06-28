@@ -14,8 +14,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tranetech.dges.R;
 import com.tranetech.dges.activities.ActivityMainDashBord;
-import com.tranetech.dges.seter_geter.FeesData;
-import com.tranetech.dges.seter_geter.HomeworkData;
 import com.tranetech.dges.seter_geter.ParentChildData;
 
 import java.util.List;
@@ -49,7 +47,7 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
 
             holder.txt_sname.setText(parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName());
             holder.txt_standard.setText(parentChildData.getsStandard());
-
+            holder.txt_lable.setText("Standard");
 
             final String stu_name = parentChildData.getsName() + " " + parentChildData.getmName() + " " + parentChildData.getlName();
 
@@ -61,13 +59,11 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
                     intent.putExtra("stu_name", stu_name);
                     intent.putExtra("photo", parentChildData.getPhoto());
                     intent.putExtra("std_ID", parentChildData.getsStandard_ID());
+                    intent.putExtra("topic",parentChildData.getTopic());
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     context.startActivity(intent);
-
                 }
             });
-
-
             Glide.with(context)
                     .load(parentChildData.getPhoto())
                     .centerCrop()
@@ -88,7 +84,7 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
     public class ParentsMultiChildViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout lr_multi_students_selection;
         private TextView txt_sname;
-        private TextView txt_standard;
+        private TextView txt_standard,txt_lable;
         private ImageView imgStudentProfile;
 
         public ParentsMultiChildViewHolder(View itemView) {
@@ -96,6 +92,7 @@ public class AdapterParentsMultiChild extends RecyclerView.Adapter<AdapterParent
             txt_sname = (TextView) itemView.findViewById(R.id.txt_sname);
             lr_multi_students_selection = (LinearLayout) itemView.findViewById(R.id.lr_multi_students_selection);
             txt_standard = (TextView) itemView.findViewById(R.id.txt_standard);
+            txt_lable = (TextView) itemView.findViewById(R.id.txt_std_lable);
             imgStudentProfile = (ImageView) itemView.findViewById(R.id.img_student_profile);
         }
     }

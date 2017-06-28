@@ -3,9 +3,9 @@ package com.tranetech.dges.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -13,7 +13,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -27,7 +26,6 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
@@ -159,10 +157,7 @@ public class ActivityLogin extends FragmentActivity {
                 mobile_s = jobj.getString("mobile");
 
                 Log.e("getjson: ", msg);
-
-
             }
-
 
             if (!msg.equals("1")) {
                 Snackbar.make(getCurrentFocus(), "Your mobile number is not registered with DGES school.", Snackbar.LENGTH_LONG).show();

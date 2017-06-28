@@ -20,6 +20,20 @@
         android:roundIcon="@drawable/logo_main"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!-- Firebase Notifications -->
+        <service android:name=".FirebaseServices.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".FirebaseServices.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- ./Firebase Notifications -->
+
         <activity
             android:name=".activities.ActivityMainDashBord"
             android:launchMode="singleTop"
@@ -83,16 +97,14 @@
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".activities.ActivityParentsMultiChild" />
-
         <activity
             android:name=".activities.ActivityLogin"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".activities.ActivityPolicies"
             android:launchMode="singleTop"
@@ -101,7 +113,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
         </activity>
-
         <activity
             android:name=".activities.Activityinquiry"
             android:launchMode="singleTop"
@@ -130,6 +141,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.ActivityMainDashBord" />
+        </activity>
+        <activity
+            android:name=".activities.GalleryActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.ActivityMainDashBord"
+            android:windowSoftInputMode="adjustResize">
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.ActivityMainDashBord" />
+        </activity>
+        <activity android:name=".activities.PhotosActivity"
+            android:launchMode="singleTop"
+            android:parentActivityName=".activities.GalleryActivity"
+            android:windowSoftInputMode="adjustResize">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".activities.GalleryActivity" />
         </activity>
     </application>
 

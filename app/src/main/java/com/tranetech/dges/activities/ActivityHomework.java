@@ -1,6 +1,8 @@
 package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -47,7 +51,8 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
     private FileCacher<List<HomeworkData>> stringCacherHomeworkList;
     private HomeworkData homeworkData;
     private String standardID;
-
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private TextView txtEmpty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +69,21 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_homework);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_homework);
+        txtEmpty = (TextView) findViewById(R.id.txt_homework_empty);
 
         stringCacherHomeworkList = new FileCacher<>(ActivityHomework.this, "stu_homework" + standardID + ".txt");
-
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                swipeRefreshLayout.setOnRefreshListener(ActivityHomework.this);
+                String message = intent.getStringExtra("topic");
+                if (message.equals("homework")) {
+                    hwAdapter.clear();
+                    GetData(standardID);
+                    hwAdapter.addALL(hwData);
+                }
+            }
+        };
     }
 
     @Override
@@ -109,6 +126,8 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
                         try {
                             getjson(response);
                         } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
@@ -157,30 +176,28 @@ public class ActivityHomework extends AppCompatActivity implements SwipeRefreshL
         queue.add(postRequest);
     }
 
-    public void getjson(String response) throws IOException {
-        JSONObject jsonObject1 = null;
-        // store response in cache memory
-
-        try {
-            jsonObject1 = new JSONObject(response);
-            JSONArray jsonArray = jsonObject1.getJSONArray("list");
-
-
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jobj = null;
-                jobj = jsonArray.getJSONObject(i);
-                homeworkData = new HomeworkData();
-                homeworkData.setsHWDate(jobj.getString("date"));
-                homeworkData.setsHWDescription(jobj.getString("containt"));
-                homeworkData.setsSubName(jobj.getString("subject"));
-                homeworkData.setStandrdID(jobj.getString("hId"));
-                homeworkData.setTeachers(jobj.getString("teacher"));
-                hwData.add(homeworkData);
-                stringCacherHomeworkList.writeCache(hwData);
+    public void getjson(String response) throws JSONException, IOException {
+        JSONObject jsonObject = new JSONObject(response);
+            String res = jsonObject.getString("list");
+            if (res.equals("0")) {
+//            ErrorAlert.error("No Data Available", ActivityResult.this);
+                swipeRefreshLayout.setVisibility(View.GONE);
+                txtEmpty.setVisibility(View.VISIBLE);
+            } else {
+                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jobj = null;
+                    jobj = jsonArray.getJSONObject(i);
+                    homeworkData = new HomeworkData();
+                    homeworkData.setsHWDate(jobj.getString("date"));
+                    homeworkData.setsHWDescription(jobj.getString("containt"));
+                    homeworkData.setsSubName(jobj.getString("subject"));
+                    homeworkData.setStandrdID(jobj.getString("hId"));
+                    homeworkData.setTeachers(jobj.getString("teacher"));
+                    hwData.add(homeworkData);
+                    stringCacherHomeworkList.writeCache(hwData);
+                }
             }
-        } catch (JSONException e) {
-            System.out.print(e.toString());
-        }
         IntialHomwrkAdapter();
     }
 

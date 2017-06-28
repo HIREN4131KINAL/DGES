@@ -1,25 +1,24 @@
 package com.tranetech.dges.activities;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -33,13 +32,15 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kosalgeek.android.caching.FileCacher;
+import com.rampo.updatechecker.UpdateChecker;
+import com.tranetech.dges.FirebaseServices.Config;
 import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.AdapterParentsMultiChild;
 import com.tranetech.dges.seter_geter.ParentChildData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
-import com.tranetech.dges.utils.MarshmallowPermissions;
 import com.tranetech.dges.utils.SharedPreferenceManager;
 
 import org.json.JSONArray;
@@ -57,12 +58,14 @@ import java.util.Map;
  */
 
 public class ActivityParentsMultiChild extends AppCompatActivity {
+    private static final String TAG = ActivityParentsMultiChild.class.getSimpleName();
     private SharedPreferenceManager preferenceManager;
     private List<ParentChildData> parentChildDataList = new ArrayList<>();
     private RecyclerView recyclerView;
     private AdapterParentsMultiChild adapterParentsMultiChild;
     private FileCacher<List<ParentChildData>> stringCachParentChild = new FileCacher<>(ActivityParentsMultiChild.this, "cacheListTmp.txt");
-    private String MobileNo;
+    private String MobileNo, topic;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,14 +85,109 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
             preferenceManager.setDefaults("mobile", MobileNo, getApplicationContext());
         }
 
+        Intent in = getIntent();
+        topic = in.getStringExtra("topic");
 
         Log.e("MobileNo: ", MobileNo);
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
 
+                // checking for type intent filter
+                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
+                    // gcm successfully registered
+                    // now subscribe to `global` topic to receive app wide notifications
+                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
+
+                    updateFirebaseRegId();
+
+                }
+            }
+        };
+
+        updateFirebaseRegId();
+        UpdateChecker checker = new UpdateChecker(this); // If you are in a Activity or a FragmentActivity
+        checker.start();
 
     }
 
+    private void updateFirebaseRegId() {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        String regId = pref.getString("regId", null);
+
+        Log.e(TAG, "Firebase reg id: " + regId);
+
+        if (!TextUtils.isEmpty(regId)) {
+            updateDeviceKey(regId);
+        } else {
+        }
+    }
+
+    private void updateDeviceKey(final String regid) {
+        final ProgressDialog loading = ProgressDialog.show(this, "Updating Device Id", "Please wait...", false, false);
+        GetIP getIP = new GetIP();
+        String url = getIP.updateip("update_device_key.php");
+
+// Request a string response from the provided URL.
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        loading.dismiss();
+                        try {
+                            updateKey(response);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                loading.dismiss();
+                String message = null;
+                if (volleyError instanceof NetworkError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ServerError) {
+                    message = "The server could not be found. Please try again after some time!!";
+                } else if (volleyError instanceof AuthFailureError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof ParseError) {
+                    message = "Parsing error! Please try again after some time!!";
+                } else if (volleyError instanceof NoConnectionError) {
+                    message = "Cannot connect to Internet...Please check your connection!";
+                } else if (volleyError instanceof TimeoutError) {
+                    message = "Connection TimeOut! Please check your internet connection.";
+                }
+                ErrorAlert.error(message, ActivityParentsMultiChild.this);
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("mobile", MobileNo);
+                params.put("key1", regid);
+                return params;
+            }
+        };
+// Add the request to the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(stringRequest);
+    }
+
+    private void updateKey(String response) throws JSONException {
+
+        JSONObject jsonObject = new JSONObject(response);
+
+        String msg = jsonObject.getString("msg");
+        Log.e(TAG, msg);
+    }
+
+
     @Override
     protected void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.REGISTRATION_COMPLETE));
+
         if (adapterParentsMultiChild != null) {
             adapterParentsMultiChild.clear();
         }
@@ -192,7 +290,7 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
                 parentChildData.setsStandard(jobj.getString("std"));
                 parentChildData.setPhoto(jobj.getString("photo"));
                 parentChildData.setsStandard_ID(jobj.getString("stdId"));
-
+                parentChildData.setTopic(topic);
 
                 parentChildDataList.add(parentChildData);
                 stringCachParentChild.writeCache(parentChildDataList);

@@ -39,10 +39,11 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
     @Override
     public void onBindViewHolder(ResultAdapter.ResultViewHolder holder, int position) {
         final ResultData ResultData = alResultData.get(position);
+        holder.txtTestType.setText(ResultData.getTestType());
         holder.txtResultSub.setText(ResultData.getsResultSub());
         holder.txtResultObtMarks.setText(ResultData.getsResultObtMarks());
-        holder.txtResultSlash.setText(ResultData.getsResultSlash());
         holder.txtResultOutMarks.setText(ResultData.getsResultOutMarks());
+        holder.txtTestDate.setText(ResultData.getDate());
     }
 
     @Override
@@ -52,16 +53,26 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ResultView
 
     public class ResultViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView txtResultSub,txtResultObtMarks,txtResultSlash,txtResultOutMarks;
+        public TextView txtResultSub,txtResultObtMarks,txtResultOutMarks,txtTestType,txtTestDate;
 
 
         public ResultViewHolder(View itemView) {
             super(itemView);
-            txtResultSub = (TextView)itemView.findViewById(R.id.sub_txt);
-            txtResultObtMarks = (TextView)itemView.findViewById(R.id.marks_txt1);
-            txtResultSlash = (TextView)itemView.findViewById(R.id.marks_txt2);
-            txtResultOutMarks = (TextView)itemView.findViewById(R.id.marks_txt3);
+            txtTestDate = (TextView)itemView.findViewById(R.id.txt_test_date);
+            txtTestType = (TextView)itemView.findViewById(R.id.txt_test_type);
+            txtResultSub = (TextView)itemView.findViewById(R.id.txt_test_subject);
+            txtResultObtMarks = (TextView)itemView.findViewById(R.id.txt_obt_marks);
+            txtResultOutMarks = (TextView)itemView.findViewById(R.id.txt_total_marks);
         }
+    }
+    public void clear() {
+        alResultData.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<ResultData> alHWData) {
+        this.alResultData.addAll(alResultData);
+        notifyDataSetChanged();
     }
 }
 

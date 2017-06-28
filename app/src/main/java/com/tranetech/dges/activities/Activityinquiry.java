@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -29,9 +28,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
 import com.tranetech.dges.R;
-import com.tranetech.dges.adapters.FeesAdapter;
 import com.tranetech.dges.adapters.InquiryAdapter;
-import com.tranetech.dges.seter_geter.FeesData;
 import com.tranetech.dges.seter_geter.InquiryData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
@@ -81,7 +78,11 @@ public class Activityinquiry extends AppCompatActivity implements SwipeRefreshLa
         btn_inquiry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onRefresh();
+                if (et_inquiry.getText().toString().length() == 0) {
+                    et_inquiry.setError("Enter Enquiry.");
+                } else {
+                    onRefresh();
+                }
             }
         });
 

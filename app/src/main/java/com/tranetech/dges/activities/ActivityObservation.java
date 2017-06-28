@@ -1,14 +1,20 @@
 package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -23,9 +29,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.kosalgeek.android.caching.FileCacher;
+import com.tranetech.dges.FirebaseServices.Config;
+import com.tranetech.dges.FirebaseServices.NotificationUtils;
 import com.tranetech.dges.R;
 import com.tranetech.dges.adapters.ObservationAdapter;
-import com.tranetech.dges.seter_geter.HomeworkData;
 import com.tranetech.dges.seter_geter.ObservationData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
@@ -47,7 +54,8 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
     private SwipeRefreshLayout swipeRefreshLayout;
     private ObservationAdapter observationAdapter;
     private String studentID;
-
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+    private TextView txtEmpty;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +70,23 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_observation);
         swipeRefreshLayout.setOnRefreshListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.rv_observation);
-
+        txtEmpty = (TextView) findViewById(R.id.txt_observation_empty);
         str_CachList_observation = new FileCacher<>(ActivityObservation.this, "stu_observation_" + studentID + ".txt");
+        txtEmpty = (TextView) findViewById(R.id.txt_observation_empty);
 
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                swipeRefreshLayout.setOnRefreshListener(ActivityObservation.this);
+                String message = intent.getStringExtra("message");
+                if (message.equals("leave")) {
+                    observationAdapter.clear();
+                    GetData(studentID);
+                    observationAdapter.addALL(observationDatas);
+                }
+            }
+        };
     }
 
     @Override
@@ -83,6 +105,13 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
     @Override
     protected void onResume() {
         super.onResume();
+        // register new push message receiver
+// by doing this, the activity will be notified each time a new message arrives
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                new IntentFilter(Config.PUSH_NOTIFICATION));
+
+// clear the notification area when the app is opened
+        NotificationUtils.clearNotifications(getApplicationContext());
         if (observationAdapter != null) {
             observationAdapter.clear();
         }
@@ -90,7 +119,7 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
         super.onResume();
     }
 
-    public void GetData(final String standardID) {
+    public void GetData(final String studentID) {
         final ProgressDialog loading = ProgressDialog.show(this, "Loading data...", "Please wait...", false, false);
         GetIP getIP = new GetIP();
         String strUrl = getIP.updateip("observation.php");
@@ -153,7 +182,7 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("sid", standardID);
+                params.put("sid", studentID);
                 return params;
             }
         };
@@ -164,25 +193,30 @@ public class ActivityObservation extends AppCompatActivity implements SwipeRefre
     private void getJson(String response) throws JSONException, IOException {
 
         JSONObject jsonObject = new JSONObject(response);
-        JSONArray jsonArray = jsonObject.getJSONArray("list");
-        if (jsonArray.length() == 0) {
-            ErrorAlert.error("No data available for this student.", ActivityObservation.this);
+        String res = jsonObject.getString("list");
+        if (res.equals("0")) {
+//            ErrorAlert.error("No Data Available", ActivityResult.this);
+            swipeRefreshLayout.setVisibility(View.GONE);
+            txtEmpty.setVisibility(View.VISIBLE);
+        } else {
+            JSONArray jsonArray = jsonObject.getJSONArray("list");
+            for (int i = 0; i < jsonArray.length(); i++) {
+                ObservationData observationData = new ObservationData();
+                JSONObject jobj = jsonArray.getJSONObject(i);
+
+                String name = jobj.getString("fName") + " " + jobj.getString("lName");
+
+                observationData.setsObStudentName(jobj.getString("teacher"));
+                observationData.setsObDate(jobj.getString("date"));
+                observationData.setsObTitle(jobj.getString("subject"));
+                observationData.setsObDesc(jobj.getString("remarks"));
+
+                observationDatas.add(observationData);
+                str_CachList_observation.writeCache(observationDatas);
+                swipeRefreshLayout.setVisibility(View.VISIBLE);
+                txtEmpty.setVisibility(View.GONE);
+            }
         }
-        for (int i = 0; i < jsonArray.length(); i++) {
-            ObservationData observationData = new ObservationData();
-            JSONObject jobj = jsonArray.getJSONObject(i);
-
-            String name = jobj.getString("fName") + " " + jobj.getString("lName");
-
-            observationData.setsObStudentName(name);
-            observationData.setsObDate(jobj.getString("date"));
-            observationData.setsObTitle(jobj.getString("subject"));
-            observationData.setsObDesc(jobj.getString("remarks"));
-
-            observationDatas.add(observationData);
-            str_CachList_observation.writeCache(observationDatas);
-        }
-
         IntialAdapter();
     }
 

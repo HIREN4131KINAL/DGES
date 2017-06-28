@@ -2,15 +2,14 @@ package com.tranetech.dges.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.tranetech.dges.seter_geter.FeesData;
 import com.tranetech.dges.R;
+import com.tranetech.dges.seter_geter.FeesData;
 
 import java.util.List;
 
@@ -54,9 +53,46 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
         try {
             final FeesData FeesData = alFeesData.get(position);
 
-            holder.txtFeesDue.setText(FeesData.getsFeesDue());
+            holder.txtFeesDue.setText(FeesData.getsFeesMonth());
             holder.txtFeesPaid.setText(FeesData.getsFeesPaid());
-            holder.txt_month.setText(FeesData.getsFeesMonth());
+            switch (FeesData.getsFeesMonth()){
+                case "01" :
+                    holder.txt_month.setText("January");
+                    break;
+                case "02" :
+                    holder.txt_month.setText("February");
+                    break;
+                case "03" :
+                    holder.txt_month.setText("March");
+                    break;
+                case "04" :
+                    holder.txt_month.setText("April");
+                    break;
+                case "05" :
+                    holder.txt_month.setText("May");
+                    break;
+                case "06" :
+                    holder.txt_month.setText("June");
+                    break;
+                case "07" :
+                    holder.txt_month.setText("July");
+                    break;
+                case "08" :
+                    holder.txt_month.setText("August");
+                    break;
+                case "09" :
+                    holder.txt_month.setText("September");
+                    break;
+                case "10" :
+                    holder.txt_month.setText("October");
+                    break;
+                case "11" :
+                    holder.txt_month.setText("November");
+                    break;
+                case "12" :
+                    holder.txt_month.setText("December");
+                    break;
+            }
             holder.txt_stu_name.setText(FeesData.getsFeesFname());
             holder.txt_paymode.setText(FeesData.getsFeesPaymode());
 
@@ -80,28 +116,27 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
             //for header fees activity
             txt_total_fees.setText(FeesData.getsFeesTotal());
 
-            for (int i = 0; i < getItemCount() - 1; i++) {
+//            for (int i = 0; i < getItemCount() - 1; i++) {
 
-                FeesData FeesData_cal = alFeesData.get(i);
+               // FeesData FeesData_cal = alFeesData.get(i);
 
-                t_paid = FeesData_cal.getsFeesPaid();
-                t_FEES = FeesData_cal.getsFeesTotal();
-
-
-                if (!t_paid.isEmpty() || t_paid != null || !t_FEES.isEmpty() || t_FEES != null) {
+                t_paid = FeesData.getsFeesPaid();
+                t_FEES = FeesData.getsFeesTotal();
 
 
-                    if (Integer.parseInt(t_paid) < Integer.parseInt(t_FEES)) {
+//                if (!t_paid.isEmpty() || t_paid != null || !t_FEES.isEmpty() || t_FEES != null) {
+//
+//
+//                    if (Integer.parseInt(t_paid) < Integer.parseInt(t_FEES)) {
 
                         sum_of_paid = sum_of_paid + Integer.parseInt(t_paid);
-                    }
-
-
-                } else {
-                    t_paid = "no data";
-                    t_FEES = "no data";
-                }
-            }
+//                    }
+//
+//                } else {
+//                    t_paid = "no data";
+//                    t_FEES = "no data";
+//                }
+//            }
 
             String Gross_Due, Gross_Paid;
 
@@ -110,6 +145,7 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
 
             due_rup_txt.setText(Gross_Due);
             total_paid_txt.setText(Gross_Paid);
+
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
@@ -120,6 +156,16 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
     @Override
     public int getItemCount() {
         return alFeesData.size();
+    }
+
+    public void clear() {
+        alFeesData.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addALL(List<FeesData> alFeesData) {
+        this.alFeesData.addAll(alFeesData);
+        notifyDataSetChanged();
     }
 
     public class FeesViewHolder extends RecyclerView.ViewHolder {
@@ -139,17 +185,6 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
             txt_paymode = (TextView) itemView.findViewById(R.id.txt_paymode);
 
         }
-    }
-
-
-    public void clear() {
-        alFeesData.clear();
-        notifyDataSetChanged();
-    }
-
-    public void addALL(List<FeesData> alFeesData) {
-        this.alFeesData.addAll(alFeesData);
-        notifyDataSetChanged();
     }
 
 
