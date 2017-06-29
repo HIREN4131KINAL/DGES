@@ -133,7 +133,6 @@ public class NotificationUtils {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(Config.NOTIFICATION_ID_BIG_IMAGE, notification);
     }
-
     /**
      * Downloading push notification image before displaying it in
      * the notification tray

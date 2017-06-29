@@ -3,12 +3,13 @@ package com.tranetech.dges.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
+import android.view.View;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -27,6 +28,7 @@ import com.tranetech.dges.adapters.PhotosAdapter;
 import com.tranetech.dges.seter_geter.PhotoData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
+import com.tranetech.dges.utils.SlideshowDialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,32 +36,72 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class PhotosActivity extends AppCompatActivity {
+public class PhotosActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     // CONNECTION_TIMEOUT and READ_TIMEOUT are in milliseconds
     public static final int CONNECTION_TIMEOUT = 10000;
     public static final int READ_TIMEOUT = 15000;
     PhotoData photoData;
-    List<PhotoData> photoDatas = new ArrayList<>();
+    ArrayList<PhotoData> photoDatas;
     private RecyclerView mRVPhotos;
     private PhotosAdapter mAdapter;
     private Intent mIntent;
     private String sGTId;
-    private ImageView imgExpanded;
-    private FrameLayout fl;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photos);
+        photoDatas = new ArrayList<>();
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.sr_photos);
+        swipeRefreshLayout.setOnRefreshListener(this);
         mRVPhotos = (RecyclerView) findViewById(R.id.rv_photos);
-        imgExpanded = (ImageView) findViewById(R.id.expanded_image);
-        fl = (FrameLayout) findViewById(R.id.container);
         mIntent = getIntent();
         sGTId = mIntent.getStringExtra("gtid");
+
+        mRVPhotos.addOnItemTouchListener(new PhotosAdapter.RecyclerTouchListener(getApplicationContext(), mRVPhotos, new PhotosAdapter.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("images", photoDatas);
+                bundle.putInt("position", position);
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                SlideshowDialogFragment newFragment = SlideshowDialogFragment.newInstance();
+                newFragment.setArguments(bundle);
+                newFragment.show(ft, "slideshow");
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+    }
+
+    @Override
+    public void onRefresh() {
+        if (mAdapter != null) {
+            mAdapter.clear();
+            getData(sGTId);
+            mAdapter.addALL(photoDatas);
+            swipeRefreshLayout.setRefreshing(false);
+        } else {
+            getData(sGTId);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdapter != null) {
+            mAdapter.clear();
+        }
         getData(sGTId);
     }
 
@@ -140,12 +182,12 @@ public class PhotosActivity extends AppCompatActivity {
     public void IntialAdapter() {
 
 
-        mRVPhotos.setHasFixedSize(false);
+        mRVPhotos.setHasFixedSize(true);
 //        LinearLayoutManager mLayoutManager = new LinearLayoutManager(MainActivity.this);
         int numberOfColumns = 2;
         mRVPhotos.setLayoutManager(new GridLayoutManager(this, numberOfColumns));
 //        mRVGallery.setLayoutManager(mLayoutManager);
-        mAdapter = new PhotosAdapter(photoDatas, PhotosActivity.this, imgExpanded, fl);
+        mAdapter = new PhotosAdapter(photoDatas, PhotosActivity.this);
        /* recyclerView.scrollToPosition(circularDatas.size() + 1);
         circularAdapter.notifyItemInserted(circularDatas.size() + 1);*/
         mRVPhotos.setAdapter(mAdapter);

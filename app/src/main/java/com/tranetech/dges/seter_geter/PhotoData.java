@@ -6,7 +6,7 @@ package com.tranetech.dges.seter_geter;
 
 public class PhotoData {
     private String sGid,sPhotoImgURL,sPhotoTitle,sImgDate;
-
+public PhotoData(){}
     public void setsGid(String sGid) {
         this.sGid = sGid;
     }

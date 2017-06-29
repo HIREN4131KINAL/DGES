@@ -264,7 +264,7 @@
                         android:layout_width="@dimen/img_width_cardview_dash"
                         android:layout_height="@dimen/img_hight_cardview_dash"
                         android:layout_gravity="center"
-                        android:background="@drawable/logo_main" />
+                        android:background="@drawable/leave" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -310,7 +310,7 @@
                         android:layout_width="@dimen/img_width_cardview_dash"
                         android:layout_height="@dimen/img_hight_cardview_dash"
                         android:layout_gravity="center"
-                        android:background="@drawable/logo_main" />
+                        android:background="@drawable/inqury" />
 
                     <TextView
                         android:layout_width="wrap_content"

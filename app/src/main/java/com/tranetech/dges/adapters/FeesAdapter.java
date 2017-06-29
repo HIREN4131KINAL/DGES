@@ -53,7 +53,7 @@ public class FeesAdapter extends RecyclerView.Adapter<FeesAdapter.FeesViewHolder
         try {
             final FeesData FeesData = alFeesData.get(position);
 
-            holder.txtFeesDue.setText(FeesData.getsFeesMonth());
+            holder.txtFeesDue.setText(FeesData.getsFeesDue());
             holder.txtFeesPaid.setText(FeesData.getsFeesPaid());
             switch (FeesData.getsFeesMonth()){
                 case "01" :
