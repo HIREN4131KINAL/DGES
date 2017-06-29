@@ -1,4 +1,4 @@
-package com.tranetech.dges.utils;
+package com.tranetech.dges.adapters;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -118,7 +118,7 @@ public class SlideshowDialogFragment extends DialogFragment {
             ImageView imageViewPreview = (ImageView) view.findViewById(R.id.image_preview);
             PhotoData image = photoDatas.get(position);
             Glide.with(getActivity())
-                    .load(image.getsPhotoImgURL())
+                    .load(image.getsPhotoImgURLLarge())
                     .thumbnail(0.5f)
                     .crossFade()
                     .into(imageViewPreview);

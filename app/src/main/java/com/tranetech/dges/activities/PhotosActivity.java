@@ -28,7 +28,7 @@ import com.tranetech.dges.adapters.PhotosAdapter;
 import com.tranetech.dges.seter_geter.PhotoData;
 import com.tranetech.dges.utils.ErrorAlert;
 import com.tranetech.dges.utils.GetIP;
-import com.tranetech.dges.utils.SlideshowDialogFragment;
+import com.tranetech.dges.adapters.SlideshowDialogFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -172,6 +172,7 @@ public class PhotosActivity extends AppCompatActivity implements SwipeRefreshLay
                 photoData.setsImgDate(jobj.getString("date"));
                 photoData.setsPhotoTitle(jobj.getString("title"));
                 photoData.setsPhotoImgURL(jobj.getString("image"));
+                photoData.setsPhotoImgURLLarge(jobj.getString("limage"));
 
                 photoDatas.add(photoData);
             }

@@ -5,7 +5,7 @@ package com.tranetech.dges.seter_geter;
  */
 
 public class PhotoData {
-    private String sGid,sPhotoImgURL,sPhotoTitle,sImgDate;
+    private String sGid,sPhotoImgURL,sPhotoTitle,sImgDate,sPhotoImgURLLarge;
 public PhotoData(){}
     public void setsGid(String sGid) {
         this.sGid = sGid;
@@ -37,5 +37,13 @@ public PhotoData(){}
 
     public String getsPhotoTitle() {
         return sPhotoTitle;
+    }
+
+    public void setsPhotoImgURLLarge(String sPhotoImgURLLarge) {
+        this.sPhotoImgURLLarge = sPhotoImgURLLarge;
+    }
+
+    public String getsPhotoImgURLLarge() {
+        return sPhotoImgURLLarge;
     }
 }
