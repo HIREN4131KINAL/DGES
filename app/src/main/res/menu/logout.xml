@@ -4,10 +4,12 @@
     tools:context=".activities.MainActivity">
 
     <item
-        android:id="@+id/menu_emp_logout"
+        android:id="@+id/menu_logout"
         android:icon="@drawable/ic_logout"
-        android:title="Logout"
-        app:showAsAction="always" />
+        android:title="Logout"/>
 
-
+    <item
+        android:id="@+id/menu_change_password"
+        android:icon="@drawable/ic_logout"
+        android:title="Change Password"/>
 </menu>

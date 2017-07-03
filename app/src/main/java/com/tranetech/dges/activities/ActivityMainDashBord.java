@@ -74,7 +74,7 @@ public class ActivityMainDashBord extends AppCompatActivity {
         cvPolicy = (CardView) findViewById(R.id.card_policies);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Dash Board");
+        actionBar.setTitle("Dashboard");
 
         startAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blinking);
 
@@ -304,8 +304,12 @@ public class ActivityMainDashBord extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.menu_emp_logout:
+            case R.id.menu_logout:
                 get_ready_logout();
+                return true;
+            case R.id.menu_change_password:
+                Intent in = new Intent(this,ChangePasswordActivity.class);
+                startActivity(in);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -2,17 +2,12 @@ package com.tranetech.dges.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -39,54 +34,29 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActivityLogin extends FragmentActivity {
-    //   private static String mobile_s;
-    private static final String PREFS_NAME = "Login";
-    public static SharedPreferences settings;
-    private static boolean hasLoggedIn;
-    TextView txt1;
-    ImageView image;
-    EditText et_Mobile, et_password;
-    // String GR_Number,str_gr_no;
-    String mobile, password, strUrl, msg, mobile_s, password_s;
-    View parentLayout;
+public class ChangePasswordActivity extends AppCompatActivity {
+
+    private EditText etOldPass, etNewPass;
+    private String sOldPass, sNewPass, sMobile;
+    private SharedPreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-     /*   getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
-        settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0);
-        parentLayout = findViewById(android.R.id.content);
-        image = (ImageView) findViewById(R.id.img_login);
-        // et_GR_Number = (EditText) findViewById(R.id.et_gr_number);
-        et_Mobile = (EditText) findViewById(R.id.et_number);
-        et_password = (EditText) findViewById(R.id.et_password);
-
-        hasLoggedIn = settings.getBoolean("hasLoggedIn", false);
-
-        // to hide soft keyboard until user interaction
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
-
-        if (hasLoggedIn) {
-            Log.e("onCreate:has loged ", hasLoggedIn + "");
-            Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-            intent.putExtra("mobile", mobile);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-        }
+        setContentView(R.layout.activity_change_password);
+        preferenceManager = new SharedPreferenceManager();
+        etOldPass = (EditText) findViewById(R.id.et_old_password);
+        etNewPass = (EditText) findViewById(R.id.et_new_password);
     }
 
-    public void btn_Login(View v) {
-        mobile = et_Mobile.getText().toString();
-        password = et_password.getText().toString();
-        if (mobile.length() == 0) {
-            et_Mobile.setError("Enter valid mobile number.");
-        } else if (password.length() == 0) {
-            et_password.setError("Enter valid password.");
+    public void btn_submit(View v) {
+        sMobile = preferenceManager.getDefaults("mobile", getApplicationContext());
+        sOldPass = etOldPass.getText().toString();
+        sNewPass = etNewPass.getText().toString();
+        if (sOldPass.length() == 0) {
+            etOldPass.setError("Enter valid mobile number.");
+        } else if (sNewPass.length() == 0) {
+            etNewPass.setError("Enter valid password.");
         } else {
             GetData();
         }
@@ -95,7 +65,7 @@ public class ActivityLogin extends FragmentActivity {
     public void GetData() {
         final ProgressDialog loading = ProgressDialog.show(this, "Login", "Please wait...", false, false);
         GetIP getIP = new GetIP();
-        strUrl = getIP.updateip("login.php");
+        String strUrl = getIP.updateip("updatepsw.php");
         StringRequest postRequest = new StringRequest(Request.Method.POST, strUrl,
                 new Response.Listener<String>() {
                     @Override
@@ -128,7 +98,7 @@ public class ActivityLogin extends FragmentActivity {
                         } else if (volleyError instanceof TimeoutError) {
                             message = "Connection TimeOut! Please check your internet connection.";
                         }
-                        ErrorAlert.error(message, ActivityLogin.this);
+                        ErrorAlert.error(message, ChangePasswordActivity.this);
                     }
                 }
         ) {
@@ -136,8 +106,10 @@ public class ActivityLogin extends FragmentActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 //  params.put("grno", GR_Number);
-                params.put("mobile", mobile);
-                params.put("psw", password);
+                params.put("mobile", sMobile);
+                params.put("oldpsw", sOldPass);
+                params.put("newpsw", sNewPass);
+
                 return params;
             }
         };
@@ -149,7 +121,7 @@ public class ActivityLogin extends FragmentActivity {
         JSONObject jsonObject1 = null;
         // store response in cache memory
         //   stringCacher.writeCache(response);
-
+        String msg = null, mobile_s, sNewPassword;
         try {
             jsonObject1 = new JSONObject(response);
             JSONArray jsonArray = jsonObject1.getJSONArray("list");
@@ -162,36 +134,24 @@ public class ActivityLogin extends FragmentActivity {
 
                 msg = jobj.getString("msg");
                 mobile_s = jobj.getString("mobile");
-                password_s = jobj.getString("psw");
+                sNewPassword = jobj.getString("newpsw");
                 Log.e("getjson: ", msg);
             }
 
             if (!msg.equals("1")) {
-                Snackbar.make(getCurrentFocus(), "Your mobile number is not registered with DGES school.", Snackbar.LENGTH_LONG).show();
+                ErrorAlert.error("Something went wrong. please try again later", ChangePasswordActivity.this);
+
             } else {
-                SharedPreferenceManager.setDefaults_boolean("hasLoggedIn", true, getApplicationContext());
-                //str_gr_no = jobj.getString("grNo");
+                preferenceManager = new SharedPreferenceManager();
+                preferenceManager.ClearAllPreferences(getApplicationContext());
 
-                Log.e("get mobile no: ", mobile_s);
+                ActivityLogin.settings.edit().clear().apply();
 
-                // SharedPreferenceManager.setDefaults("msg", msg, getApplicationContext());
-                SharedPreferenceManager.setDefaults("mobile", mobile_s, getApplicationContext());
-
-                SharedPreferences settings = getSharedPreferences(ActivityLogin.PREFS_NAME, 0); // 0 - for private mode
-                SharedPreferences.Editor editor = settings.edit();
-                //    editor.putString("msg", msg);
-                editor.putString("mobile", mobile_s);
-                editor.putString("password", password_s);
-                editor.putBoolean("hasLoggedIn", true);
-                editor.apply();
-
-
-                Intent intent = new Intent(this, ActivityParentsMultiChild.class);
-                intent.putExtra("mobile", mobile_s);
+                Toast.makeText(getApplicationContext(), "Successfully Changed", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ActivityLogin.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
             }
-
 
         } catch (JSONException e) {
             System.out.print(e.toString());
@@ -199,6 +159,4 @@ public class ActivityLogin extends FragmentActivity {
 
 
     }
-
-
 }

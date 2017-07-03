@@ -327,8 +327,12 @@ public class ActivityParentsMultiChild extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.menu_emp_logout:
+            case R.id.menu_logout:
                 get_ready_logout();
+                return true;
+            case R.id.menu_change_password:
+                Intent in = new Intent(this,ChangePasswordActivity.class);
+                startActivity(in);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
